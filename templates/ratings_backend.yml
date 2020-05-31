@@ -1,0 +1,153 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+#Transforms any serverless code to cloudformation
+Transform: AWS::Serverless-2016-10-31
+
+Description: |
+  Lambda function that updates dynamodb table from
+  templates/ratings_backend.yml
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: source-code
+
+  DynamoDbTableName:
+    Type: String
+    Default: dev_toonami_ratings
+
+  EnableLambdaSchedule:
+    Type: String
+    Default: false 
+    Description: Determines whether lambda function event is enabled   
+
+
+  PolicyPrefix:
+    Type: String
+    Default: DevRatingsBackend 
+    Description: Policy statements must be AlphaNumeric   
+
+  ProjectName:
+    Type: String
+    Default: dev-ratings-backend
+
+
+Resources:
+
+  LambdaCodeBucket:
+    Properties:
+      BucketName: !Join ['-', [ !Ref ProjectName, !Ref BucketName ]]
+      Tags:
+        -
+          Key: keep
+          Value: "yes"
+        -
+          Key: reason
+          Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
+    Type: "AWS::S3::Bucket"
+
+############
+#Lambda function to update ratings
+#
+############
+  UpdateRatings:
+    Type: AWS::Serverless::Function
+    Properties:
+ 
+                                
+      Description: |
+        Makes reddit api call on schedule to check for 
+        updated ratings
+      Events:
+        #cloudwatch event rule that runs 
+        #every 3 hours        
+        ThreeHourCWEvent:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(3 hours)'
+            Name: !Sub '${ProjectName}-lambda-poll-trigger'
+            Description: Runs reddit_ratings.lambda_handler once every 3 hours
+            Enabled: !Ref EnableLambdaSchedule        
+
+      FunctionName: !Join ['-', [ !Ref ProjectName, 'lambda-poll']]
+      Handler: index.handler
+
+      #Policies to include in the lambda basic execution role
+      #created by SAM
+      Policies:
+        Version: "2012-10-17"
+        Statement: 
+          #dynamodb permissions     
+          - Sid: !Sub '${PolicyPrefix}LambdaDynamoDbAllow'
+            Effect: Allow
+            Action:
+              - dynamodb:DeleteItem
+              - dynamodb:ListTables
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:Query
+
+            Resource:
+              - "*"        
+
+          #Secrets Manager GetSecret permissions     
+          - Sid: !Sub '${PolicyPrefix}LambdaSecretsMangerAllow'
+            Effect: Allow
+            Action:
+              - secretsmanager:GetSecret
+
+            Resource:
+              - "*"         
+
+      Runtime: python3.7
+      #Default code that will be updated by
+      #CodeBuild Job
+      InlineCode: |
+        def handler(event, context):
+          print("Hello, world!")
+    Tags:
+        -
+          Key: keep
+          Value: "yes"
+        -
+          Key: reason
+          Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
+
+
+###############################
+#DynamoDb table to store ratings
+#primary key is a composite of the
+#show name and time
+###############################
+  RatingsTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "RATINGS_OCCURRED_ON"
+          AttributeType: "S"
+        -
+          AttributeName: "TIME"
+          AttributeType: "S"
+
+    #On demand dynamodb
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        -
+          AttributeName: "RATINGS_OCCURRED_ON"
+          KeyType: "HASH"
+        -
+          AttributeName: "TIME"
+          KeyType: "RANGE"
+
+      SSESpecification:
+          SSEEnabled: true
+      TableName: !Ref DynamoDbTableName
+      Tags:
+        -
+          Key: keep
+          Value: "yes"
+        -
+          Key: reason
+          Value: !Join ['-', [ !Ref ProjectName, 'dynamodb']]
