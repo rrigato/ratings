@@ -38,8 +38,8 @@ phases:
 
 
 
-      # #Running reddit rating tests
-      # - python -m unittest tests/test_reddit_ratings.py
+      #Running reddit rating tests
+      - python -m unittest tests/test_reddit_ratings.py
 
 
 
