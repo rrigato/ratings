@@ -1,3 +1,6 @@
+import boto3
+import json
+
 def batch_json_upload(json_file_location, table_name):
     """Batch inserts json file into dynamodb table
 
@@ -44,3 +47,25 @@ def batch_json_upload(json_file_location, table_name):
                 TableName=table_name,
                 Item=individual_item
             )
+
+
+def main():
+    """Entry point into the script
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    get_logger()
+    batch_json_upload(
+        json_file_location="ratings_earliest_november_11_2018.json",
+        table_name="dev_toonami_ratings"
+    )
+
+
+if __name__ == "__main__":
+    main()
