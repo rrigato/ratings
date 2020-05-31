@@ -413,6 +413,41 @@ Resources:
 
 
 
+        ###############################
+        #stage 4 Builds the prod
+        # environment by populating resources created
+        # in stage 2
+        ###############################
+        - Name: BuildProdEnvironment
+          Actions:
+          - Name: Test
+              ######################################
+              #List of valid action type providers
+              #by action can be found here:
+              #https://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html#actions-valid-providers
+              ######################################
+            ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+            InputArtifacts:
+              - Name: !GetAtt GitRepo.Name
+              - Name: BuildDev
+            OutputArtifacts:
+              - Name: BuildProd
+            #########################################
+            #Configuration Details by provider can be found here:
+            #https://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html#structure-configuration-examples
+            #
+            #########################################
+            Configuration:
+                PrimarySource: !GetAtt GitRepo.Name
+                ProjectName:
+                  !Join ['', ['prod-build-', !Ref ProjectName]]
+
+            RunOrder: 1
+
 
 ####################################
 #Role that will be assumed when
