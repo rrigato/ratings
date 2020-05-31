@@ -43,25 +43,25 @@ phases:
 
 
 
-      # #Creating Deployment package for lambda dependencies
-      # - mkdir deploypkg
+      #Creating Deployment package for lambda dependencies
+      - mkdir deploypkg
 
-      # #install dependencies into local deploypkg folder
-      # - pip install --target ./deploypkg requests
+      #install dependencies into local deploypkg folder
+      - pip install --target ./deploypkg requests
 
-      # - pip install --target ./deploypkg bs4
+      - pip install --target ./deploypkg bs4
 
-      # #copy runtime script to deployment package
-      # - cp scripts/reddit_ratings.py deploypkg
+      #copy runtime script to deployment package
+      - cp scripts/reddit_ratings.py deploypkg
 
-      # - cd deploypkg
+      - cd deploypkg
 
-      # #zip depenedencies and source code in directory
-      # - zip -r9 built_lambda.zip .
+      #zip depenedencies and source code in directory
+      - zip -r9 built_lambda.zip .
 
-      # - cd ..
+      - cd ..
 
-      # #- zip -g built_lambda.zip scripts/reddit_ratings.py
+      #- zip -g built_lambda.zip scripts/reddit_ratings.py
 
       # #updates zip deployment package
       # - aws lambda update-function-code
