@@ -1,7 +1,36 @@
 from scripts.reddit_ratings import clean_dict_value
 from scripts.reddit_ratings import dict_key_mapping
+
 import boto3
 import json
+import logging
+import os
+
+def get_logger(working_directory=os.getcwd()):
+    """Sets up logger
+
+        Parameters
+        ----------
+        working_directory: str
+            Where to put logger, defaults to cwd
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    '''
+        Adds the file name to the logs/ directory without
+        the extension
+    '''
+    logging.basicConfig(
+        filename=os.path.join(working_directory, "logs/",
+        os.path.basename(__file__).split(".")[0]),
+        format="%(asctime)s %(message)s",
+         datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.DEBUG
+         )
+    logging.info("\n")
 
 
 def batch_json_upload(json_file_location, table_name):
@@ -63,7 +92,7 @@ def main():
         Raises
         ------
     """
-    # get_logger()
+    get_logger()
     # batch_json_upload(
     #     json_file_location="ratings_earliest_november_11_2018.json",
     #     table_name="dev_toonami_ratings"
