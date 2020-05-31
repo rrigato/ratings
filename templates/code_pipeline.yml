@@ -149,51 +149,6 @@ Resources:
       TimeoutInMinutes: 5
 
 
-  #################################
-  #Code Build Project that runs python
-  #unit/integration tests
-  #
-  ###################################
-  CodeBuildPythonTests:
-    #Need the DevArtifactsBucket Created first before This
-    #CodeBuild Project can start
-    DependsOn: DevArtifactsBucket
-    Type: AWS::CodeBuild::Project
-    Properties:
-      #Output location for the CodeBuild Project
-      Artifacts:
-        Type: S3
-        Location:
-            !Join ['', ['codebuild-dev-', !Ref ProjectName]]
-        Packaging: NONE
-      #Allows for git badge at top of git repo
-      BadgeEnabled: true
-
-      #Where logs are written to from code build
-      LogsConfig:
-          S3Logs:
-              Status: ENABLED
-              Location:
-                !Join ['', ['codebuild-dev-', !Ref ProjectName,
-                '/buildlogs']]
-      #Standard Linux Image environment
-      Environment:
-        ComputeType: BUILD_GENERAL1_SMALL
-        Type: LINUX_CONTAINER
-        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
-      Name:
-          !Join ['', ['dev-tests-', !Ref ProjectName]]
-      ServiceRole: !Ref CodeBuildRole
-      #CodeCommit Git repo used for CodeBuild
-      Source:
-        #Buildspec file to use for the dev build
-        BuildSpec: builds/buildspec_dev_ratings.yml
-        Location: !GetAtt GitRepo.CloneUrlHttp
-        Type: CODECOMMIT
-      TimeoutInMinutes: 5
-
-
-
  #################################
  #Production Code Build that runs python
  #tests and deploys code to prod
