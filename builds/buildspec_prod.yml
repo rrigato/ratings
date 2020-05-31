@@ -1,0 +1,50 @@
+############################
+#Accomplishes the following build tasks
+#
+#1) Runs the cloudformation template to create the necessary resources
+#2) Runs python coverage function to generate Auto HTML documentation
+##) Runs unit tests of lambda functions, checks aws resources created
+#
+#
+############################
+version: 0.2
+
+phases:
+  ###########################################
+  #Uses a python runtime
+  #Note that you do not need the \ to escape
+  #aws cli commands
+  ###########################################
+  install:
+    runtime-versions:
+       python: 3.7
+    commands:
+      - echo Entered the install phase...
+
+      - BUILD_ENVIRONMENT=prod
+      - REPO_NAME=ratings
+      - pip install -r tests/requirements.txt
+      - ls -l
+    finally:
+
+  build:
+    commands:
+      - echo Defined build variables
+      - echo $BUILD_ENVIRONMENT
+      - echo $REPO_NAME
+
+      #merges dev branch into master now that all tests have
+      #been passed and artifacts created
+      - aws codecommit merge-branches-by-fast-forward
+        --source-commit-specifier dev
+        --destination-commit-specifier master
+        --repository-name $REPO_NAME
+
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    - ./logs/*

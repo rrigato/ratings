@@ -1,0 +1,87 @@
+############################
+#Logic for creating, updating and testing the
+#aws resources necessary for making the api backend
+#
+#1) Runs the cloudformation template to create the necessary resources
+#2) Runs python coverage function to generate Auto HTML documentation
+##) Runs unit tests of lambda functions, checks aws resources created
+#
+#
+############################
+version: 0.2
+
+env:
+  secrets-manager:
+    REDDIT_CLIENT_KEY: /prod/reddit_api_key
+    REDDIT_CLIENT_SECRET: /prod/reddit_api_secret
+
+phases:
+  ###########################################
+  #Uses a python runtime
+  #Note that you do not need the \ to escape
+  #aws cli commands
+  ###########################################
+  install:
+    runtime-versions:
+       python: 3.7
+    commands:
+      - echo Entered the install phase...
+      - BUILD_ENVIRONMENT=dev-ratings
+      - LAMBDA_FUNCTION_NAME=dev-ratings-backend-lambda-poll
+      - pip install -r tests/requirements.txt
+  build:
+    commands:
+      - echo Defined build variables
+      - echo $BUILD_ENVIRONMENT
+      - echo $LAMBDA_FUNCTION_NAME
+      - echo $RATINGS_UPDATE_STACK
+
+
+
+      # #Running reddit rating tests
+      # - python -m unittest tests/test_reddit_ratings.py
+
+
+
+      # #Creating Deployment package for lambda dependencies
+      # - mkdir deploypkg
+
+      # #install dependencies into local deploypkg folder
+      # - pip install --target ./deploypkg requests
+
+      # - pip install --target ./deploypkg bs4
+
+      # #copy runtime script to deployment package
+      # - cp scripts/reddit_ratings.py deploypkg
+
+      # - cd deploypkg
+
+      # #zip depenedencies and source code in directory
+      # - zip -r9 built_lambda.zip .
+
+      # - cd ..
+
+      # #- zip -g built_lambda.zip scripts/reddit_ratings.py
+
+      # #updates zip deployment package
+      # - aws lambda update-function-code
+      #   --function-name $LAMBDA_FUNCTION_NAME
+      #   --zip-file fileb://deploypkg/built_lambda.zip
+
+      # #changes lambda handler to scripts/reddit_ratings.py
+      # #lambda_handler function
+      # - aws lambda update-function-configuration
+      #   --function-name $LAMBDA_FUNCTION_NAME
+      #   --handler "reddit_ratings.lambda_handler"
+
+      # - python -m unittest tests/test_dev_ratings_backend.py
+
+  post_build:
+    commands:
+      - echo cleaning up resources
+
+      - aws cloudformation delete-stack --stack-name $RATINGS_UPDATE_STACK
+
+artifacts:
+  files:
+    - ./logs/*
