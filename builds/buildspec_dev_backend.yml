@@ -28,7 +28,7 @@ phases:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratings
       - LAMBDA_FUNCTION_NAME=dev-ratings-backend-lambda-poll
-      - pip install -r tests/requirements.txt
+      - pip install -r tests/requirements_backend.txt
   build:
     commands:
       - echo Defined build variables

@@ -23,7 +23,7 @@ phases:
 
       - BUILD_ENVIRONMENT=prod
       - REPO_NAME=ratings
-      - pip install -r tests/requirements.txt
+      - pip install -r tests/requirements_backend.txt
       - ls -l
     finally:
 
