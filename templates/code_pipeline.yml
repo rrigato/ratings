@@ -262,11 +262,11 @@ Resources:
   #Stages for this environment:
   #Stage 1) Source = Get source code repository
   #stage 2) Build = Runs these CodeBuild projects in parallel:
-  #builds/buildspec_dev_ratings.yml
   #builds/buildspec_dev_backend.yml
   #
   #stage 3) Deploy create/updates the
-  #templates/prod_resource_import.yml
+  #templates/ratings_backend.yml cf template with prod
+  #parameter overrides
   #stage 4) Build = runs any configuration necessary
   #to deploy built html files to prod
   ###########################################
@@ -370,7 +370,7 @@ Resources:
         # - Name: DeployProd
         #   Actions:
         # ############################
-        # #Second action of this deploy prod stage
+        # #First action of this deploy prod stage
         # #Creates/updates the templates/ratings_backend.yml
         # #cloudformation template which is for the backend
         # #lambda/dynamo logic
