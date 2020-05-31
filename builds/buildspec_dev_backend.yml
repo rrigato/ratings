@@ -90,7 +90,7 @@ phases:
     commands:
       - echo cleaning up resources
 
-      #- aws cloudformation delete-stack --stack-name $RATINGS_UPDATE_STACK
+      - aws cloudformation delete-stack --stack-name $RATINGS_UPDATE_STACK
 
 artifacts:
   files:
