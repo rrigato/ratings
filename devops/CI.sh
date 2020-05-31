@@ -1,9 +1,12 @@
 ################################
-#Used to create development repository
-#Unit tests are run on each commit
-#
-#This script only needs to be run once
-###############################
+#Miscellaneous AWSCLI commands to setup CI/CD pipeline
+################################
+
+#Initial project creation setup
+aws cloudformation create-stack --stack-name ratings-pipeline \
+ --template-body file://templates/code_pipeline.yml \
+ --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
+
 
 
 #Creates the CodeBuild and Code Pipeline Cloudformation stack
@@ -16,7 +19,6 @@ aws cloudformation create-change-set --stack-name ratings-pipeline \
 aws cloudformation execute-change-set --change-set-name \
 arn:aws:cloudformation:us-east-1:350255258796:changeSet/CodePipelineAddition/2326ac23-8154-49d4-a328-7edc708a2b53
 
-#Update code pipeline
 aws cloudformation update-stack --stack-name ratings-pipeline \
  --template-body file://templates/code_pipeline.yml \
  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND
