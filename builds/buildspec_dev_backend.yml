@@ -61,20 +61,20 @@ phases:
 
       - cd ..
 
-      #- zip -g built_lambda.zip scripts/reddit_ratings.py
+      - zip -g built_lambda.zip scripts/reddit_ratings.py
 
-      # #updates zip deployment package
-      # - aws lambda update-function-code
-      #   --function-name $LAMBDA_FUNCTION_NAME
-      #   --zip-file fileb://deploypkg/built_lambda.zip
+      #updates zip deployment package
+      - aws lambda update-function-code
+        --function-name $LAMBDA_FUNCTION_NAME
+        --zip-file fileb://deploypkg/built_lambda.zip
 
-      # #changes lambda handler to scripts/reddit_ratings.py
-      # #lambda_handler function
-      # - aws lambda update-function-configuration
-      #   --function-name $LAMBDA_FUNCTION_NAME
-      #   --handler "reddit_ratings.lambda_handler"
+      #changes lambda handler to scripts/reddit_ratings.py
+      #lambda_handler function
+      - aws lambda update-function-configuration
+        --function-name $LAMBDA_FUNCTION_NAME
+        --handler "reddit_ratings.lambda_handler"
 
-      # - python -m unittest tests/test_dev_ratings_backend.py
+      - python -m unittest tests/test_dev_ratings_backend.py
 
   post_build:
     commands:
