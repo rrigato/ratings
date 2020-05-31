@@ -93,10 +93,10 @@ def main():
         ------
     """
     get_logger()
-    # batch_json_upload(
-    #     json_file_location="ratings_earliest_november_11_2018.json",
-    #     table_name="dev_toonami_ratings"
-    # )
+    batch_json_upload(
+        json_file_location="ratings_earliest_november_11_2018.json",
+        table_name="dev_toonami_ratings"
+    )
 
 
 if __name__ == "__main__":
