@@ -852,7 +852,12 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             table_name=table_name
     )
 
-    
+    ratings_occurred_on = sort_ratings_occurred_on(
+        ratings_list=all_ratings_list
+    )
+
+    import pdb; pdb.set_trace()
+
 
 
 
@@ -884,7 +889,16 @@ def main():
         ------
     """
     get_logger()
+    
     all_ratings_list = ratings_iteration(number_posts=10)
+
+    clean_rating_keys = dict_key_mapping(
+        pre_clean_ratings_keys=all_ratings_list
+    )
+
+    clean_rating_values = clean_dict_value(
+        ratings_values_to_clean=all_ratings_list
+    )
 
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,
