@@ -1022,6 +1022,25 @@ class RedditApi(unittest.TestCase):
         self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
 
+    def test_ratings_not_in_table(self):
+        """Tests the outgoing parameters to see if items are in table
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        from scripts.reddit_ratings import ratings_not_in_table 
+
+        ratings_not_in_table(
+            
+        )
+
+
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
         function
