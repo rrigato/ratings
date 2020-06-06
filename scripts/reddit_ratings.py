@@ -827,7 +827,7 @@ def sort_ratings_occurred_on(ratings_list):
     return(ratings_occurred_on)
 
 
-def handle_ratings_insertion(all_ratings_list):
+def handle_ratings_insertion(all_ratings_list, table_name):
     """Handles inserting ratings into dynamodb
 
         Parameters
@@ -836,6 +836,9 @@ def handle_ratings_insertion(all_ratings_list):
             List of dict where each element is
             one saturday night ratings
 
+        table_name : str
+            name of the dynamodb table
+
         Returns
         -------
 
@@ -843,10 +846,12 @@ def handle_ratings_insertion(all_ratings_list):
         ------
 
     """
-    dynamo_client = get_boto_clients(
+    dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
-            region_name="us-east-1"
+            region_name="us-east-1",
+            table_name=table_name
     )
+
     
 
 
@@ -881,8 +886,10 @@ def main():
     get_logger()
     all_ratings_list = ratings_iteration(number_posts=10)
 
-    with open("ratings_placeholder.json", "w") as output_file:
-        output_file.write(json.dumps(all_ratings_list))
+    handle_ratings_insertion(
+        all_ratings_list=all_ratings_list,
+        table_name="dev_toonami_ratings"
+    )
 
 if __name__ == "__main__":
     main()
