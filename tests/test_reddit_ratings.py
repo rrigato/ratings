@@ -171,6 +171,7 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         """
+        os.environ["DYNAMODB_TABLE_NAME"] = "dev_toonami_ratings"
         '''
             Assigns a class attribute which is 
             a dict that represents news posts
@@ -197,21 +198,21 @@ class RedditApi(unittest.TestCase):
         ]
 
 
+    @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
-    @patch("scripts.reddit_ratings.get_logger")
-    def test_maint(self, configure_logging_mock,
-        ratings_iteration_mock):
-        '''Unittest for get_oauth_token
+    def test_main(self, ratings_iteration_mock,
+        configure_logging_mock):
+        '''Test for main function
 
             Parameters
             ----------
-            get_logger_mock : unittest.mock.MagicMock
-                Mock object used to ensure no logging is setup
-                for the test
-
             ratings_iteration_mock : unittest.mock.MagicMock
                 Mock object to make sure the reddit api is 
                 not called
+
+            handle_ratings_iteration_mock : unittest.mock.MagicMock
+                Mock object used to ensure no logging is setup
+                for the test
 
             Returns
             -------
@@ -1022,29 +1023,6 @@ class RedditApi(unittest.TestCase):
         self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
 
-    def test_ratings_not_in_table(self):
-        """Tests the outgoing parameters to see if items are in table
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import ratings_not_in_table 
-
-        weeks_to_insert = ratings_not_in_table(
-            ratings_occurred_on=[
-                "2020-05-23",
-                "2020-05-16",
-                "2020-05-09",
-                "2020-05-02"
-            ],
-        table_name="testtablename"
-        )
 
 
 class LambdaHandler(unittest.TestCase):

@@ -968,7 +968,7 @@ def main():
 
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,
-        table_name="dev_toonami_ratings"
+        table_name=os.environ.get("DYNAMODB_TABLE_NAME")
     )
 
 if __name__ == "__main__":
