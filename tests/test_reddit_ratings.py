@@ -147,7 +147,7 @@ class IntegrationRedditApi(unittest.TestCase):
 
 
 class RedditApi(unittest.TestCase):
-    """Testing the reddit api pull
+    """Testing the reddit api pull unit tests only
 
         Parameters
         ----------
@@ -228,16 +228,27 @@ class RedditApi(unittest.TestCase):
             region_name="us-east-1"
         )
 
+    def test_sort_ratings_occurred_on(self):
+        '''Tests that we are able to sort when the ratings occurred
 
-    #@patch("boto3.client")
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        import pdb; pdb.set_trace()
+
+
+
     def test_get_boto_clients_table_resource(self):
         '''Tests getting a dynamodb table resource from get_boto_clients
 
             Parameters
             ----------
-            boto3_client_mock : unittest.mock.MagicMock
-                Mock object used to patch
-                AWS Python SDK
 
             Returns
             -------
