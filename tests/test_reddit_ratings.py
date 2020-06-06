@@ -248,27 +248,41 @@ class RedditApi(unittest.TestCase):
         '''
         from scripts.reddit_ratings import get_boto_clients
 
+        dynamodb_functions_to_test = [
+            "put_item",
+            "query",
+            "scan"
+        ]
         '''
             boto3 does not make any calls to 
             aws until you use the resource/client
         '''
         test_service_name = "dynamodb"
         test_table_name = "fake_ddb_table"
+
         dynamodb_client, dynamodb_table = get_boto_clients(
             resource_name=test_service_name, 
             table_name=test_table_name
         )
 
-        import pdb; pdb.set_trace()
 
         '''
-            Default region is us-east-1 for 
-            get_boto_clients
+            Testing the objects returned have the needed functions
         '''
-        boto3_client_mock.assert_called_once_with(
-            service_name=test_service_name,
-            region_name="us-east-1"
+        self.assertIn(
+            "describe_table"
+            dir(dynamodb_client)
         )
+
+        '''
+            ensuring we have all needed functions for
+            working with a table
+        '''
+        for dynamodb_function in dynamodb_functions_to_test:
+            self.assertIn(
+                dynamodb_function,
+                dir(dynamodb_table)
+            )        
 
 
 
