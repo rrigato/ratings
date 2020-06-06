@@ -806,14 +806,22 @@ def sort_ratings_occurred_on(ratings_list):
             )
         )
 
+
     '''
         Unique ratings
     '''
-    ratings_as_dates = tuple(ratings_as_dates)
+    ratings_as_dates = set(ratings_as_dates)
+
+    '''
+        Turns set into a list of datetimes that are
+        in descending order
+    '''
+    ratings_occurred_on = sorted(ratings_as_dates, reverse=True)
+
 
     import pdb; pdb.set_trace()
-    ratings_as_dates.sort()
 
+    return(ratings_occurred_on)
 
 
 def handle_ratings_insertion(all_ratings_list):

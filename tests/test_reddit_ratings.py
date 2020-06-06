@@ -240,6 +240,8 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         """
+        from scripts.reddit_ratings import sort_ratings_occurred_on
+        
         ratings_occurred_on = sort_ratings_occurred_on(
             ratings_list=MOCK_RATINGS_LIST
         )
