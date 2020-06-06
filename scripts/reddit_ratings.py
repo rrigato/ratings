@@ -707,20 +707,27 @@ def dict_key_mapping(pre_clean_ratings_keys):
         '''
         for original_key in list(dict_to_clean.keys()):
             '''
-                static mapping to standardize dynamodb
-                keys that removes old key and adds the correct dynamo
-                column name mapping
-
-                original_key will be one of the keys in key_to_dynamo_column_map
-
-                Will pop (remove) that key from original dict and 
-                assign the corresponding value for original_key 
-                in key_to_dynamo_column_map to dict_to_clean
+                If the key is already a valid output column 
+                name we do nothing
             '''
+            if original_key in list(key_to_dynamo_column_map.values()):
+                pass
+            else:
+                '''
+                    static mapping to standardize dynamodb
+                    keys that removes old key and adds the correct dynamo
+                    column name mapping
 
-            dict_to_clean[key_to_dynamo_column_map[original_key]] =  dict_to_clean.pop(
-                original_key
-            )
+                    original_key will be one of the keys in key_to_dynamo_column_map
+
+                    Will pop (remove) that key from original dict and 
+                    assign the corresponding value for original_key 
+                    in key_to_dynamo_column_map to dict_to_clean
+                '''
+
+                dict_to_clean[key_to_dynamo_column_map[original_key]] =  dict_to_clean.pop(
+                    original_key
+                )
         '''
             Append each cleaned dict
         '''
@@ -889,7 +896,7 @@ def main():
         ------
     """
     get_logger()
-    
+
     all_ratings_list = ratings_iteration(number_posts=10)
 
     clean_rating_keys = dict_key_mapping(
