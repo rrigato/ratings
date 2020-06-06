@@ -86,6 +86,12 @@ def get_boto_clients(resource_name, region_name='us-east-1',
             service_name=resource_name,
             region_name=region_name
         ).Table(table_name)
+
+        return(service_client, dynamodb_table_resource)
+
+    '''
+        Otherwise return just a resource client
+    '''
     return(service_client)
 
 
