@@ -129,20 +129,23 @@ updating ratings
 
 #### tests
 
-- test_dev_aws_resources.py = tests dev website
-
 - test_dev_ratings_backend.py = tests backend resources for storing
-calling televison ratings api
+calls to the television ratings api
 
 - test_reddit_ratings.py = tests logic for making api call to
 return television ratings
 
 
 ##### util
+- lambda_cw_event.json = lambda cloudwatch invokation event json
+
+- news_flair_fixture.json = reddit response with posts that have a news flair for unit testing
+  
 - reddit_search_response.json = Reddit search api json response using the
 following api query:
 https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&restrict_sr=on&t=all&raw_json=1&after=t3_a19qyq
 
+- test_reddit_rating_config.py = fixtures for use in tests/test_reddit_rating.py
 
 #### Setup Continuous Integration
 
