@@ -775,12 +775,12 @@ def clean_dict_value(ratings_values_to_clean):
 
     return(clean_ratings_values)
 
-def test_sort_ratings_occurred_on(ratings_list):
+def sort_ratings_occurred_on(ratings_list):
     '''Sorts ratings in descending order by date
 
         Parameters
         ----------
-        all_ratings_list : list
+        ratings_list : list
             List of dict where each element is
             one saturday night ratings
 
@@ -792,7 +792,11 @@ def test_sort_ratings_occurred_on(ratings_list):
         Raises
         ------
     '''
+    
+    ratings_as_dates = [] 
+    for individual_rating in ratings_list:
 
+    import pdb; pdb.set_trace()
 
 def handle_ratings_insertion(all_ratings_list):
     """Handles inserting ratings into dynamodb

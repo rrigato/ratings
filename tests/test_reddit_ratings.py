@@ -229,7 +229,7 @@ class RedditApi(unittest.TestCase):
         )
 
     def test_sort_ratings_occurred_on(self):
-        '''Tests that we are able to sort when the ratings occurred
+        """Tests that we are able to sort when the ratings occurred
 
             Parameters
             ----------
@@ -239,8 +239,7 @@ class RedditApi(unittest.TestCase):
 
             Raises
             ------
-        '''
-        import pdb; pdb.set_trace()
+        """
         ratings_occurred_on = sort_ratings_occurred_on(
             ratings_list=MOCK_RATINGS_LIST
         )
@@ -264,7 +263,7 @@ class RedditApi(unittest.TestCase):
 
 
     def test_get_boto_clients_table_resource(self):
-        '''Tests getting a dynamodb table resource from get_boto_clients
+        """Tests getting a dynamodb table resource from get_boto_clients
 
             Parameters
             ----------
@@ -275,7 +274,7 @@ class RedditApi(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         from scripts.reddit_ratings import get_boto_clients
 
         dynamodb_functions_to_test = [
