@@ -201,7 +201,7 @@ class RedditApi(unittest.TestCase):
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        configure_logging_mock):
+        handle_ratings_iteration_mock):
         '''Test for main function
 
             Parameters
@@ -228,6 +228,16 @@ class RedditApi(unittest.TestCase):
 
         ratings_iteration_mock.assert_called_once_with(
             number_posts=10
+        )
+
+        self.assertEqual(
+            handle_ratings_iteration_mock.call_count,
+            1
+        )
+
+        handle_ratings_iteration_mock.assert_called_once_with(
+            all_ratings_list=MOCK_RATINGS_LIST,
+            table_name="dev_toonami_ratings"
         )
 
     @patch("boto3.client")
