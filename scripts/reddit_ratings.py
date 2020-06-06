@@ -776,7 +776,7 @@ def clean_dict_value(ratings_values_to_clean):
     return(clean_ratings_values)
 
 def sort_ratings_occurred_on(ratings_list):
-    '''Sorts ratings in descending order by date
+    """Sorts ratings in descending order by date
 
         Parameters
         ----------
@@ -791,12 +791,30 @@ def sort_ratings_occurred_on(ratings_list):
 
         Raises
         ------
-    '''
+    """
     
     ratings_as_dates = [] 
+    '''
+        For each dict of ratings get the 
+        RATINGS_OCCURRED_ON string and convert that to 
+        a datetime object
+    '''
     for individual_rating in ratings_list:
+        ratings_as_dates.append(
+            datetime.strptime(
+                individual_rating["RATINGS_OCCURRED_ON"], "%Y-%m-%d"
+            )
+        )
+
+    '''
+        Unique ratings
+    '''
+    ratings_as_dates = tuple(ratings_as_dates)
 
     import pdb; pdb.set_trace()
+    ratings_as_dates.sort()
+
+
 
 def handle_ratings_insertion(all_ratings_list):
     """Handles inserting ratings into dynamodb
