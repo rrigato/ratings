@@ -863,7 +863,6 @@ def handle_ratings_insertion(all_ratings_list, table_name):
         ratings_list=all_ratings_list
     )
 
-    import pdb; pdb.set_trace()
 
 
 

@@ -224,7 +224,7 @@ class RedditApi(unittest.TestCase):
         ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
 
         main()
-        
+
         ratings_iteration_mock.assert_called_once_with(
             number_posts=10
         )
@@ -851,7 +851,10 @@ class RedditApi(unittest.TestCase):
             ------
         """
         from scripts.reddit_ratings import handle_ratings_insertion
-        handle_ratings_insertion(all_ratings_list=MOCK_RATINGS_LIST)
+        handle_ratings_insertion(
+            all_ratings_list=MOCK_RATINGS_LIST,
+            table_name="fake_table_name"
+        )
 
 
     def test_dict_key_mapping(self):
