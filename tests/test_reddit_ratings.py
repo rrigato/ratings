@@ -197,15 +197,15 @@ class RedditApi(unittest.TestCase):
         ]
 
 
-    @patch("reddit_ratings.ratings_iteration")
-    @patch("reddit_ratings.configure_logging")
+    @patch("scripts.reddit_ratings.ratings_iteration")
+    @patch("scripts.reddit_ratings.get_logger")
     def test_maint(self, configure_logging_mock,
         ratings_iteration_mock):
         '''Unittest for get_oauth_token
 
             Parameters
             ----------
-            configure_logging_mock : unittest.mock.MagicMock
+            get_logger_mock : unittest.mock.MagicMock
                 Mock object used to ensure no logging is setup
                 for the test
 
@@ -219,6 +219,15 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         '''
+        from scripts.reddit_ratings import main
+
+        ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
+
+        main()
+        
+        ratings_iteration_mock.assert_called_once_with(
+            number_posts=10
+        )
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
