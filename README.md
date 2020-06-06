@@ -97,9 +97,6 @@ and Tests backend ratings logic
 
 - buildspec_prod.yml = Buildspec to use for the prod deployment CodeBuild project
 
-#### docs
-
-
 #### devops
 
 ci.sh = miscellaneous awscli commands to configure environment
@@ -114,6 +111,11 @@ ci.sh = miscellaneous awscli commands to configure environment
 - directory for python log files
 
 
+#### scripts
+- historical_ratings_upload.py = one time upload of json from the [historical](#historical) directory
+
+- reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
+
 #### templates
 
 
@@ -124,13 +126,11 @@ ci.sh = miscellaneous awscli commands to configure environment
 - ratings_backend.yml = Creates the backend storage and compute necessary for
 updating ratings
 
-- ratings_update_lambda.yml = Lambda function that updates dynamodb table from
-  templates/ratings_backend.yml
+
 
 #### tests
 
-- test_dev_ratings_backend.py = tests backend resources for storing
-calls to the television ratings api
+- test_dev_ratings_backend.py = tests backend dynamodb/lamdba aws resources
 
 - test_reddit_ratings.py = tests logic for making api call to
 return television ratings
