@@ -36,6 +36,6 @@ aws cloudformation update-stack --stack-name ratings-pipeline \
 
 
    #static s3 bucket for testing upload code
-aws cloudformation create-stack --stack-name dev-backend-logic \
+aws cloudformation create-stack --stack-name dev-ratings-backend \
     --template-body file://templates/ratings_backend.yml \
     --capabilities CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM
