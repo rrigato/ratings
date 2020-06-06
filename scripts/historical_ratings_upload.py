@@ -53,7 +53,7 @@ def batch_json_upload(json_file_location, table_name):
 
     """
     dynamo_client, dynamo_table = get_boto_clients(
-            service_name="dynamodb",
+            resource_name="dynamodb",
             region_name="us-east-1",
             table_name=table_name
     )
