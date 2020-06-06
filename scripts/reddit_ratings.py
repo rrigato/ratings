@@ -899,7 +899,23 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             Ex: week_night of "05-23-2020"
         '''
         if len(existing_items["Items"]):
-            pass
+            '''
+                batch writer
+            '''
+            with dynamo_table.batch_writer as batch_insert:
+                '''
+                    For each show in the ratings list, 
+                    only insert those with RATINGS_OCCURRED_ON 
+                    of week_night
+                '''
+                for individual_show in all_ratings_list:
+                    if individual_show["RATINGS_OCCURRED_ON"] == week_night:
+                        '''
+                            Insert the dict
+                        '''
+                        batch_insert.put_item(
+                            Item=individual_show
+                        )
 
         else:
             '''
