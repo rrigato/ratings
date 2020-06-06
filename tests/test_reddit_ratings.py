@@ -1081,8 +1081,7 @@ class LambdaHandler(unittest.TestCase):
             cls.lambda_event_fixture = json.load(news_flair)
 
     @patch("scripts.reddit_ratings.main")
-    def test_lambda_handler_event(self, main_mock,
-        ratings_iteration_mock):
+    def test_lambda_handler_event(self, main_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters
