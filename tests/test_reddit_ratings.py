@@ -270,7 +270,7 @@ class RedditApi(unittest.TestCase):
             Testing the objects returned have the needed functions
         '''
         self.assertIn(
-            "describe_table"
+            "describe_table",
             dir(dynamodb_client)
         )
 
