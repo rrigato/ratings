@@ -72,14 +72,19 @@ def batch_json_upload(json_file_location, table_name):
         clean_rating_values = clean_dict_value(
             ratings_values_to_clean=clean_rating_keys
         )
+
         '''
-            Iterate over all items for upload
+            batch writer
         '''
-        for individual_item in clean_rating_values:
-            dynamo_table.put_item(
-                TableName=table_name,
-                Item=individual_item
-            )
+        with dynamo_table.batch_writer() as batch_insert:
+            '''
+                Iterate over all items for upload
+            '''
+            for individual_item in clean_rating_values:
+                batch_insert.put_item(
+                    TableName=table_name,
+                    Item=individual_item
+                )
 
 
 def main():
