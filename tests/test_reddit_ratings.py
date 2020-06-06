@@ -229,8 +229,8 @@ class RedditApi(unittest.TestCase):
         )
 
 
-    @patch("boto3.client")
-    def test_get_boto_clients_table_resource(self, boto3_client_mock):
+    #@patch("boto3.client")
+    def test_get_boto_clients_table_resource(self):
         '''Tests getting a dynamodb table resource from get_boto_clients
 
             Parameters
@@ -248,13 +248,18 @@ class RedditApi(unittest.TestCase):
         '''
         from scripts.reddit_ratings import get_boto_clients
 
+        '''
+            boto3 does not make any calls to 
+            aws until you use the resource/client
+        '''
         test_service_name = "dynamodb"
         test_table_name = "fake_ddb_table"
-        get_boto_clients(
+        dynamodb_client, dynamodb_table = get_boto_clients(
             resource_name=test_service_name, 
             table_name=test_table_name
         )
 
+        import pdb; pdb.set_trace()
 
         '''
             Default region is us-east-1 for 

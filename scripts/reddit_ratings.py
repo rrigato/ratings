@@ -70,7 +70,6 @@ def get_boto_clients(resource_name, region_name='us-east-1',
         Raises
         ------
     '''
-    import pdb; pdb.set_trace()
 
     service_client = boto3.client(
             service_name=resource_name, 
