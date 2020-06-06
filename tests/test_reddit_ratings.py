@@ -849,11 +849,15 @@ class RedditApi(unittest.TestCase):
             4
         )        
 
-    def test_handle_ratings_insertion(self):
+    @patch("scripts.reddit_ratings.get_boto_clients")
+    def test_handle_ratings_insertion(self, get_boto_clients_patch):
         """Tests outbound arguements for ratings put item in dynamodb
 
             Parameters
             ----------
+            get_ratings_post_mock : unittest.mock.MagicMock
+                Patch to return boto3 dynamodb resource
+
 
             Returns
             -------
@@ -862,6 +866,22 @@ class RedditApi(unittest.TestCase):
             ------
         """
         from scripts.reddit_ratings import handle_ratings_insertion
+
+        '''
+            Mocking the clients
+        '''
+        dynamo_client_mock = MagicMock()
+
+        dynamo_resource_mock = MagicMock()
+
+        '''
+            Mocking not having the given week night in the 
+            ratings
+        '''
+        dynamo_resource_mock.query.return_value = {
+            "Items":[]
+        }
+        get_boto_clients_patch.return_value = [1, 2]
         handle_ratings_insertion(
             all_ratings_list=MOCK_RATINGS_LIST,
             table_name="dev_toonami_ratings"
