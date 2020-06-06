@@ -1080,19 +1080,16 @@ class LambdaHandler(unittest.TestCase):
         with open("util/lambda_cw_event.json", "r") as news_flair:
             cls.lambda_event_fixture = json.load(news_flair)
 
-    @patch("scripts.reddit_ratings.ratings_iteration")
-    @patch("scripts.reddit_ratings.get_logger")
-    def test_lambda_handler_event(self, get_logger_mock,
+    @patch("scripts.reddit_ratings.main")
+    def test_lambda_handler_event(self, main_mock,
         ratings_iteration_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters
             ----------
-            get_logger_mock : unittest.mock.MagicMock
-                Mock object used to patch get_logger
+            main_mock : unittest.mock.MagicMock
+                Mock object used to patch the main function
 
-            ratings_iteration_mock : unittest.mock.MagicMock
-                 Mock object used to patch ratings_iteration
 
             Returns
             -------
@@ -1111,15 +1108,9 @@ class LambdaHandler(unittest.TestCase):
             Testing call count and args passed
         '''
         self.assertEqual(
-            get_logger_mock.call_count,
+            main_mock.call_count,
             1
         )
-
-        ratings_iteration_mock.assert_called_once_with(
-            number_posts=10
-        )
-
-
 
 
 

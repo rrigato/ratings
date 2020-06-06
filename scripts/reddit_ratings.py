@@ -866,6 +866,8 @@ def handle_ratings_insertion(all_ratings_list, table_name):
 
         Returns
         -------
+        None :
+            Returns None if the operation is successful
 
         Raises
         ------
@@ -921,9 +923,8 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             '''
                 Return since the list is sorted
             '''
-            return(0)
-
-
+            return(None)
+    return(None)
 
 
 
@@ -940,7 +941,7 @@ def lambda_handler(event, context):
         ------
     """
     get_logger()
-    all_ratings_list = ratings_iteration(number_posts=10)
+    main()
 
 
 def main():
