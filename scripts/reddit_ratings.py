@@ -850,13 +850,7 @@ def ratings_not_in_table(ratings_occurred_on, dynamo_table):
         Raises
         ------
     """
-    for week_night in ratings_occurred_on:
-        dynamo_table.query(
-            KeyConditionExpression=(
-                conditions.Key("RATINGS_OCCURRED_ON").eq(week_night)
-            ),
-            
-        )
+    pass
 
 def handle_ratings_insertion(all_ratings_list, table_name):
     """Handles inserting ratings into dynamodb
@@ -886,6 +880,18 @@ def handle_ratings_insertion(all_ratings_list, table_name):
     ratings_occurred_on = sort_ratings_occurred_on(
         ratings_list=all_ratings_list
     )
+    '''
+        Iterates over every existing weekend quering to 
+        check if that date already has values in the table
+    '''
+    for week_night in ratings_occurred_on:
+        existing_items = dynamo_table.query(
+            KeyConditionExpression=(
+                conditions.Key("RATINGS_OCCURRED_ON").eq(week_night)
+            ),
+            ProjectionExpression="RATINGS_OCCURRED_ON"
+        )
+
 
 
 

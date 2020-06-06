@@ -1036,8 +1036,14 @@ class RedditApi(unittest.TestCase):
         """
         from scripts.reddit_ratings import ratings_not_in_table 
 
-        ratings_not_in_table(
-            
+        weeks_to_insert = ratings_not_in_table(
+            ratings_occurred_on=[
+                "2020-05-23",
+                "2020-05-16",
+                "2020-05-09",
+                "2020-05-02"
+            ],
+        table_name="testtablename"
         )
 
 
