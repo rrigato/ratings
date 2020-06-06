@@ -104,11 +104,14 @@ and Tests backend ratings logic
 
 ci.sh = miscellaneous awscli commands to configure environment
 
+#### historical
+- ratings_05262012_to_05272017.json = ratings from May 26th, 2012 until May 27th 2017, credit to these historical ratings [from this source](https://github.com/FOSSforlife/toonami_ratings)
+  
+- ratings_11102018_04112020.json = ratings from November 10th 2018 through April 11th 2020, source was the reddit api
+
+
 #### logs
 - directory for python log files
-
-
-
 
 
 #### templates
