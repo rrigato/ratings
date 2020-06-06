@@ -42,7 +42,8 @@ def get_logger(working_directory=os.getcwd()):
          )
     logging.info("\n")
 
-def get_boto_clients(resource_name, region_name='us-east-1'):
+def get_boto_clients(resource_name, region_name='us-east-1',
+    table_name=None):
     '''Returns the boto client for various aws resources
 
         Parameters
@@ -56,17 +57,22 @@ def get_boto_clients(resource_name, region_name='us-east-1'):
 
         Returns
         -------
+        service_client : boto3.client
+            boto3 client for the aws resource in resource_name
+            in region region_name
+        
 
 
         Raises
         ------
     '''
-    return(
-        boto3.client(
+    import pdb; pdb.set_trace()
+
+    service_client = boto3.client(
             service_name=resource_name, 
             region_name=region_name
         )
-    )
+    return(service_client)
 
 
 
