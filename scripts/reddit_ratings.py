@@ -813,13 +813,16 @@ def sort_ratings_occurred_on(ratings_list):
     ratings_as_dates = set(ratings_as_dates)
 
     '''
-        Turns set into a list of datetimes that are
+        sorted = Turns set into a list of datetime objects that are
         in descending order
+
+        List comprehension iterates through each of those datetime objects
+        formats as a string in "YYYY-MM-DD" that is added to the list
     '''
-    ratings_occurred_on = sorted(ratings_as_dates, reverse=True)
-
-
-    import pdb; pdb.set_trace()
+    ratings_occurred_on = [ 
+        datetime.strftime(original_datetime, "%Y-%m-%d") for original_datetime in 
+        sorted(ratings_as_dates, reverse=True)
+    ]
 
     return(ratings_occurred_on)
 
