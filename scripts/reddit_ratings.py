@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from datetime import datetime
 from dateutil import parser
 
 import boto3
@@ -773,6 +774,25 @@ def clean_dict_value(ratings_values_to_clean):
         clean_ratings_values.append(dict_to_clean)
 
     return(clean_ratings_values)
+
+def test_sort_ratings_occurred_on(ratings_list):
+    '''Sorts ratings in descending order by date
+
+        Parameters
+        ----------
+        all_ratings_list : list
+            List of dict where each element is
+            one saturday night ratings
+
+        Returns
+        -------
+        ratings_occurred_on : list
+            List of str sorted by date
+
+        Raises
+        ------
+    '''
+
 
 def handle_ratings_insertion(all_ratings_list):
     """Handles inserting ratings into dynamodb

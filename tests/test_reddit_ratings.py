@@ -245,6 +245,10 @@ class RedditApi(unittest.TestCase):
             ratings_list=MOCK_RATINGS_LIST
         )
 
+        '''
+            The ratings_occurred_on should be a descending
+            list based on date
+        '''
         self.assertEqual(
             ratings_occurred_on,
             [
