@@ -241,6 +241,21 @@ class RedditApi(unittest.TestCase):
             ------
         '''
         import pdb; pdb.set_trace()
+        ratings_occurred_on = sort_ratings_occurred_on(
+            ratings_list=MOCK_RATINGS_LIST
+        )
+
+        self.assertEqual(
+            ratings_occurred_on,
+            [
+                "2020-05-23",
+                "2020-05-16"
+                "2020-05-09",
+                "2020-05-02"
+            ]
+        )
+        from datetime import datetime
+        datetime.datetime.strptime("2020-05-02", "%Y-%m-%d")
 
 
 
