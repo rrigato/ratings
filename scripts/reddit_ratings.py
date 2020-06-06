@@ -891,9 +891,23 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             ),
             ProjectionExpression="RATINGS_OCCURRED_ON"
         )
+        '''
+            If there is no partition key with the value 
+            of week_night we insert all dicts that have a 
+            RATINGS_OCCURRED_ON of week_night
 
+            Ex: week_night of "05-23-2020"
+        '''
+        if len(existing_items["Items"]):
+            pass
 
+        else:
+            '''
+                Return since the list is sorted
+            '''
+            return(0)
 
+        # import pdb; pdb.set_trace()
 
 
 
@@ -925,7 +939,6 @@ def main():
         Raises
         ------
     """
-    get_logger()
 
     all_ratings_list = ratings_iteration(number_posts=10)
 
@@ -943,4 +956,5 @@ def main():
     )
 
 if __name__ == "__main__":
+    get_logger()    
     main()

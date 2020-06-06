@@ -853,7 +853,7 @@ class RedditApi(unittest.TestCase):
         from scripts.reddit_ratings import handle_ratings_insertion
         handle_ratings_insertion(
             all_ratings_list=MOCK_RATINGS_LIST,
-            table_name="fake_table_name"
+            table_name="dev_toonami_ratings"
         )
 
 
