@@ -230,6 +230,46 @@ class RedditApi(unittest.TestCase):
 
 
     @patch("boto3.client")
+    def test_get_boto_clients_table_resource(self, boto3_client_mock):
+        '''Tests getting a dynamodb table resource from get_boto_clients
+
+            Parameters
+            ----------
+            boto3_client_mock : unittest.mock.MagicMock
+                Mock object used to patch
+                AWS Python SDK
+
+            Returns
+            -------
+
+
+            Raises
+            ------
+        '''
+        from scripts.reddit_ratings import get_boto_clients
+
+        test_service_name = "dynamodb"
+        test_table_name = "fake_ddb_table"
+        get_boto_clients(
+            resource_name=test_service_name, 
+            table_name=test_table_name
+        )
+
+
+        '''
+            Default region is us-east-1 for 
+            get_boto_clients
+        '''
+        boto3_client_mock.assert_called_once_with(
+            service_name=test_service_name,
+            region_name="us-east-1"
+        )
+
+
+
+
+
+    @patch("boto3.client")
     def test_get_boto_clients_with_region(self, boto3_client_mock):
         '''Tests outgoing boto3 client generation when a region is passed
 
