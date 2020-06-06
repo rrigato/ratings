@@ -82,7 +82,6 @@ def batch_json_upload(json_file_location, table_name):
             '''
             for individual_item in clean_rating_values:
                 batch_insert.put_item(
-                    TableName=table_name,
                     Item=individual_item
                 )
 
