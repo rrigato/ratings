@@ -1,5 +1,6 @@
 from scripts.reddit_ratings import clean_dict_value
 from scripts.reddit_ratings import dict_key_mapping
+from scripts.reddit_ratings import get_boto_clients
 
 import boto3
 import json
@@ -51,12 +52,12 @@ def batch_json_upload(json_file_location, table_name):
         ------
 
     """
-    dynamo_resource = boto3.resource(
-            "dynamodb",
-            region_name="us-east-1"
+    dynamo_client, dynamo_table = get_boto_clients(
+            service_name="dynamodb",
+            region_name="us-east-1",
+            table_name=table_name
     )
 
-    dynamo_table = dynamo_resource.Table(table_name)
     '''
         Open and load historical file
     '''
