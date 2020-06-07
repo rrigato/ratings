@@ -106,6 +106,8 @@ Resources:
               - "*"         
 
       Runtime: python3.7
+      #60 second timeout
+      Timeout: 60
       #Default code that will be updated by
       #CodeBuild Job
       InlineCode: |
