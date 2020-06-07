@@ -38,22 +38,21 @@ phases:
       - echo $REPO_NAME
 
 
-      #where output lambda artifacts are stored from
-      #dev CodeBuild
-      - cd $CODEBUILD_SRC_DIR_BuildDevBackend
 
-      - ls -l
 
-      # #updates zip deployment package
-      # - aws lambda update-function-code
-      #   --function-name $LAMBDA_FUNCTION_NAME
-      #   --zip-file fileb://deploypkg/built_lambda.zip
+      #CODEBUILD_SRC_DIR_BuildDevBackend = 
+      #where output lambda artifacts are stored from dev CodeBuild
+      #updates zip deployment package
+      - aws lambda update-function-code
+        --function-name $LAMBDA_FUNCTION_NAME
+        --zip-file 
+        "fileb://${CODEBUILD_SRC_DIR_BuildDevBackend}/deploypkg/built_lambda.zip"
 
-      # #changes lambda handler to scripts/reddit_ratings.py
-      # #lambda_handler function
-      # - aws lambda update-function-configuration
-      #   --function-name $LAMBDA_FUNCTION_NAME
-      #   --handler "reddit_ratings.lambda_handler"
+      #changes lambda handler to scripts/reddit_ratings.py
+      #lambda_handler function
+      - aws lambda update-function-configuration
+        --function-name $LAMBDA_FUNCTION_NAME
+        --handler "reddit_ratings.lambda_handler"
 
       #merges dev branch into master now that all tests have
       #been passed and artifacts created
