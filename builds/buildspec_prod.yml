@@ -21,7 +21,7 @@ phases:
     commands:
       - echo Entered the install phase...
 
-      - BUILD_ENVIRONMENT=prod
+      - BUILD_ENVIRONMENT=prod-ratings
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"           
       - REPO_NAME=ratings
