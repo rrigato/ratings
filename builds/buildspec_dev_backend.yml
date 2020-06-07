@@ -108,4 +108,9 @@ phases:
 
 artifacts:
   files:
-    - ./logs/*
+    ##########################
+    #Adds the successfully built/tested lambda function as an 
+    #artifact for the prod stage to deploy 
+    ##########################
+    - 'deploypkg/built_lambda.zip'
+  name: BuildDevBackend
