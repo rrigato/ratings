@@ -86,9 +86,11 @@ phases:
         --handler "reddit_ratings.lambda_handler"
 
 
-      #asyncronously invoke the lambda function once
-      - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
-        outfile "${LAMBDA_FUNCTION_NAME}_output.json"
+      #asyncronously invoke the lambda function passing
+      #util/lambda_cw_event.json as the event json
+      # - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
+      #   --invocation-type Event --payload file://util/lambda_cw_event.json
+      #   outfile "${LAMBDA_FUNCTION_NAME}_output.json"
 
       #syncronously invoke the lambda function once
       - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
