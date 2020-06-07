@@ -966,7 +966,6 @@ def main():
         ratings_values_to_clean=all_ratings_list
     )
 
-    import pdb; pdb.set_trace()
 
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,

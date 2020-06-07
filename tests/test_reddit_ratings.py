@@ -899,13 +899,17 @@ class RedditApi(unittest.TestCase):
         '''
             the query function should be called 
             4 times, once for each unique ratings_occurred_on
-            in MOCK_RATINGS_LIST
+            in MOCK_CLEAN_RATINGS_LIST
         '''
         self.assertEqual(
-            dynamo_table_mock.call_count,
+            dynamo_table_mock.query.call_count,
             4
         )
-
+        
+        self.assertEqual(
+            dynamo_table_mock.batch_writer.call_count,
+            4
+        )
 
     def test_dict_key_mapping(self):
         """Validating mapping of rating keys to dynamodb columns
