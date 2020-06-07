@@ -958,7 +958,17 @@ class RedditApi(unittest.TestCase):
             ratings
         '''
         dynamo_table_mock.query.return_value = {
-            "Items":[]
+            "Items":[
+                {
+                    "TIME": "2:30a", 
+                    "SHOW": "Naruto: Shippuden", 
+                    "TOTAL_VIEWERS": "336", 
+                    "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.19",
+                    "TOTAL_VIEWERS_AGE_18_49": "241",
+                    "RATINGS_OCCURRED_ON": "2020-05-09",
+                    "IS_RERUN": None
+                }
+            ]
         }
 
 
@@ -985,9 +995,12 @@ class RedditApi(unittest.TestCase):
             4
         )
         
+        '''
+            everything else should be skipped
+        '''
         self.assertEqual(
             dynamo_table_mock.batch_writer.call_count,
-            4
+            0
         )
 
 
