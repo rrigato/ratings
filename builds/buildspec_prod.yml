@@ -40,7 +40,7 @@ phases:
 
       #where output lambda artifacts are stored from
       #dev CodeBuild
-      - cd $CODEBUILD_SRC_DIR_BuildDev
+      - cd $CODEBUILD_SRC_DIR_BuildDevBackend
 
       - ls -l
 

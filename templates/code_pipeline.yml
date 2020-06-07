@@ -370,7 +370,7 @@ Resources:
                 Provider: CodeBuild
             InputArtifacts:
               - Name: !GetAtt GitRepo.Name
-              - Name: BuildDev
+              - Name: BuildDevBackend
             OutputArtifacts:
               - Name: BuildProd
             #########################################
