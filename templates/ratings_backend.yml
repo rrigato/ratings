@@ -72,7 +72,7 @@ Resources:
           Properties:
             Schedule: 'rate(12 hours)'
             Name: !Sub '${ProjectName}-lambda-poll-trigger'
-            Description: Runs reddit_ratings.lambda_handler once every 3 hours
+            Description: Runs reddit_ratings.lambda_handler once every 12 hours
             Enabled: !Ref EnableLambdaSchedule        
 
       FunctionName: !Join ['-', [ !Ref ProjectName, 'lambda-poll']]
