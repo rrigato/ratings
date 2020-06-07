@@ -603,6 +603,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSCodeCommitPowerUser
         - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
 
       Path: /
       Policies:
