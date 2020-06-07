@@ -10,7 +10,7 @@ import requests
 import unittest
 
 
-
+from util.test_reddit_rating_config import MOCK_CLEAN_RATINGS_LIST
 from util.test_reddit_rating_config import MOCK_RATINGS_LIST
 from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019
 from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
@@ -872,19 +872,38 @@ class RedditApi(unittest.TestCase):
         '''
         dynamo_client_mock = MagicMock()
 
-        dynamo_resource_mock = MagicMock()
+        dynamo_table_mock = MagicMock()
 
         '''
             Mocking not having the given week night in the 
             ratings
         '''
-        dynamo_resource_mock.query.return_value = {
+        dynamo_table_mock.query.return_value = {
             "Items":[]
         }
-        get_boto_clients_patch.return_value = [1, 2]
+
+        '''
+            mocking a function that has two return values
+        '''
+        get_boto_clients_patch.return_value = [
+            dynamo_client_mock, dynamo_table_mock
+        ]
+
         handle_ratings_insertion(
-            all_ratings_list=MOCK_RATINGS_LIST,
+            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
             table_name="dev_toonami_ratings"
+        )
+
+        import pdb; pdb.set_trace()
+
+        '''
+            the query function should be called 
+            4 times, once for each unique ratings_occurred_on
+            in MOCK_RATINGS_LIST
+        '''
+        self.assertEqual(
+            dynamo_table_mock.call_count,
+            4
         )
 
 

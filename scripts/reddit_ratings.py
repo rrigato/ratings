@@ -879,7 +879,6 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             table_name=table_name
     )
 
-    import pdb; pdb.set_trace()
     ratings_occurred_on = sort_ratings_occurred_on(
         ratings_list=all_ratings_list
     )
@@ -966,6 +965,8 @@ def main():
     clean_rating_values = clean_dict_value(
         ratings_values_to_clean=all_ratings_list
     )
+
+    import pdb; pdb.set_trace()
 
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,
