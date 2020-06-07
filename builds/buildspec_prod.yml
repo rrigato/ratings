@@ -44,6 +44,17 @@ phases:
 
       - ls -l
 
+      # #updates zip deployment package
+      # - aws lambda update-function-code
+      #   --function-name $LAMBDA_FUNCTION_NAME
+      #   --zip-file fileb://deploypkg/built_lambda.zip
+
+      # #changes lambda handler to scripts/reddit_ratings.py
+      # #lambda_handler function
+      # - aws lambda update-function-configuration
+      #   --function-name $LAMBDA_FUNCTION_NAME
+      #   --handler "reddit_ratings.lambda_handler"
+
       #merges dev branch into master now that all tests have
       #been passed and artifacts created
       - aws codecommit merge-branches-by-fast-forward
