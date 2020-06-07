@@ -882,6 +882,7 @@ class RedditApi(unittest.TestCase):
             "Items":[]
         }
 
+
         '''
             mocking a function that has two return values
         '''
@@ -894,7 +895,6 @@ class RedditApi(unittest.TestCase):
             table_name="dev_toonami_ratings"
         )
 
-        import pdb; pdb.set_trace()
 
         '''
             the query function should be called 
@@ -909,6 +909,18 @@ class RedditApi(unittest.TestCase):
         self.assertEqual(
             dynamo_table_mock.batch_writer.call_count,
             4
+        )
+
+
+        '''
+            with context manager calls the __enter__()
+            function of the mock
+
+            One call for each item
+        '''
+        self.assertEqual(
+            dynamo_table_mock.batch_writer().__enter__().put_item.call_count,
+            24
         )
 
     def test_dict_key_mapping(self):
