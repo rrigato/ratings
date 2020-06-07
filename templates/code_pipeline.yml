@@ -497,7 +497,7 @@ Resources:
         Version: '2012-10-17'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
       Path: /
       #Ability to create record sets in Route53
       Policies:
@@ -559,13 +559,13 @@ Resources:
                 - Sid: IAMallow
                   Effect: Allow
                   #######################################
-                  #Allowing lambda to perform a PutItem on
-                  #DynamoDB
+                  #Allowing lambda runtime roles to be created
                   #
                   #######################################
                   Action:
                     - iam:PassRole
                     - iam:CreateRole
+                    - iam:DeleteRole
                     - iam:GetRole
                     - iam:UpdateAssumeRolePolicy
                     - iam:DetachRolePolicy
