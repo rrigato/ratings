@@ -171,6 +171,10 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         """
+        '''
+            How many news posts the client main function is using
+        '''
+        cls.MAIN_FUNCTION_POST_COUNT = 25
         os.environ["DYNAMODB_TABLE_NAME"] = "dev_toonami_ratings"
         '''
             Assigns a class attribute which is 
@@ -227,7 +231,7 @@ class RedditApi(unittest.TestCase):
         main()
 
         ratings_iteration_mock.assert_called_once_with(
-            number_posts=10
+            number_posts=self.MAIN_FUNCTION_POST_COUNT
         )
 
         self.assertEqual(
