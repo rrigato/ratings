@@ -555,23 +555,22 @@ Resources:
                     - secretsmanager:UpdateSecret
                   Resource:
                     - "*"
-                #create vpc privleges
-                - Sid: !Join ['', [!Ref ProjectName,'VpcDeploy']]
+
+                - Sid: IAMallow
                   Effect: Allow
+                  #######################################
+                  #Allowing lambda to perform a PutItem on
+                  #DynamoDB
+                  #
+                  #######################################
                   Action:
-                    - ec2:CreateVpc
-                    - ec2:CreateSubnet
-                    - ec2:DeleteSubnet
-                    - ec2:DeleteVpc
-                    - ec2:DescribeVpcs
-                    - ec2:ModifyVpcAttribute
-                    - ec2:createTags
-                    - ec2:DescribeAvailabilityZones
-                    - ec2:DescribeAccountAttributes
-                    - ec2:DescribeSubnets
-                    - ec2:CreateRouteTable
-                    - ec2:DeleteRouteTable
-                    - ec2:DescribeRouteTables
+                    - iam:PassRole
+                    - iam:CreateRole
+                    - iam:GetRole
+                    - iam:UpdateAssumeRolePolicy
+                    - iam:DetachRolePolicy
+                    - iam:DeleteRolePolicy
+                    - iam:PutRolePolicy
                   Resource:
                     - "*"
 
