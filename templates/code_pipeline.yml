@@ -2,12 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Creates a CodePipeline for a CI/CD pipeline
 Parameters:
 
-  ProdCrossAccountArn:
-    Default: arn/placeholder
-    Description:
-        Arn of the role that will be used to update prod resources
-    Type: String
-
   #Default project name that
   #the git repo will be called
   ProjectName:
@@ -182,12 +176,6 @@ Resources:
      #Standard Linux Image environment
      Environment:
        ComputeType: BUILD_GENERAL1_SMALL
-       #Used to pass the production account arn
-       #to the builds/py/prod_stack_build.py
-       EnvironmentVariables:
-         -
-           Name: PROD_CROSS_ACCOUNT_ARN
-           Value: !Ref ProdCrossAccountArn
        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
        Type: LINUX_CONTAINER
 
