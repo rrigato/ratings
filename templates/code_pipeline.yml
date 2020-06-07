@@ -337,6 +337,9 @@ Resources:
               #it will be created, otherwise the stack will be updated
               #with the template provided in TemplatePath
               ActionMode: CREATE_UPDATE
+              #serverless transform and iam capabilities 
+              #for the cf stack create/update
+              Capabilities: CAPABILITY_AUTO_EXPAND,CAPABILITY_NAMED_IAM
               RoleArn: !GetAtt [ProdCodeDeployRole, Arn]
               #Used to pass parameters to Cloudformation template
               ParameterOverrides: |
