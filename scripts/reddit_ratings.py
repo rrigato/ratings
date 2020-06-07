@@ -956,7 +956,7 @@ def main():
         ------
     """
 
-    all_ratings_list = ratings_iteration(number_posts=10)
+    all_ratings_list = ratings_iteration(number_posts=25)
 
     clean_rating_keys = dict_key_mapping(
         pre_clean_ratings_keys=all_ratings_list
