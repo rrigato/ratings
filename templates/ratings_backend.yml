@@ -59,6 +59,11 @@ Resources:
       Description: |
         Makes reddit api call on schedule to check for 
         updated ratings
+      #passed to os.environ for python used to
+      #determine which table to update in scripts.reddit_ratings.main
+      Environment:
+        Variables:
+          DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
       Events:
         #cloudwatch event rule that runs 
         #every 3 hours        
