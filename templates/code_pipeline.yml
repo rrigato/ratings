@@ -305,54 +305,50 @@ Resources:
 
 
 
-        #   ###################################
-        #   #stage 3) Deploys to production
-        #   #by updating or creating a stack as
-        #   #necessary
-        #   ###################################
-        # - Name: DeployProd
-        #   Actions:
-        # ############################
-        # #First action of this deploy prod stage
-        # #Creates/updates the templates/ratings_backend.yml
-        # #cloudformation template which is for the backend
-        # #lambda/dynamo logic
-        # ############################
-        #   - Name: DeployProdStaticWebpage
-        #     ActionTypeId:
-        #       Category: Deploy
-        #       Owner: AWS
-        #       Provider: CloudFormation
-        #       Version: '1'
-        #     InputArtifacts:
-        #       - Name: !GetAtt GitRepo.Name
-        #     OutputArtifacts:
-        #       - Name: ProdImportCf
-        #     ##########################################
-        #     #configuration properties documentation:
-        #     #https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline-action-reference.html
-        #     ##########################################
-        #     Configuration:
-        #       #If the cloudformation stack does not exist
-        #       #it will be created, otherwise the stack will be updated
-        #       #with the template provided in TemplatePath
-        #       ActionMode: CREATE_UPDATE
-        #       RoleArn: !GetAtt [ProdCodeDeployRole, Arn]
-        #       #Used to pass parameters to Cloudformation template
-        #       ParameterOverrides: |
-        #         {
-        #             "DynamoDbTableName": "prod_toonami_ratings",
-        #             "PolicyPrefix": "ProdRatingsBackend",
-        #             "ProjectName": "prod-ratings-backend"
-        #         }              
-        #       StackName: !Sub "${ProdStackName}-backend-logic"
-        #       #TemplatePath: !Ref GitRepoName !Sub "TemplateSource::${ProdStackConfig}"
-        #       #Artifact::template_file_name
-        #       #is what the deploy stage is expecting as input for the
-        #       #cloudformation template location
-        #       TemplatePath:
-        #           !Join ['::', [!Ref ProjectName, 'templates/ratings_backend.yml']]
-        #     RunOrder: 2
+          ###################################
+          #stage 3) Deploys to production
+          #by updating or creating a stack as
+          #necessary
+          ###################################
+        - Name: DeployProd
+          Actions:
+        ############################
+        #First action of this deploy prod stage
+        #Creates/updates the templates/ratings_backend.yml
+        #cloudformation template which is for the backend
+        #lambda/dynamo logic
+        ############################
+          - Name: DeployProd
+            ActionTypeId:
+              Category: Deploy
+              Owner: AWS
+              Provider: CloudFormation
+              Version: '1'
+            InputArtifacts:
+              - Name: !GetAtt GitRepo.Name
+            OutputArtifacts:
+              - Name: ProdImportCf
+            ##########################################
+            #configuration properties documentation:
+            #https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline-action-reference.html
+            ##########################################
+            Configuration:
+              #If the cloudformation stack does not exist
+              #it will be created, otherwise the stack will be updated
+              #with the template provided in TemplatePath
+              ActionMode: CREATE_UPDATE
+              RoleArn: !GetAtt [ProdCodeDeployRole, Arn]
+              #Used to pass parameters to Cloudformation template
+              ParameterOverrides: |
+                {
+                    "DynamoDbTableName": "prod_toonami_ratings",
+                    "PolicyPrefix": "ProdRatingsBackend",
+                    "ProjectName": "prod-ratings-backend"
+                }              
+              StackName: !Sub "${ProdStackName}-backend-logic"
+              TemplatePath:
+                  !Join ['::', [!Ref ProjectName, 'templates/ratings_backend.yml']]
+            RunOrder: 1
 
 
 
