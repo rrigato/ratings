@@ -850,8 +850,10 @@ class RedditApi(unittest.TestCase):
         )        
 
     @patch("scripts.reddit_ratings.get_boto_clients")
-    def test_handle_ratings_insertion(self, get_boto_clients_patch):
+    def test_handle_ratings_insertion_no_match(self, get_boto_clients_patch):
         """Tests outbound arguements for ratings put item in dynamodb
+            mocks if the ratings in MOCK_CLEAN_RATINS_LIST 
+            are not already in table
 
             Parameters
             ----------
@@ -922,6 +924,75 @@ class RedditApi(unittest.TestCase):
             dynamo_table_mock.batch_writer().__enter__().put_item.call_count,
             24
         )
+
+
+    @patch("scripts.reddit_ratings.get_boto_clients")
+    def test_handle_ratings_insertion_with_match(self, get_boto_clients_patch):
+        """Tests outbound arguements for ratings put item in dynamodb
+            mocks if the ratings in MOCK_CLEAN_RATINS_LIST 
+            are already in table
+
+            Parameters
+            ----------
+            get_ratings_post_mock : unittest.mock.MagicMock
+                Patch to return boto3 dynamodb resource
+
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        from scripts.reddit_ratings import handle_ratings_insertion
+
+        '''
+            Mocking the clients
+        '''
+        dynamo_client_mock = MagicMock()
+
+        dynamo_table_mock = MagicMock()
+
+        '''
+            Mocking not having the given week night in the 
+            ratings
+        '''
+        dynamo_table_mock.query.return_value = {
+            "Items":[]
+        }
+
+
+        '''
+            mocking a function that has two return values
+        '''
+        get_boto_clients_patch.return_value = [
+            dynamo_client_mock, dynamo_table_mock
+        ]
+
+        handle_ratings_insertion(
+            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
+            table_name="dev_toonami_ratings"
+        )
+
+
+        '''
+            the query function should be called 
+            4 times, once for each unique ratings_occurred_on
+            in MOCK_CLEAN_RATINGS_LIST
+        '''
+        self.assertEqual(
+            dynamo_table_mock.query.call_count,
+            4
+        )
+        
+        self.assertEqual(
+            dynamo_table_mock.batch_writer.call_count,
+            4
+        )
+
+
+
+
 
     def test_dict_key_mapping(self):
         """Validating mapping of rating keys to dynamodb columns
