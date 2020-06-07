@@ -88,6 +88,7 @@ Resources:
             Effect: Allow
             Action:
               - dynamodb:DeleteItem
+              - dynamodb:BatchWriteItem
               - dynamodb:ListTables
               - dynamodb:GetItem
               - dynamodb:PutItem
