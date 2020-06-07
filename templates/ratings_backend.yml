@@ -101,6 +101,7 @@ Resources:
             Effect: Allow
             Action:
               - secretsmanager:GetSecret
+              - secretsmanager:GetSecretValue
 
             Resource:
               - "*"         
