@@ -310,7 +310,7 @@ Resources:
           #by updating or creating a stack as
           #necessary
           ###################################
-        - Name: DeployProd
+        - Name: !Sub "${ProjectName}DeployProd"
           Actions:
         ############################
         #First action of this deploy prod stage
@@ -318,7 +318,7 @@ Resources:
         #cloudformation template which is for the backend
         #lambda/dynamo logic
         ############################
-          - Name: DeployProd
+          - Name: !Sub "${ProjectName}DeployBackendProd"
             ActionTypeId:
               Category: Deploy
               Owner: AWS
@@ -353,9 +353,7 @@ Resources:
 
 
         ###############################
-        #stage 4 Builds the prod
-        # environment by populating resources created
-        # in stage 2
+        #stage 4 Configures/tests the production environment
         ###############################
         - Name: BuildProdEnvironment
           Actions:
