@@ -22,7 +22,7 @@ phases:
       - echo Entered the install phase...
 
       - BUILD_ENVIRONMENT=prod
-      - LAMBDA_FUNCTION_NAME=dev-ratings-backend-lambda-poll
+      - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"           
       - REPO_NAME=ratings
       - pip install -r tests/requirements_backend.txt
@@ -33,6 +33,8 @@ phases:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
+      - echo $LAMBDA_FUNCTION_NAME
+      - echo $RATINGS_UPDATE_STACK
       - echo $REPO_NAME
 
 
