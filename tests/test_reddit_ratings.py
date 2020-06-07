@@ -986,15 +986,15 @@ class RedditApi(unittest.TestCase):
 
 
         '''
-            the query function should be called 
-            4 times, once for each unique ratings_occurred_on
-            in MOCK_CLEAN_RATINGS_LIST
+            the query function is only called once 
+            because it returns after checking the most recent rating
         '''
         self.assertEqual(
             dynamo_table_mock.query.call_count,
-            4
+            1
         )
-        
+
+
         '''
             everything else should be skipped
         '''
