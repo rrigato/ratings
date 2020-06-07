@@ -85,6 +85,9 @@ phases:
         --function-name $LAMBDA_FUNCTION_NAME
         --handler "reddit_ratings.lambda_handler"
 
+      #invoke the lambda function once
+      - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
+      
       - python -m unittest tests/test_dev_ratings_backend.py
 
   post_build:
