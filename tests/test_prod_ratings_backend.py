@@ -325,5 +325,15 @@ class BackendTests(unittest.TestCase):
             current_year_items["Count"],
             1
         )
-        
+
+        '''
+            Validate that SHOW element is not none
+            and that TOTAL_VIEWERS is a number if you exclude , or .
+        '''
+        for show_rating in current_year_items["Items"]:
+            self.assertIsNotNone(show_rating["SHOW"])
+            self.assertTrue(
+                show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
+            )
+            
         
