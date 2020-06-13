@@ -210,45 +210,6 @@ class BackendTests(unittest.TestCase):
             lambda_configuration["Configuration"]["Handler"],
             "reddit_ratings.lambda_handler"
         )
-
-    @unittest.skip("Skipping for now")
-    def test_s3_code_object(self):
-        '''s3 zip file used to update lambda function code
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-
-        """
-            gets s3 bucket information
-        """
-        s3_client = get_boto_clients(
-            resource_name="s3",
-            region_name="us-east-1"
-        )
-
-
-        '''
-            Testing code used to update lambda function
-        '''
-        s3_code_configuration = s3_client.head_object(
-            Bucket=self.S3_CODE_BUCKET,
-            Key=self.S3_CODE_ZIP_FILE
-        )
-        '''
-            Testing code content type
-        '''
-        self.assertEqual(
-            s3_code_configuration["ContentType"],
-            "application/zip"
-        )
-
         
     def test_dynamodb_count(self):
         '''Tests that the number of items present in dynamodb table
