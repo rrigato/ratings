@@ -1,3 +1,6 @@
+from datetime import datetime
+from datetime import timedelta
+
 import boto3
 import logging
 import os
@@ -295,6 +298,14 @@ class BackendTests(unittest.TestCase):
                 resource_name="dynamodb",
                 region_name="us-east-1",
                 table_name=self.DYNAMO_TABLE_NAME
+        )
+
+        from boto3.dynamodb.conditions import Key
+        current_year_items = dynamo_table.query(
+            KeyConditionExpression=Key("RATINGS_OCCURRED_ON").between(
+                start=datetime.now() - timedelta(days=30),
+                end=datetime.now()
+            )
         )
         import pdb; pdb.set_trace()
         datetime.now().year
