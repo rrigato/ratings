@@ -303,14 +303,27 @@ class BackendTests(unittest.TestCase):
         from boto3.dynamodb.conditions import Key
 
         '''
+            Formatting in "YYYY-MM-DD"
         '''
         start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
         end_day = datetime.now().strftime("%Y-%m-%d")
+
+        '''
+            Getting all items that occurred in the last 30 days
+            
+            current_year_items["ScannedCount"] = total items in table
+            current_year_items["Count"]= items that met filter criteria
+        '''
         current_year_items = dynamo_table.scan(
             FilterExpression=Key("RATINGS_OCCURRED_ON").between(
                 low_value=start_day,
                 high_value=end_day
             )
         )
-        import pdb; pdb.set_trace()
-        datetime.now().year
+        
+        self.assertGreater(
+            current_year_items["Count"],
+            1
+        )
+        
+        
