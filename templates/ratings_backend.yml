@@ -108,6 +108,7 @@ Resources:
               - "*"         
 
       Runtime: python3.7
+      Tracing: Active
       #60 second timeout
       Timeout: 60
       #Default code that will be updated by
