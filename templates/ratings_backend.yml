@@ -35,6 +35,7 @@ Parameters:
 
 Resources:
 
+  #SNS Topic that will be published to in case of a lambda error
   ErrorAlertQueue:
     Type: AWS::SNS::Topic
     Properties:
@@ -59,7 +60,11 @@ Resources:
   UpdateRatings:
     Type: AWS::Serverless::Function
     Properties:
- 
+      
+      #SNS topic that errors will be sent to
+      DeadLetterQueue:
+        TargetArn: !Ref ErrorAlertQueue
+        Type: SNS
                                 
       Description: |
         Makes reddit api call on schedule to check for 
