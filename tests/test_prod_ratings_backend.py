@@ -239,7 +239,7 @@ class BackendTests(unittest.TestCase):
 
         self.assertGreater(
             item_count["Count"],
-            50
+            3500
         )
 
 
