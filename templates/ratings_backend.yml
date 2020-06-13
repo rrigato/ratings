@@ -35,6 +35,11 @@ Parameters:
 
 Resources:
 
+  ErrorAlertQueue:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub '${ProjectName}-error-topic'
+
   LambdaCodeBucket:
     Properties:
       BucketName: !Join ['-', [ !Ref ProjectName, !Ref BucketName ]]
