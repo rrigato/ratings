@@ -262,7 +262,7 @@ class LambdaHandler(unittest.TestCase):
             cls.lambda_event_fixture = json.load(news_flair)
 
     @patch("logging.getLogger")
-    @patch("scripts.reddit_ratings.main")
+    @patch("scripts.backup_dynamodb_ratings.main")
     def test_lambda_handler_event(self, main_mock, 
         getLogger_mock):
         """Tests passing sample event to lambda_handler
