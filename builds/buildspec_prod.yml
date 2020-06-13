@@ -60,6 +60,9 @@ phases:
         --destination-commit-specifier master
         --repository-name $REPO_NAME
 
+      - python -m unittest tests/test_prod_ratings_backend.py
+
+
   post_build:
     commands:
       - echo Entered the post_build phase...
