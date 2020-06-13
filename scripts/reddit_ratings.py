@@ -42,7 +42,7 @@ def get_logger(working_directory=os.getcwd()):
         format="%(asctime)s %(message)s",
          datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.DEBUG
          )
-    logging.info("\n")
+    logger.info("\n")
 
 def get_boto_clients(resource_name, region_name='us-east-1',
     table_name=None):
@@ -167,8 +167,8 @@ def get_oauth_token(client_key, client_secret):
     reddit_headers = {
         "user-agent": REDDIT_USER_AGENT
     }
-    logging.info("Custom Headers: ")
-    logging.info(reddit_headers)
+    logger.info("Custom Headers: ")
+    logger.info(reddit_headers)
     '''
         grant_type=client_credentials is
         x-www-form-urlencoded which is what indicates
@@ -260,8 +260,8 @@ def get_news_flair(access_token,
                 str(url_param_dict[url_param])
             )
 
-    logging.info("Final search url:")
-    logging.info(reddit_search_url)
+    logger.info("Final search url:")
+    logger.info(reddit_search_url)
 
     reddit_search_headers = {
         "user-agent":REDDIT_USER_AGENT,
@@ -274,7 +274,7 @@ def get_news_flair(access_token,
         reddit_search_url,
         headers=reddit_search_headers
     )
-    logging.info("Successfully made search request")
+    logger.info("Successfully made search request")
 
     return(news_flair_posts.json())
 
@@ -310,9 +310,9 @@ def get_ratings_post(news_flair_posts):
         '''
         if (reddit_post["data"]["title"].lower().find("ratings")
             != (-1)):
-            logging.info("Rating post found")
-            logging.info(reddit_post["data"]["title"])
-            logging.info(reddit_post["data"]["name"])
+            logger.info("Rating post found")
+            logger.info(reddit_post["data"]["title"])
+            logger.info(reddit_post["data"]["name"])
 
             ratings_post_list.append(element_counter)
         element_counter += 1
@@ -341,16 +341,16 @@ def handle_table_header(bs_obj):
         list
     '''
     all_th_tags = bs_obj.find("thead").findAll("th")
-    logging.info("Found the following table headers: ")
-    logging.info(all_th_tags)
+    logger.info("Found the following table headers: ")
+    logger.info(all_th_tags)
 
     header_columns = []
 
     for th_tag in all_th_tags:
         header_columns.append(th_tag.text)
 
-    logging.info("header columns parsed: ")
-    logging.info(header_columns)
+    logger.info("header columns parsed: ")
+    logger.info(header_columns)
 
     return(header_columns)
 
@@ -382,8 +382,8 @@ def handle_table_body(bs_obj, header_columns):
     '''
     all_tr_tags = bs_obj.find("tbody").findAll("tr")
 
-    logging.info("Found this many shows: ")
-    logging.info(len(all_tr_tags))
+    logger.info("Found this many shows: ")
+    logger.info(len(all_tr_tags))
 
     saturday_ratings = []
     '''
@@ -466,7 +466,7 @@ def handle_table_clean(reddit_post_html, rating_call_counter,
         bs_obj=bs_obj,
         header_columns=header_columns
     )
-    logging.info("Cleaned the ratings post")
+    logger.info("Cleaned the ratings post")
 
     '''
         Parses a datetime from the title of the
@@ -481,9 +481,9 @@ def handle_table_clean(reddit_post_html, rating_call_counter,
     ratings_occurred_on = parser.parse(ratings_title,
         fuzzy_with_tokens=True)
 
-    logging.info("Date Parse Fuzzy Logic: ")
-    logging.info(ratings_title)
-    logging.info(ratings_occurred_on)
+    logger.info("Date Parse Fuzzy Logic: ")
+    logger.info(ratings_title)
+    logger.info(ratings_occurred_on)
 
     '''
         Iterating over every saturday night ratings
@@ -583,7 +583,7 @@ def ratings_iteration(number_posts=10):
     fullname_after = None
     all_ratings_list = []
 
-    logging.info("Oauth token for ratings_iteration")
+    logger.info("Oauth token for ratings_iteration")
     '''
         If number_posts is None we are only looking
         for the most recent ratings post
@@ -626,7 +626,7 @@ def ratings_iteration(number_posts=10):
                 No more historical posts to search over
             '''
             if news_flair_posts["data"]["dist"] == 0:
-                logging.info("No more posts to iterate")
+                logger.info("No more posts to iterate")
                 return(all_ratings_list)
 
             ratings_post_list = get_ratings_post(news_flair_posts)
@@ -636,7 +636,7 @@ def ratings_iteration(number_posts=10):
                 have any ratings posts to return
             '''
             if len(ratings_post_list) == 0:
-                logging.info("No more posts to iterate")
+                logger.info("No more posts to iterate")
                 return(all_ratings_list)
 
             all_ratings_list = iterate_handle_table_clean(
@@ -943,7 +943,7 @@ def lambda_handler(event, context):
     '''
         Logging required for cloudwatch logs
     '''
-    logging.getLogger()
+    logger = logging.getLogger()
     main()
 
 
