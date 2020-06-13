@@ -171,7 +171,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: 'rate(30 days)'
-            Name: !Sub '${ProjectName}-lambda-poll-trigger'
+            Name: !Sub '${ProjectName}-dynamodb-backup-trigger'
             Description: |
               Runs scripts.backup_dynamodb_ratings.lambda_handler once every 12 hours
             Enabled: !Ref EnableLambdaSchedule        
