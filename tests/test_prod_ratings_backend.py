@@ -301,10 +301,15 @@ class BackendTests(unittest.TestCase):
         )
 
         from boto3.dynamodb.conditions import Key
-        current_year_items = dynamo_table.query(
-            KeyConditionExpression=Key("RATINGS_OCCURRED_ON").between(
-                start=datetime.now() - timedelta(days=30),
-                end=datetime.now()
+
+        '''
+        '''
+        start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        end_day = datetime.now().strftime("%Y-%m-%d")
+        current_year_items = dynamo_table.scan(
+            FilterExpression=Key("RATINGS_OCCURRED_ON").between(
+                low_value=start_day,
+                high_value=end_day
             )
         )
         import pdb; pdb.set_trace()
