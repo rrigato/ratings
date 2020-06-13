@@ -247,8 +247,8 @@ class BackendTests(unittest.TestCase):
         )
 
         
-    def test_dynamodb_config(self):
-        '''Tests that the dynamodb table is present
+    def test_dynamodb_count(self):
+        '''Tests that the number of items present in dynamodb table
 
             Parameters
             ----------
@@ -259,3 +259,21 @@ class BackendTests(unittest.TestCase):
             Raises
             ------
         '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+
+        '''
+            Testing item count
+        '''
+        item_count = dynamo_table.scan(
+            TableName=self.DYNAMO_TABLE_NAME,
+            Select="COUNT"
+        )
+
+        self.assertGreater(
+            item_count["Count"],
+            50
+        )
