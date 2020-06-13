@@ -124,7 +124,7 @@ Resources:
             Resource:
               - "*"         
 
-      Runtime: python3.8
+      Runtime: python3.7
       Tracing: Active
       #60 second timeout
       Timeout: 60
@@ -211,7 +211,7 @@ Resources:
             Resource:
               - "*"         
 
-      Runtime: python3.8
+      Runtime: python3.7
       Tracing: Active
       #60 second timeout
       Timeout: 60
