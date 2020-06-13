@@ -170,7 +170,7 @@ Resources:
         MonthlyCwEvent:
           Type: Schedule
           Properties:
-            Schedule: 'rate(12 hours)'
+            Schedule: 'rate(30 days)'
             Name: !Sub '${ProjectName}-lambda-poll-trigger'
             Description: |
               Runs scripts.backup_dynamodb_ratings.lambda_handler once every 12 hours
