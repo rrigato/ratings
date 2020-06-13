@@ -116,6 +116,8 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 - reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
 
+- backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
+
 #### templates
 
 

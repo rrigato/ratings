@@ -83,7 +83,7 @@ Resources:
           DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
       Events:
         #cloudwatch event rule that runs 
-        #every 3 hours        
+        #every 12 hours        
         ThreeHourCWEvent:
           Type: Schedule
           Properties:
