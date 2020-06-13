@@ -1214,7 +1214,7 @@ class LambdaHandler(unittest.TestCase):
     @patch("logging.getLogger")
     @patch("scripts.reddit_ratings.main")
     def test_lambda_handler_event(self, main_mock, 
-        get_logger_mock):
+        getLogger_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters
@@ -1222,6 +1222,8 @@ class LambdaHandler(unittest.TestCase):
             main_mock : unittest.mock.MagicMock
                 Mock object used to patch the main function
 
+            getLogger_mock : unittest.mock.MagicMock
+                Mock object used to patch get_logger for lambda handler
 
             Returns
             -------
@@ -1234,6 +1236,11 @@ class LambdaHandler(unittest.TestCase):
         lambda_handler(
             event=self.lambda_event_fixture,
             context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
         )
 
         '''

@@ -940,6 +940,9 @@ def lambda_handler(event, context):
         Raises
         ------
     """
+    '''
+        Logging required for cloudwatch logs
+    '''
     logging.getLogger()
     main()
 
