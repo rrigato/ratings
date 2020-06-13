@@ -209,45 +209,6 @@ class BackendTests(unittest.TestCase):
             lambda_configuration["Configuration"]["Handler"],
             "reddit_ratings.lambda_handler"
         )
-
-    @unittest.skip("Skipping for now")
-    def test_s3_code_object(self):
-        '''s3 zip file used to update lambda function code
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-
-        """
-            gets s3 bucket information
-        """
-        s3_client = get_boto_clients(
-            resource_name="s3",
-            region_name="us-east-1"
-        )
-
-
-        '''
-            Testing code used to update lambda function
-        '''
-        s3_code_configuration = s3_client.head_object(
-            Bucket=self.S3_CODE_BUCKET,
-            Key=self.S3_CODE_ZIP_FILE
-        )
-        '''
-            Testing code content type
-        '''
-        self.assertEqual(
-            s3_code_configuration["ContentType"],
-            "application/zip"
-        )
-
         
         
     def test_dynamodb_count(self):
@@ -280,3 +241,61 @@ class BackendTests(unittest.TestCase):
             item_count["Count"],
             10
         )
+
+
+
+    def test_dynamodb_recent_insertion(self):
+        '''Validates the ratings where inserted in the last month
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+
+        from boto3.dynamodb.conditions import Key
+
+        '''
+            Formatting in "YYYY-MM-DD"
+        '''
+        start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        end_day = datetime.now().strftime("%Y-%m-%d")
+
+        '''
+            Getting all items that occurred in the last 30 days
+            
+            current_year_items["ScannedCount"] = total items in table
+            current_year_items["Count"]= items that met filter criteria
+        '''
+        current_year_items = dynamo_table.scan(
+            FilterExpression=Key("RATINGS_OCCURRED_ON").between(
+                low_value=start_day,
+                high_value=end_day
+            )
+        )
+        
+        self.assertGreater(
+            current_year_items["Count"],
+            1
+        )
+
+        '''
+            Validate that SHOW element is not none
+            and that TOTAL_VIEWERS is a number if you exclude , or .
+        '''
+        for show_rating in current_year_items["Items"]:
+            self.assertIsNotNone(show_rating["SHOW"])
+            self.assertTrue(
+                show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
+            )
+            
+        
