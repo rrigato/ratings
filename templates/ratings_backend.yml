@@ -172,12 +172,15 @@ Resources:
           Properties:
             Schedule: 'rate(12 hours)'
             Name: !Sub '${ProjectName}-lambda-poll-trigger'
-            Description: Runs reddit_ratings.lambda_handler once every 12 hours
+            Description: |
+              Runs scripts.backup_dynamodb_ratings.lambda_handler once every 12 hours
             Enabled: !Ref EnableLambdaSchedule        
 
-      FunctionName: !Join ['-', [ !Ref ProjectName, 'lambda-poll']]
+      FunctionName: !Join ['-', [ !Ref ProjectName, 'backup-dynamodb']]
       Handler: index.handler
 
+      #256 mbs
+      MemorySize: 256
       #Policies to include in the lambda basic execution role
       #created by SAM
       Policies:
@@ -193,6 +196,7 @@ Resources:
               - dynamodb:GetItem
               - dynamodb:PutItem
               - dynamodb:Query
+              - dynamodb:Scan
 
             Resource:
               - "*"        
@@ -222,7 +226,7 @@ Resources:
           Value: "yes"
         -
           Key: reason
-          Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
+          Value: !Join ['-', [ !Ref ProjectName, 'backup-dynamodb']]
 
 
 
