@@ -1,4 +1,6 @@
-from bs4 import BeautifulSoup
+from datetime import datetime
+from datetime import timedelta
+
 import argparse
 import boto3
 import json
