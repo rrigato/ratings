@@ -52,7 +52,9 @@ phases:
       #Running reddit rating tests
       - python -m unittest tests/test_reddit_ratings.py
 
-
+      #running dynamodb backup unit tests
+      - python -m unittest tests.test_backup_dynamodb_ratings.LambdaHandler
+      - python -m unittest tests.test_backup_dynamodb_ratings.BackupDynamoDbUnit
 
       #Creating Deployment package for lambda dependencies
       - mkdir deploypkg
