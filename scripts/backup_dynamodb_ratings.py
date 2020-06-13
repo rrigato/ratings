@@ -1,5 +1,4 @@
 from boto3.dynamodb import conditions
-from bs4 import BeautifulSoup
 from datetime import datetime
 from dateutil import parser
 
@@ -128,23 +127,7 @@ def main():
         Raises
         ------
     """
-
-    all_ratings_list = ratings_iteration(number_posts=25)
-
-    clean_rating_keys = dict_key_mapping(
-        pre_clean_ratings_keys=all_ratings_list
-    )
-
-    clean_rating_values = clean_dict_value(
-        ratings_values_to_clean=all_ratings_list
-    )
-
-
-    handle_ratings_insertion(
-        all_ratings_list=all_ratings_list,
-        table_name=os.environ.get("DYNAMODB_TABLE_NAME")
-    )
-
+    pass
 if __name__ == "__main__":
     get_logger()    
     main()
