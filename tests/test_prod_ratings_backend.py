@@ -277,3 +277,24 @@ class BackendTests(unittest.TestCase):
             item_count["Count"],
             50
         )
+
+
+    def test_dynamodb_recent_insertion(self):
+        '''Validates the ratings where inserted in the last month
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+        import pdb; pdb.set_trace()
+        datetime.now().year
