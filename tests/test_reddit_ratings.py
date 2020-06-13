@@ -1211,8 +1211,10 @@ class LambdaHandler(unittest.TestCase):
         with open("util/lambda_cw_event.json", "r") as news_flair:
             cls.lambda_event_fixture = json.load(news_flair)
 
+    @patch("logging.getLogger")
     @patch("scripts.reddit_ratings.main")
-    def test_lambda_handler_event(self, main_mock):
+    def test_lambda_handler_event(self, main_mock, 
+        get_logger_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters

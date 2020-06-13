@@ -940,7 +940,7 @@ def lambda_handler(event, context):
         Raises
         ------
     """
-    get_logger()
+    logging.getLogger()
     main()
 
 
