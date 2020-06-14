@@ -406,15 +406,19 @@ class LambdaHandler(unittest.TestCase):
             cls.lambda_event_fixture = json.load(news_flair)
 
     @patch("logging.getLogger")
-    @patch("scripts.backup_dynamodb_ratings.main")
-    def test_lambda_handler_event(self, main_mock, 
-        getLogger_mock):
+    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
+    @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
+    def test_lambda_handler_event(self,delete_dynamodb_backups_mock,
+        create_dynamodb_backup_mock, getLogger_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters
             ----------
-            main_mock : unittest.mock.MagicMock
-                Mock object used to patch the main function
+            delete_dynamodb_backups_mock : unittest.mock.MagicMock
+                Mock object for local deletion of backups
+
+            create_dynamodb_backup_mock : unittest.mock.MagicMock
+                Mock object for local creation of backups
 
             getLogger_mock : unittest.mock.MagicMock
                 Mock object used to patch get_logger for lambda handler
