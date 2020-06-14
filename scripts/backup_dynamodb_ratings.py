@@ -96,7 +96,8 @@ def get_boto_clients(resource_name, region_name='us-east-1',
     return(service_client)
 
 
-    def delete_dynamodb_backups(self, recent_window=29, purge_windows):
+    def delete_dynamodb_backups(self, recent_window=29, 
+        purge_window=100):
         '''deletes the old/recent dynamodb backups
 
             Parameters
@@ -108,10 +109,10 @@ def get_boto_clients(resource_name, region_name='us-east-1',
                 that occurred in the last 29 days
 
             purge_window : int
-                Rolling number of days of old backups we 
-                want to delete. Defaults to 29 days. 
+                How old an on demand backup is before we want to purge it.
+                Defaults to 365 days. 
                 Ex: We want to delete all USER on demand backups 
-                that occurred in the last 29 days
+                that are older than 365 days
 
             Returns
             -------
@@ -120,6 +121,10 @@ def get_boto_clients(resource_name, region_name='us-east-1',
             Raises
             ------
         '''
+        dynamodb_client = get_boto_clients(
+            resource_name="dynamodb", 
+            region_name="us-east-1"
+        )
 
 
 def lambda_handler(event, context):
@@ -152,7 +157,7 @@ def main():
         Raises
         ------
     """
-    pass
+    delete_dynamodb_backups()
 if __name__ == "__main__":
     get_logger()    
     main()
