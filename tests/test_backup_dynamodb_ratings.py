@@ -228,6 +228,28 @@ class BackupDynamoDbUnit(unittest.TestCase):
         )
 
 
+
+    @patch("scripts.backup_dynamodb_ratings.get_boto_clients")
+    def test_delete_dynamodb_backups(self, get_boto_clients_mock):
+        '''Tests that we delete the old/recent dynamodb backups
+
+            Parameters
+            ----------
+            get_boto_clients_mock : unittest.mock.MagicMock
+                Mock object used to patch
+                AWS Python SDK dynamodb clients
+
+            Returns
+            -------
+
+
+            Raises
+            ------
+        '''
+        from scripts.backup_dynamodb_ratings import delete_dynamodb_backups
+
+
+
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
         function
