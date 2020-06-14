@@ -1,6 +1,6 @@
 from boto3.dynamodb import conditions
 from datetime import datetime
-from dateutil import parser
+from datetime import timedelta
 
 import boto3
 import json
@@ -95,6 +95,31 @@ def get_boto_clients(resource_name, region_name='us-east-1',
     '''
     return(service_client)
 
+
+    def delete_dynamodb_backups(self, recent_window=29, purge_windows):
+        '''deletes the old/recent dynamodb backups
+
+            Parameters
+            ----------
+            recent_window : int
+                Rolling number of days of old backups we 
+                want to delete. Defaults to 29 days. 
+                Ex: We want to delete all USER on demand backups 
+                that occurred in the last 29 days
+
+            purge_window : int
+                Rolling number of days of old backups we 
+                want to delete. Defaults to 29 days. 
+                Ex: We want to delete all USER on demand backups 
+                that occurred in the last 29 days
+
+            Returns
+            -------
+
+
+            Raises
+            ------
+        '''
 
 
 def lambda_handler(event, context):
