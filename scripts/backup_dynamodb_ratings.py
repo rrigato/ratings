@@ -16,34 +16,6 @@ import requests
 '''
 REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
 
-
-def get_logger(working_directory=os.getcwd()):
-    """Sets up logger
-
-        Parameters
-        ----------
-        working_directory: str
-            Where to put logger, defaults to cwd
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-   
-    '''
-        Adds the file name to the logs/ directory without
-        the extension
-    '''
-    logging.basicConfig(
-        filename=os.path.join(working_directory, "logs/",
-        os.path.basename(__file__).split(".")[0]),
-        format="%(asctime)s %(message)s",
-         datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.DEBUG
-         )
-    logging.info("\n")
-
 def get_boto_clients(resource_name, region_name='us-east-1',
     table_name=None):
     '''Returns the boto client for various aws resources
@@ -96,35 +68,34 @@ def get_boto_clients(resource_name, region_name='us-east-1',
     return(service_client)
 
 
-    def delete_dynamodb_backups(self, recent_window=29, 
-        purge_window=100):
-        '''deletes the old/recent dynamodb backups
+def delete_dynamodb_backups(recent_window=29, purge_window=100):
+    '''deletes the old/recent dynamodb backups
 
-            Parameters
-            ----------
-            recent_window : int
-                Rolling number of days of old backups we 
-                want to delete. Defaults to 29 days. 
-                Ex: We want to delete all USER on demand backups 
-                that occurred in the last 29 days
+        Parameters
+        ----------
+        recent_window : int
+            Rolling number of days of old backups we 
+            want to delete. Defaults to 29 days. 
+            Ex: We want to delete all USER on demand backups 
+            that occurred in the last 29 days
 
-            purge_window : int
-                How old an on demand backup is before we want to purge it.
-                Defaults to 365 days. 
-                Ex: We want to delete all USER on demand backups 
-                that are older than 365 days
+        purge_window : int
+            How old an on demand backup is before we want to purge it.
+            Defaults to 365 days. 
+            Ex: We want to delete all USER on demand backups 
+            that are older than 365 days
 
-            Returns
-            -------
+        Returns
+        -------
 
 
-            Raises
-            ------
-        '''
-        dynamodb_client = get_boto_clients(
-            resource_name="dynamodb", 
-            region_name="us-east-1"
-        )
+        Raises
+        ------
+    '''
+    dynamodb_client = get_boto_clients(
+        resource_name="dynamodb", 
+        region_name="us-east-1"
+    )
 
 
 def lambda_handler(event, context):
@@ -158,6 +129,6 @@ def main():
         ------
     """
     delete_dynamodb_backups()
-if __name__ == "__main__":
-    get_logger()    
+
+if __name__ == "__main__":    
     main()
