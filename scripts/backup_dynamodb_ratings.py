@@ -3,11 +3,8 @@ from datetime import datetime
 from datetime import timedelta
 
 import boto3
-import json
 import logging
-import math
 import os
-import requests
 
 '''
     Special user agent that is recommended according to the
@@ -212,7 +209,7 @@ def lambda_handler(event, context):
     logging.getLogger().setLevel(logging.INFO)
 
     delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
-    
+
     create_dynamodb_backup(
         table_name=os.environ["DYNAMODB_TABLE_NAME"],
         backup_name="lambda_backup_script"
