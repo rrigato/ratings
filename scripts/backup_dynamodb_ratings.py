@@ -118,6 +118,10 @@ def delete_dynamodb_backups(table_name,
     if len(table_backup_list) == 0:
         return(None)
 
+    '''
+        Calulating datetime object based on provided purge_window and
+        recent_window
+    '''
     oldest_allowed_backup = datetime.now() - datetime.timedelta(days=purge_window)
 
     most_recent_backup = datetime.now() - datetime.timedelta(days=recent_window)
@@ -128,11 +132,22 @@ def delete_dynamodb_backups(table_name,
         '''
             Purging backups older than now minus the purge window
             or newer than now minus the most_recent_backup time
+
+            Ex:
+            If today is 2025-05-31 and recent_window= 10 and purge_window=365
+            Deleteing all backups created between 2024-05-31
+            and 2025-05-21
+
         '''
         if ( 
             (dynamo_backup["BackupCreationDateTime"] > most_recent_backup) or
             (dynamo_backup["BackupCreationDateTime"] < oldest_allowed_backup)
         ):
+            logging.info("Deleting backup: ")
+            logging.info(table_backup_list["BackupArn"])
+            dynamodb_client.delete_backup(
+                BackupArn=table_backup_list["BackupArn"]
+            )
         
     #import pdb; pdb.set_trace()
 
