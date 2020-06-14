@@ -22,6 +22,7 @@ phases:
       - echo Entered the install phase...
 
       - BUILD_ENVIRONMENT=prod-ratings
+      - BACKUP_DYNAMODB_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-backup-dynamodb"
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"           
       - REPO_NAME=ratings
@@ -33,6 +34,7 @@ phases:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
+      - echo $BACKUP_DYNAMODB_FUNCTION_NAME
       - echo $LAMBDA_FUNCTION_NAME
       - echo $RATINGS_UPDATE_STACK
       - echo $REPO_NAME
@@ -64,14 +66,14 @@ phases:
       #updates zip deployment package for backup update script
       #################################################
       - aws lambda update-function-code
-        --function-name $LAMBDA_FUNCTION_NAME
-        --zip-file "fileb://${CODEBUILD_SRC_DIR_BuildDevBackend}/deploypkg/built_lambda.zip"
+        --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+        --zip-file "fileb://${CODEBUILD_SRC_DIR_BuildDevBackend}/backup_dynamodb_ratings.zip"
 
       #changes lambda handler to scripts/reddit_ratings.py
       #lambda_handler function
       - aws lambda update-function-configuration
-        --function-name $LAMBDA_FUNCTION_NAME
-        --handler "reddit_ratings.lambda_handler"
+        --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+        --handler "backup_dynamodb_ratings.lambda_handler"
 
 
 
