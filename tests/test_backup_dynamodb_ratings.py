@@ -356,6 +356,9 @@ class BackupDynamoDbUnit(unittest.TestCase):
         '''
         from scripts.backup_dynamodb_ratings import create_dynamodb_backup
 
+        create_dynamodb_backup()
+
+        get_boto_clients_mock.dynamodb_client.create_backup.call_count
 
 
 class LambdaHandler(unittest.TestCase):

@@ -153,6 +153,34 @@ def delete_dynamodb_backups(table_name,
             )
         
 
+
+def create_dynamodb_backup(table_name,
+    backup_name):
+    '''deletes the old/recent dynamodb backups
+
+        Parameters
+        ----------
+        table_name : str
+            Name of the table to remove the backups 
+            from
+
+        backup_name : str
+            Name of the backup
+
+        Returns
+        -------
+
+
+        Raises
+        ------
+    '''
+    dynamodb_client = get_boto_clients(
+        resource_name="dynamodb", 
+        region_name="us-east-1"
+    )
+
+    
+
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
 
