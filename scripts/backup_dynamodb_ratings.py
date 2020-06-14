@@ -103,13 +103,14 @@ def delete_dynamodb_backups(table_name,
     )
 
     
-    import pdb; pdb.set_trace()
+
 
     table_backup_list = dynamodb_client.list_backups(
         TableName=table_name,
         BackupType="USER"
     )
 
+    #import pdb; pdb.set_trace()
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule

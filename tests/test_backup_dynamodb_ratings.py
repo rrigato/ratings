@@ -48,8 +48,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
         '''
             How many news posts the client main function is using
         '''
-        cls.MAIN_FUNCTION_POST_COUNT = 25
-        os.environ["DYNAMODB_TABLE_NAME"] = "dev_toonami_ratings"
+        cls.DYNAMODB_TABLE_NAME = "dev_toonami_ratings"
+        os.environ["DYNAMODB_TABLE_NAME"] = cls.DYNAMODB_TABLE_NAME
         '''
             Assigns a class attribute which is 
             a dict that represents news posts
@@ -248,6 +248,12 @@ class BackupDynamoDbUnit(unittest.TestCase):
         '''
         from scripts.backup_dynamodb_ratings import delete_dynamodb_backups
 
+        delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
+        import pdb; pdb.set_trace()
+        get_boto_clients_mock.dynamodb_client.list_backups.assert_called_once_with(
+            TableName=self.DYNAMODB_TABLE_NAME,
+            BackupType="USER"
+        )
 
 
 class LambdaHandler(unittest.TestCase):
