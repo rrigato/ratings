@@ -113,6 +113,9 @@ def delete_dynamodb_backups(table_name,
         BackupType="USER"
     )["BackupSummaries"]
 
+    import pdb; pdb.set_trace()
+    for dynamodb_backup in table_backup_list:
+        pass
     #import pdb; pdb.set_trace()
 
 def lambda_handler(event, context):

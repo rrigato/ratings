@@ -251,11 +251,21 @@ class BackupDynamoDbUnit(unittest.TestCase):
         mock_dynamodb_client = MagicMock()
 
         mock_dynamodb_client.list_backups.return_value = {
-            "BackupSummaries":[
-                
+            "BackupSummaries": [
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12465",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012345"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now(tz_info=local),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                }
             ]
         }
-
         get_boto_clients_mock.return_value = mock_dynamodb_client
 
         delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
