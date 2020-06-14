@@ -165,11 +165,10 @@ def create_dynamodb_backup(table_name,
             from
 
         backup_name : str
-            Name of the backup
+            Name of the backup with appended day string _YYYY_MM_DD 
 
         Returns
         -------
-
 
         Raises
         ------
@@ -179,7 +178,21 @@ def create_dynamodb_backup(table_name,
         region_name="us-east-1"
     )
 
-    
+    '''
+        Add _YYYY_MM_DD to backup_name
+    '''
+    full_backup_name = "{backup_name}_{backup_date}".format(
+        backup_name=backup_name,
+        backup_date=datetime.now().strftime("%Y_%m_%d")
+    )
+
+    logging.info("Creating backup ")
+    logging.info(full_backup_name)
+
+    dynamodb_client.create_backup(
+        table_name=table_name,
+        backup_name=full_backup_name
+    )
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
