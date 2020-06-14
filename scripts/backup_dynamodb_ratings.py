@@ -114,8 +114,14 @@ def delete_dynamodb_backups(table_name,
     )["BackupSummaries"]
 
     import pdb; pdb.set_trace()
+
+    if len(table_backup_list) == 0:
+        return(None)
+    '''
+        iterate over every backup
+    '''
     for dynamodb_backup in table_backup_list:
-        pass
+        
     #import pdb; pdb.set_trace()
 
 def lambda_handler(event, context):
