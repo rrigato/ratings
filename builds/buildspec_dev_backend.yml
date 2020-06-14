@@ -27,6 +27,7 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratings
+      - BACKUP_DYNAMODB_FUNCTION_NAME = "${BUILD_ENVIRONMENT}-dynamodb-backup-trigger"
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"      
       - pip install -r tests/requirements_backend.txt
@@ -34,6 +35,7 @@ phases:
     commands:
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
+      - echo $BACKUP_DYNAMODB_FUNCTION_NAME
       - echo $LAMBDA_FUNCTION_NAME
       - echo $RATINGS_UPDATE_STACK
 
@@ -107,9 +109,19 @@ phases:
       #
       #-j = junk path, exclude file path
       #####################################
-      - zip -j9 backup_dynamodb_ratings_lambda.zip scripts/backup_dynamodb_ratings.py
+      - zip -j9 backup_dynamodb_ratings.zip scripts/backup_dynamodb_ratings.py
       
-      
+      #updates zip deployment package
+      - aws lambda update-function-code
+        --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+        --zip-file fileb://backup_dynamodb_ratings.zip
+
+      #changes lambda handler to scripts/backup_dynamodb_ratings.py
+      #lambda_handler function
+      - aws lambda update-function-configuration
+        --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+        --handler "backup_dynamodb_ratings.lambda_handler"    
+
       - python -m unittest tests/test_dev_ratings_backend.py
 
   post_build:
