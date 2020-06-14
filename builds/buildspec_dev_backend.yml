@@ -27,7 +27,7 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratings
-      - BACKUP_DYNAMODB_FUNCTION_NAME = "${BUILD_ENVIRONMENT}-backend-backup-dynamodb"
+      - BACKUP_DYNAMODB_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-backup-dynamodb"
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"      
       - pip install -r tests/requirements_backend.txt
