@@ -99,6 +99,16 @@ phases:
       - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
         --payload file://util/lambda_cw_event.json
         "${LAMBDA_FUNCTION_NAME}_output.json"
+
+
+      #####################################
+      #Build backup lambda function 
+      #(no dependencies other than built ins and the aws python sdk)
+      #
+      #-j = junk path, exclude file path
+      #####################################
+      - zip -j9 backup_dynamodb_ratings_lambda.zip scripts/backup_dynamodb_ratings.py
+      
       
       - python -m unittest tests/test_dev_ratings_backend.py
 
