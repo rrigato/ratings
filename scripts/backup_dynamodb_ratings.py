@@ -105,10 +105,13 @@ def delete_dynamodb_backups(table_name,
     
 
 
+    '''
+        BackupSummaries = list of all user backups
+    '''
     table_backup_list = dynamodb_client.list_backups(
         TableName=table_name,
         BackupType="USER"
-    )
+    )["BackupSummaries"]
 
     #import pdb; pdb.set_trace()
 
