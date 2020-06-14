@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
+from datetime import timedelta
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -259,11 +260,35 @@ class BackupDynamoDbUnit(unittest.TestCase):
                     "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
                             "dev_toonami_ratings/backup/012345"),
                     "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now(tz_info=local),
+                    "BackupCreationDateTime": datetime.now(),
                     "BackupStatus": "AVAILABLE",
                     "BackupType": "USER",
                     "BackupSizeBytes": 575731
-                }
+                },
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12465",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012345"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now() - timedelta(),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                },                
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12465",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012345"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now(),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                }                
             ]
         }
         get_boto_clients_mock.return_value = mock_dynamodb_client
