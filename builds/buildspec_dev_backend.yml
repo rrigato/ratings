@@ -138,4 +138,6 @@ artifacts:
     #artifact for the prod stage to deploy 
     ##########################
     - 'deploypkg/built_lambda.zip'
+    #backup function artifact
+    - 'backup_dynamodb_ratings.zip'
   name: BuildDevBackend
