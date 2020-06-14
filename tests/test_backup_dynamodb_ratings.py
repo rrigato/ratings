@@ -315,7 +315,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
         self.assertEqual(
             mock_dynamodb_client.delete_backup.call_count,
-            2
+            4
         )
 
         
@@ -330,15 +330,17 @@ class BackupDynamoDbUnit(unittest.TestCase):
             args, kwargs = backup_delete_call
             
             '''
-                Validate that only the first and third elements in the 
-                mock Backup list are deleted since those are the only
-                two functions in the range
+                Validate that everything but the 3rd elemnt in the 
+                mock Backup list are deleted since that is the only function outside 
+                the deletion range
             '''
             self.assertIn(
                 kwargs["BackupArn"],
                 [
                     self.dynamodb_backups_fixture["BackupSummaries"][0]["BackupArn"],
-                    self.dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"]
+                    self.dynamodb_backups_fixture["BackupSummaries"][1]["BackupArn"],
+                    self.dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"],
+                    self.dynamodb_backups_fixture["BackupSummaries"][4]["BackupArn"]
                 ]
             )
 
