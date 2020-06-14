@@ -77,21 +77,19 @@ class BackupDynamoDbUnit(unittest.TestCase):
         ]
 
 
-    @patch("scripts.reddit_ratings.handle_ratings_insertion")
-    @patch("scripts.reddit_ratings.ratings_iteration")
-    def test_main(self, ratings_iteration_mock,
-        handle_ratings_iteration_mock):
+    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
+    @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
+    def test_main(self, delete_dynamodb_backups_mock,
+        create_dynamodb_backup_mock):
         '''Test for main function
 
             Parameters
             ----------
-            ratings_iteration_mock : unittest.mock.MagicMock
-                Mock object to make sure the reddit api is 
-                not called
+            delete_dynamodb_backups_mock : unittest.mock.MagicMock
+                Mock object for local deletion of backups
 
-            handle_ratings_iteration_mock : unittest.mock.MagicMock
-                Mock object used to ensure no logging is setup
-                for the test
+            create_dynamodb_backup_mock : unittest.mock.MagicMock
+                Mock object for local creation of backups
 
             Returns
             -------
@@ -439,12 +437,5 @@ class LambdaHandler(unittest.TestCase):
             1
         )
 
-        '''
-            Testing call count and args passed
-        '''
-        self.assertEqual(
-            main_mock.call_count,
-            1
-        )
 
 

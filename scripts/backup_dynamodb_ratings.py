@@ -210,8 +210,13 @@ def lambda_handler(event, context):
         Logging required for cloudwatch logs
     '''
     logging.getLogger().setLevel(logging.INFO)
-    main()
 
+    delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
+    
+    create_dynamodb_backup(
+        table_name=os.environ["DYNAMODB_TABLE_NAME"],
+        backup_name="lambda_backup_script"
+    )
 
 def main():
     """Entry point into the script
@@ -224,7 +229,11 @@ def main():
         Raises
         ------
     """
-    delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
+    delete_dynamodb_backups(table_name="prod_toonami_ratings")
+    create_dynamodb_backup(
+        table_name="prod_toonami_ratings",
+        backup_name="adhoc_manual_backup"
+    )
 
 if __name__ == "__main__":    
     main()
