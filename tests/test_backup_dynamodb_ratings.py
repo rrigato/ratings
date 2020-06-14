@@ -316,17 +316,23 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
         for backup_delete_call in mock_dynamodb_client.delete_backup.call_args_list:
 
-            import pdb; pdb.set_trace()
+            
             '''
                 unittest.mock._Call object, returns arguements
                 and keyword arguements as a dict
             '''
             args, kwargs = backup_delete_call
+            
+            '''
+                Validate that only the first and third elements in the 
+                mock Backup list are deleted since those are the only
+                two functions in the range
+            '''
             self.assertIn(
                 kwargs["BackupArn"],
                 [
-                    dynamodb_backups_fixture[0]["BackupArn"],
-                    dynamodb_backups_fixture[2]["BackupArn"]
+                    dynamodb_backups_fixture["BackupSummaries"][0]["BackupArn"],
+                    dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"]
                 ]
             )
 
