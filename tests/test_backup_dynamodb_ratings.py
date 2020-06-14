@@ -371,40 +371,6 @@ class BackupDynamoDbUnit(unittest.TestCase):
             )
         )
 
-
-class LambdaHandler(unittest.TestCase):
-    """Tests specific to when the script is run from a lambda
-        function
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-    @classmethod
-    def setUpClass(cls):
-        """Unitest function that is run once for the class
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        '''
-            Assigns a class attribute which is 
-            a dict that represents news posts
-        '''
-        with open("util/lambda_cw_event.json", "r") as news_flair:
-            cls.lambda_event_fixture = json.load(news_flair)
-
     @patch("logging.getLogger")
     @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
@@ -440,6 +406,43 @@ class LambdaHandler(unittest.TestCase):
             getLogger_mock.call_count,
             1
         )
+
+
+
+
+class LambdaHandler(unittest.TestCase):
+    """Tests specific to when the script is run from a lambda
+        function
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    @classmethod
+    def setUpClass(cls):
+        """Unitest function that is run once for the class
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+        '''
+            Assigns a class attribute which is 
+            a dict that represents news posts
+        '''
+        with open("util/lambda_cw_event.json", "r") as news_flair:
+            cls.lambda_event_fixture = json.load(news_flair)
+
 
 
 
