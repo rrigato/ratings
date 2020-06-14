@@ -51,34 +51,17 @@ class BackupDynamoDbUnit(unittest.TestCase):
         '''
         cls.DYNAMODB_TABLE_NAME = "dev_toonami_ratings"
         os.environ["DYNAMODB_TABLE_NAME"] = cls.DYNAMODB_TABLE_NAME
+
         '''
             Assigns a class attribute which is 
             a dict that represents news posts
         '''
-        with open("util/news_flair_fixture.json", "r") as news_flair:
-            cls.news_flair_fixture = json.load(news_flair)
-        
-        cls.oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
-
-        cls.valid_column_names = [
-            "PERCENTAGE_OF_HOUSEHOLDS",
-            "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-            "RATINGS_OCCURRED_ON",
-            "SHOW",
-            "TIME", 
-            "TOTAL_VIEWERS", 
-            "TOTAL_VIEWERS_AGE_18_49"
-
-        ]
+        with open("util/lambda_cw_event.json", "r") as cw_event:
+            cls.lambda_event_fixture = json.load(cw_event)
 
 
-    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
+    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     def test_main(self, delete_dynamodb_backups_mock,
         create_dynamodb_backup_mock):
         '''Test for main function
@@ -372,8 +355,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
         )
 
     @patch("logging.getLogger")
-    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
+    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     def test_lambda_handler_event(self,delete_dynamodb_backups_mock,
         create_dynamodb_backup_mock, getLogger_mock):
         """Tests passing sample event to lambda_handler
@@ -407,6 +390,14 @@ class BackupDynamoDbUnit(unittest.TestCase):
             1
         )
 
+        delete_dynamodb_backups_mock.assert_called_once_with(
+            table_name=self.DYNAMODB_TABLE_NAME
+        )
+
+        create_dynamodb_backup_mock.assert_called_once_with(
+            table_name=self.DYNAMODB_TABLE_NAME,
+            backup_name="lambda_backup_script"
+        )
 
 
 
