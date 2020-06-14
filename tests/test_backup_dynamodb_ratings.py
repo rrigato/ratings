@@ -59,6 +59,47 @@ class BackupDynamoDbUnit(unittest.TestCase):
         with open("util/lambda_cw_event.json", "r") as cw_event:
             cls.lambda_event_fixture = json.load(cw_event)
 
+        cls.dynamodb_backups_fixture = {
+            "BackupSummaries": [
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12465",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012345"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now(),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                },
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12466",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012346"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now() - timedelta(days=100),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                },                
+                {
+                    "TableName": "dev_toonami_ratings",
+                    "TableId": "f1234567-12467",
+                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
+                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
+                            "dev_toonami_ratings/backup/012347"),
+                    "BackupName": "manual_backup_test",
+                    "BackupCreationDateTime": datetime.now()- timedelta(days=367),
+                    "BackupStatus": "AVAILABLE",
+                    "BackupType": "USER",
+                    "BackupSizeBytes": 575731
+                }                
+            ]
+        }
+
 
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
     @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
@@ -232,48 +273,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
         mock_dynamodb_client = MagicMock()
 
-        dynamodb_backups_fixture = {
-            "BackupSummaries": [
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12465",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012345"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now(),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12466",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012346"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now() - timedelta(days=100),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },                
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12467",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012347"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now()- timedelta(days=367),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                }                
-            ]
-        }
 
-        mock_dynamodb_client.list_backups.return_value = dynamodb_backups_fixture
+        mock_dynamodb_client.list_backups.return_value = self.dynamodb_backups_fixture
 
         get_boto_clients_mock.return_value = mock_dynamodb_client
 
@@ -312,8 +313,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
             self.assertIn(
                 kwargs["BackupArn"],
                 [
-                    dynamodb_backups_fixture["BackupSummaries"][0]["BackupArn"],
-                    dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"]
+                    self.dynamodb_backups_fixture["BackupSummaries"][0]["BackupArn"],
+                    self.dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"]
                 ]
             )
 
