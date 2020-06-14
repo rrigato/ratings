@@ -68,11 +68,16 @@ def get_boto_clients(resource_name, region_name='us-east-1',
     return(service_client)
 
 
-def delete_dynamodb_backups(recent_window=29, purge_window=100):
+def delete_dynamodb_backups(table_name,
+    recent_window=29, purge_window=100,):
     '''deletes the old/recent dynamodb backups
 
         Parameters
         ----------
+        table_name : str
+            Name of the table to remove the backups 
+            from
+
         recent_window : int
             Rolling number of days of old backups we 
             want to delete. Defaults to 29 days. 
@@ -96,6 +101,9 @@ def delete_dynamodb_backups(recent_window=29, purge_window=100):
         resource_name="dynamodb", 
         region_name="us-east-1"
     )
+
+    
+    import pdb; pdb.set_trace()
 
 
 def lambda_handler(event, context):
@@ -128,7 +136,7 @@ def main():
         Raises
         ------
     """
-    delete_dynamodb_backups()
+    delete_dynamodb_backups(table_name="prod_toonami_ratings")
 
 if __name__ == "__main__":    
     main()
