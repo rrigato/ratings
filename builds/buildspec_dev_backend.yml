@@ -27,7 +27,7 @@ phases:
     commands:
       - echo Entered the install phase...
       - BUILD_ENVIRONMENT=dev-ratings
-      - BACKUP_DYNAMODB_FUNCTION_NAME = "${BUILD_ENVIRONMENT}-dynamodb-backup-trigger"
+      - BACKUP_DYNAMODB_FUNCTION_NAME = "${BUILD_ENVIRONMENT}-backend-backup-dynamodb"
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"      
       - pip install -r tests/requirements_backend.txt
@@ -90,12 +90,6 @@ phases:
         --handler "reddit_ratings.lambda_handler"
 
 
-      #asyncronously invoke the lambda function passing
-      #util/lambda_cw_event.json as the event json
-      # - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
-      #   --invocation-type Event --payload file://util/lambda_cw_event.json
-      #   outfile "${LAMBDA_FUNCTION_NAME}_output.json"
-
       #syncronously invoke the lambda function once
       #with cloudwatch timer event payload
       - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
@@ -121,6 +115,13 @@ phases:
       - aws lambda update-function-configuration
         --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
         --handler "backup_dynamodb_ratings.lambda_handler"    
+
+      #syncronously invoke the lambda function once
+      #with cloudwatch timer event payload
+      - aws lambda invoke --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+        --payload file://util/lambda_cw_event.json
+        "${BACKUP_DYNAMODB_FUNCTION_NAME}_output.json"
+
 
       - python -m unittest tests/test_dev_ratings_backend.py
 
