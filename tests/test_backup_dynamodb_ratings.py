@@ -251,7 +251,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
         mock_dynamodb_client = MagicMock()
 
-        mock_dynamodb_client.list_backups.return_value = {
+        dynamodb_backups_fixture = {
             "BackupSummaries": [
                 {
                     "TableName": "dev_toonami_ratings",
@@ -292,6 +292,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
             ]
         }
 
+        mock_dynamodb_client.list_backups.return_value = dynamodb_backups_fixture
+
         get_boto_clients_mock.return_value = mock_dynamodb_client
 
         delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
@@ -309,6 +311,17 @@ class BackupDynamoDbUnit(unittest.TestCase):
             mock_dynamodb_client.delete_backup.call_count,
             2
         )
+
+        import pdb; pdb.set_trace()
+
+        for backup_delete_call in mock_dynamodb_client.delete_backup.call_args_list:
+            self.assertIn(
+
+                [
+                    dynamodb_backups_fixture[0]["BackupArn"],
+                    dynamodb_backups_fixture[2]["BackupArn"]
+                ]
+            )
 
 
 class LambdaHandler(unittest.TestCase):
