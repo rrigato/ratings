@@ -248,9 +248,23 @@ class BackupDynamoDbUnit(unittest.TestCase):
         '''
         from scripts.backup_dynamodb_ratings import delete_dynamodb_backups
 
+        mock_dynamodb_client = MagicMock()
+
+        mock_dynamodb_client.list_backups.return_value = {
+            "BackupSummaries":[
+                
+            ]
+        }
+
+        get_boto_clients_mock.return_value = mock_dynamodb_client
+
         delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
-        import pdb; pdb.set_trace()
-        get_boto_clients_mock.dynamodb_client.list_backups.assert_called_once_with(
+
+
+        '''
+            validate call args for list_backups
+        '''
+        mock_dynamodb_client.list_backups.assert_called_once_with(
             TableName=self.DYNAMODB_TABLE_NAME,
             BackupType="USER"
         )
