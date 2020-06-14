@@ -291,7 +291,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
                 }                
             ]
         }
-        
+
         get_boto_clients_mock.return_value = mock_dynamodb_client
 
         delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
@@ -303,6 +303,11 @@ class BackupDynamoDbUnit(unittest.TestCase):
         mock_dynamodb_client.list_backups.assert_called_once_with(
             TableName=self.DYNAMODB_TABLE_NAME,
             BackupType="USER"
+        )
+
+        self.assertEqual(
+            mock_dynamodb_client.delete_backup.call_count,
+            2
         )
 
 

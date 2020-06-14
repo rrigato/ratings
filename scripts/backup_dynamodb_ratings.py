@@ -113,8 +113,10 @@ def delete_dynamodb_backups(table_name,
         BackupType="USER"
     )["BackupSummaries"]
 
-    import pdb; pdb.set_trace()
 
+    '''
+        return None if there is no backups
+    '''
     if len(table_backup_list) == 0:
         return(None)
 
@@ -122,9 +124,9 @@ def delete_dynamodb_backups(table_name,
         Calulating datetime object based on provided purge_window and
         recent_window
     '''
-    oldest_allowed_backup = datetime.now() - datetime.timedelta(days=purge_window)
+    oldest_allowed_backup = datetime.now() - timedelta(days=purge_window)
 
-    most_recent_backup = datetime.now() - datetime.timedelta(days=recent_window)
+    most_recent_backup = datetime.now() - timedelta(days=recent_window)
     '''
         iterate over every user backup
     '''
@@ -140,16 +142,16 @@ def delete_dynamodb_backups(table_name,
 
         '''
         if ( 
-            (dynamo_backup["BackupCreationDateTime"] > most_recent_backup) or
-            (dynamo_backup["BackupCreationDateTime"] < oldest_allowed_backup)
+            (dynamodb_backup["BackupCreationDateTime"] > most_recent_backup) or
+            (dynamodb_backup["BackupCreationDateTime"] < oldest_allowed_backup)
         ):
             logging.info("Deleting backup: ")
-            logging.info(table_backup_list["BackupArn"])
+            logging.info(dynamodb_backup["BackupArn"])
+            
             dynamodb_client.delete_backup(
-                BackupArn=table_backup_list["BackupArn"]
+                BackupArn=dynamodb_backup["BackupArn"]
             )
         
-    #import pdb; pdb.set_trace()
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
