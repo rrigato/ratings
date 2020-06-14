@@ -105,6 +105,11 @@ def delete_dynamodb_backups(table_name,
     
     import pdb; pdb.set_trace()
 
+    table_backup_list = dynamodb_client.list_backups(
+        TableName=table_name,
+        BackupType="USER"
+    )
+
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
@@ -136,7 +141,7 @@ def main():
         Raises
         ------
     """
-    delete_dynamodb_backups(table_name="prod_toonami_ratings")
+    delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
 
 if __name__ == "__main__":    
     main()
