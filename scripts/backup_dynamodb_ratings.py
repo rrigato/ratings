@@ -69,7 +69,7 @@ def get_boto_clients(resource_name, region_name='us-east-1',
 
 
 def delete_dynamodb_backups(table_name,
-    recent_window=29, purge_window=100,):
+    recent_window=29, purge_window=365):
     '''deletes the old/recent dynamodb backups
 
         Parameters
@@ -147,7 +147,7 @@ def delete_dynamodb_backups(table_name,
         ):
             logging.info("Deleting backup: ")
             logging.info(dynamodb_backup["BackupArn"])
-            
+
             dynamodb_client.delete_backup(
                 BackupArn=dynamodb_backup["BackupArn"]
             )
