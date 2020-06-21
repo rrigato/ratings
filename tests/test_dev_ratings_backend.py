@@ -11,7 +11,7 @@ import unittest
 
 ENVIRON_DEF = "dev-backend"
 
-def get_boto_clients(resource_name, region_name='us-east-1',
+def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
     '''Returns the boto client for various aws resources
 

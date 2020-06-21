@@ -13,7 +13,7 @@ import os
 '''
 REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
 
-def get_boto_clients(resource_name, region_name='us-east-1',
+def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
     '''Returns the boto client for various aws resources
 
