@@ -17,7 +17,7 @@ aws cloudformation create-change-set --stack-name ratings-pipeline \
  #aws cloudformation execute-change-set --change-set-name
  #<change_set_arn>
 aws cloudformation execute-change-set --change-set-name \
-arn:aws:cloudformation:us-east-1:350255258796:changeSet/CodePipelineAddition/2326ac23-8154-49d4-a328-7edc708a2b53
+<change_set_arn>
 
 aws cloudformation update-stack --stack-name ratings-pipeline \
  --template-body file://templates/code_pipeline.yml \
