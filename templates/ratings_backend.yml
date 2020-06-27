@@ -228,7 +228,7 @@ Resources:
             Schedule: 'rate(30 days)'
             Name: !Sub '${ProjectName}-dynamodb-backup-trigger'
             Description: |
-              Runs scripts.backup_dynamodb_ratings.lambda_handler once every 12 hours
+              Runs scripts.backup_dynamodb_ratings.lambda_handler once every 30 days
             Enabled: !Ref EnableLambdaSchedule        
 
       FunctionName: !Join ['-', [ !Ref ProjectName, 'backup-dynamodb']]
