@@ -187,8 +187,8 @@ def create_dynamodb_backup(table_name,
     logging.info(full_backup_name)
 
     dynamodb_client.create_backup(
-        table_name=table_name,
-        backup_name=full_backup_name
+        TableName=table_name,
+        BackupName=full_backup_name
     )
 
 def lambda_handler(event, context):
