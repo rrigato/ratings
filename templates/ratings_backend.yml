@@ -61,11 +61,6 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       EvaluationPeriods: 1
       Metrics:
-      #static math expression for the number of lambda errors
-      #greater than zero
-      - Expression: SUM(lambdaErrors) > 0 
-        Id: triggerMathExpression
-
       #metric statistic for the sum of all lambda
       #invocation errors in a 30 minute period
       - Id: lambdaErrors
@@ -73,9 +68,11 @@ Resources:
           Metric:
             MetricName: Errors
             Namespace: AWS/Lambda
+          #every 30 minute window
           Period: 1800
           Stat: Sum
-      ThresholdMetricId: lambdaErrors
+      #dont want any greater than 0 errors
+      Threshold: 0
 
   LambdaCodeBucket:
     Properties:
