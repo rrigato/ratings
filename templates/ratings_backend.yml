@@ -90,8 +90,6 @@ Resources:
       Dimensions:
         - Name: FunctionName
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-poll']]
-        - Name: FunctionName
-          Value: !Join ['-', [ !Ref ProjectName, 'backup-dynamodb']]
 
       EvaluationPeriods: 1
       #metric statistic for if there was no lambda invocations
