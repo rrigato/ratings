@@ -54,19 +54,20 @@ Resources:
     Properties:
       AlarmDescription: !Sub '${ProjectName} Lambda Error alert'
       AlarmName: !Sub '${ProjectName}LambdaErrorAlarm'
-      ComparisonOperator: LessThanLowerOrGreaterThanUpperThreshold
+      ComparisonOperator: GreaterThanThreshold
       EvaluationPeriods: 1
       Metrics:
-      - Expression: ANOMALY_DETECTION_BAND(m1, 2)
-        Id: ad1
-      - Id: m1
+      - Expression: SUM(lambdaErrors) > 0 
+        Id: triggerMathExpression
+
+      - Id: lambdaErrors
         MetricStat:
           Metric:
-            MetricName: Invocations
+            MetricName: Errors
             Namespace: AWS/Lambda
-          Period: !!int 86400
+          Period: 300
           Stat: Sum
-      ThresholdMetricId: ad1
+      ThresholdMetricId: lambdaErrors
       TreatMissingData: breaching
 
   LambdaCodeBucket:
