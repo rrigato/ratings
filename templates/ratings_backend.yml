@@ -48,6 +48,27 @@ Resources:
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-function-error-alert']]
       TopicName: !Sub '${ProjectName}-error-topic'
 
+  #alarm that is triggered for lambda function error
+  LambdaErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: !Sub '${ProjectName} Lambda Error alert'
+      AlarmName: !Sub '${ProjectName}LambdaErrorAlarm'
+      ComparisonOperator: LessThanLowerOrGreaterThanUpperThreshold
+      EvaluationPeriods: 1
+      Metrics:
+      - Expression: ANOMALY_DETECTION_BAND(m1, 2)
+        Id: ad1
+      - Id: m1
+        MetricStat:
+          Metric:
+            MetricName: Invocations
+            Namespace: AWS/Lambda
+          Period: !!int 86400
+          Stat: Sum
+      ThresholdMetricId: ad1
+      TreatMissingData: breaching
+
   LambdaCodeBucket:
     Properties:
       BucketName: !Join ['-', [ !Ref ProjectName, !Ref BucketName ]]
