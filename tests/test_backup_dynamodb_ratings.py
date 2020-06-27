@@ -375,8 +375,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
             Testing call to creat_backup
         '''
         get_boto_clients_mock().create_backup.assert_called_once_with(
-            table_name=self.DYNAMODB_TABLE_NAME,
-            backup_name= (test_backup_name + "_" + 
+            TableName=self.DYNAMODB_TABLE_NAME,
+            BackupName= (test_backup_name + "_" + 
                 datetime.now().strftime("%Y_%m_%d")
             )
         )
