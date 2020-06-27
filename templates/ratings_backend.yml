@@ -252,6 +252,10 @@ Resources:
               - dynamodb:PutItem
               - dynamodb:Query
               - dynamodb:Scan
+              - dynamodb:ListBackups
+              - dynamodb:CreateBackup
+              - dynamodb:DeleteBackup
+              - dynamodb:DescribeBackup
 
             Resource:
               - "*"        
