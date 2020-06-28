@@ -128,6 +128,14 @@ def delete_dynamodb_backups(table_name,
         iterate over every user backup
     '''
     for dynamodb_backup in table_backup_list:
+
+        '''
+            datetime.now is local time, but making sure
+            both objects are not timezone aware
+        '''
+        local_dynamo_backup_time = dynamodb_backup["BackupCreationDateTime"].replace(
+            tzinfo=None
+        )
         '''
             Purging backups older than now minus the purge window
             or newer than now minus the most_recent_backup time
@@ -139,8 +147,8 @@ def delete_dynamodb_backups(table_name,
 
         '''
         if ( 
-            (dynamodb_backup["BackupCreationDateTime"] > most_recent_backup) or
-            (dynamodb_backup["BackupCreationDateTime"] < oldest_allowed_backup)
+            (local_dynamo_backup_time > most_recent_backup) or
+            (local_dynamo_backup_time < oldest_allowed_backup)
         ):
             logging.info("Deleting backup: ")
             logging.info(dynamodb_backup["BackupArn"])
