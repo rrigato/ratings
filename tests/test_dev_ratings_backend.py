@@ -325,7 +325,7 @@ class BackendTests(unittest.TestCase):
         '''
             Assert we have a dyamodb backup
         '''
-        self.assertGreater(dynamo_backups["BackupSummaries"], 0) 
+        self.assertGreater(len(dynamo_backups["BackupSummaries"]), 0) 
 
         '''
             Initialize a random backup time for comparison
@@ -340,3 +340,12 @@ class BackendTests(unittest.TestCase):
             
             if dynamo_backup["BackupCreationDateTime"] > most_recent_backup:
                 most_recent_backup = dynamo_backup["BackupCreationDateTime"]
+        
+        '''
+            Validating that the most recent backup has occurred in the 
+            last 10 minutes
+        '''
+        self.assertGreater(
+            most_recent_backup.replace(tzinfo=None),
+            datetime.now() - timedelta(minutes=10)
+        )
