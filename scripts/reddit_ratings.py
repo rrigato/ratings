@@ -756,7 +756,6 @@ def clean_dict_value(ratings_values_to_clean):
     """
     clean_ratings_values = []
     for dict_to_clean in ratings_values_to_clean:
-        dict_to_clean["IS_RERUN"] = None
         '''
             If we are able to find " (r)" in the 
             SHOW string that indicates a rerun

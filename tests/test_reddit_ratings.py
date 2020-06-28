@@ -1146,14 +1146,22 @@ class RedditApi(unittest.TestCase):
         clean_ratings_list = clean_dict_value(
             ratings_values_to_clean=list_with_rerun_and_bad_household
         )
+
+
         '''
             Testing that household rating value of 9.99 
-            is replaced with None
+            is not returned in dict
         '''
         self.assertIsNone(
             clean_ratings_list[0]["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"]
         )   
-        self.assertIsNone(clean_ratings_list[0]["IS_RERUN"])
+
+        '''
+            Validating that IS_RERUN is not returned
+            for a Show without reruns
+        '''
+        with self.assertRaises(KeyError, msg="IS_RERUN"):
+            self.assertIsNone(clean_ratings_list[0]["IS_RERUN"])
 
         '''
             Testing string split and 
@@ -1173,7 +1181,12 @@ class RedditApi(unittest.TestCase):
             clean_ratings_list[2]["SHOW"],
             "sample show without adult household (r"
         )
-        self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
+        '''
+            Validating that IS_RERUN is not returned
+            for a Show without reruns
+        '''
+        with self.assertRaises(KeyError, msg="IS_RERUN"):        
+            self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
 
 
