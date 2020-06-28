@@ -321,3 +321,22 @@ class BackendTests(unittest.TestCase):
         dynamo_backups = dynamo_client.list_backups(
             TableName=self.DYNAMO_TABLE_NAME
         )
+
+        '''
+            Assert we have a dyamodb backup
+        '''
+        self.assertGreater(dynamo_backups["BackupSummaries"], 0) 
+
+        '''
+            Initialize a random backup time for comparison
+        '''
+        most_recent_backup = dynamo_backups["BackupSummaries"][0]["BackupCreationDateTime"]
+
+        '''
+            Iterating over every backup to get the most recent backup 
+            time
+        '''
+        for dynamo_backup in dynamo_backups["BackupSummaries"]:
+            
+            if dynamo_backup["BackupCreationDateTime"] > most_recent_backup:
+                most_recent_backup = dynamo_backup["BackupCreationDateTime"]
