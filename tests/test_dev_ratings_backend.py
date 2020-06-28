@@ -300,4 +300,21 @@ class BackendTests(unittest.TestCase):
                 show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
             )
             
-        
+    def test_dynamodb_backup_time(self):
+        '''Validates a backup was created
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+
