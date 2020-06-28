@@ -312,9 +312,12 @@ class BackendTests(unittest.TestCase):
             Raises
             ------
         '''
-        dynamo_client, dynamo_table = get_boto_clients(
+        dynamo_client = get_boto_clients(
                 resource_name="dynamodb",
-                region_name="us-east-1",
-                table_name=self.DYNAMO_TABLE_NAME
+                region_name="us-east-1"
         )
 
+
+        dynamo_backups = dynamo_client.list_backups(
+            TableName=self.DYNAMO_TABLE_NAME
+        )
