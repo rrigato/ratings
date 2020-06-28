@@ -341,9 +341,9 @@ class BackendTests(unittest.TestCase):
         
         '''
             Validating that the most recent backup has occurred in the 
-            last 30 days
+            last 10 minutes
         '''
         self.assertGreater(
             most_recent_backup.replace(tzinfo=None),
-            datetime.now() - timedelta(days=30)
+            datetime.now() - timedelta(minutes=10)
         )
