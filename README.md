@@ -1,14 +1,34 @@
 ![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNWRzcDRZemNOTTZVM1F1ZVNZb2J6UG1ZMFdPWnRobytweG9aOE81RTgyTXlEeFg1RDcvQWFlWm96OXpQSTBBZ0VQNTFDeEJweWdtcU9ORTBYSVRGTmQ4PSIsIml2UGFyYW1ldGVyU3BlYyI6IjRIRExOZk5ZRnFZdFdRVE0iLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master) ![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)
 
+#ratings
+
 This application creates a lambda function that polls the reddit api to retrieve television ratings. The ratings are then parsed from an html table element and inserted into dynamodb.
 
 
-### CloudFormation Limitations
+
+## table_of_contents
 
 
-#### DeletionPolicy attribute must be string
-[According to this forum post](https://forums.aws.amazon.com/message.jspa?messageID=560586)
-The DeletionPolicy must be a string, this limits flexibility when trying to pass it as a parameter dependent on environment...
+- [table_of_contents](#table_of_contents)
+  - [Development Tooling Overview](#development-tooling-overview)
+    - [cfn-lint (cloudformation Linting)](#cfn-lint-cloudformation-linting)
+    - [Git Secrets Scan](#git-secrets-scan)
+  - [Project Directory Overview](#project-directory-overview)
+    - [builds](#builds)
+      - [Buildspec Files](#buildspec-files)
+    - [devops](#devops)
+    - [historical](#historical)
+    - [logs](#logs)
+    - [scripts](#scripts)
+    - [templates](#templates)
+    - [tests](#tests)
+      - [util](#util)
+    - [Setup Continuous Integration](#setup-continuous-integration)
+    - [Setup Infrastructure](#setup-infrastructure)
+
+
+
+
 
 ### Development Tooling Overview
 
