@@ -327,7 +327,7 @@ Resources:
       #index where all attributes are projected with GSI1_PK as PK
       #and RATINGS_OCCURRED_ON as sort key
         - 
-          IndexName: 'myGSI2'
+          IndexName: 'GSIALLATTRIBUTES_PK'
           KeySchema: 
             - 
               AttributeName: 'GSI1_PK'
@@ -339,6 +339,23 @@ Resources:
           #project all attributes
           Projection: 
             ProjectionType: 'ALL'
+      #index designed for aggregation of data with GSI2_PK
+      #as PK and GSI1_PK as sort key
+        - 
+          IndexName: 'AGGREGRATE_PK'
+          KeySchema: 
+            - 
+              AttributeName: 'GSI2_PK'
+              KeyType: 'HASH'
+            - 
+              AttributeName: 'GSI1_PK'
+              KeyType: 'RANGE'
+
+          #GSI Keys and partition and sort key 
+          #for limited storage space
+          Projection: 
+            ProjectionType: 'KEYS_ONLY'
+
 
       SSESpecification:
           SSEEnabled: true
