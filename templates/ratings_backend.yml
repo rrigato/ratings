@@ -1,5 +1,5 @@
 ---
-AWSTemplateFormatVersion: "2010-09-09"
+AWSTemplateFormatVersion: '2010-09-09'
 
 #Transforms any serverless code to cloudformation
 Transform: AWS::Serverless-2016-10-31
@@ -42,7 +42,7 @@ Resources:
       Tags:
         -
           Key: keep
-          Value: "yes"
+          Value: 'yes'
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-function-error-alert']]
@@ -109,11 +109,11 @@ Resources:
       Tags:
         -
           Key: keep
-          Value: "yes"
+          Value: 'yes'
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
-    Type: "AWS::S3::Bucket"
+    Type: 'AWS::S3::Bucket'
 
 ############
 #Lambda function to update ratings
@@ -153,7 +153,7 @@ Resources:
       #Policies to include in the lambda basic execution role
       #created by SAM
       Policies:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement: 
           #dynamodb permissions     
           - Sid: !Sub '${PolicyPrefix}LambdaDynamoDbAllow'
@@ -167,7 +167,7 @@ Resources:
               - dynamodb:Query
 
             Resource:
-              - "*"        
+              - '*'        
 
           #Secrets Manager GetSecret permissions     
           - Sid: !Sub '${PolicyPrefix}LambdaSecretsMangerAllow'
@@ -177,7 +177,7 @@ Resources:
               - secretsmanager:GetSecretValue
 
             Resource:
-              - "*"         
+              - '*'         
 
       Runtime: python3.7
       Tracing: Active
@@ -191,7 +191,7 @@ Resources:
     Tags:
         -
           Key: keep
-          Value: "yes"
+          Value: 'yes'
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
@@ -239,7 +239,7 @@ Resources:
       #Policies to include in the lambda basic execution role
       #created by SAM
       Policies:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement: 
           #dynamodb permissions     
           - Sid: !Sub '${PolicyPrefix}LambdaDynamoDbAllow'
@@ -258,7 +258,7 @@ Resources:
               - dynamodb:DescribeBackup
 
             Resource:
-              - "*"        
+              - '*'        
 
           #Secrets Manager GetSecret permissions     
           - Sid: !Sub '${PolicyPrefix}LambdaSecretsMangerAllow'
@@ -268,7 +268,7 @@ Resources:
               - secretsmanager:GetSecretValue
 
             Resource:
-              - "*"         
+              - '*'         
 
       Runtime: python3.7
       Tracing: Active
@@ -282,7 +282,7 @@ Resources:
     Tags:
         -
           Key: keep
-          Value: "yes"
+          Value: 'yes'
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'backup-dynamodb']]
@@ -296,25 +296,49 @@ Resources:
 #show name and time
 ###############################
   RatingsTable:
-    Type: "AWS::DynamoDB::Table"
+    Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
         -
-          AttributeName: "RATINGS_OCCURRED_ON"
-          AttributeType: "S"
+          AttributeName: 'RATINGS_OCCURRED_ON'
+          AttributeType: 'S'
         -
-          AttributeName: "TIME"
-          AttributeType: "S"
+          AttributeName: 'TIME'
+          AttributeType: 'S'
+        -
+          AttributeName: 'GSI1_PK'
+          AttributeType: 'S'
+        -
+          AttributeName: 'GSI2_PK'
+          AttributeType: 'S'
+
 
     #On demand dynamodb
       BillingMode: PAY_PER_REQUEST
       KeySchema:
         -
-          AttributeName: "RATINGS_OCCURRED_ON"
-          KeyType: "HASH"
+          AttributeName: 'RATINGS_OCCURRED_ON'
+          KeyType: 'HASH'
         -
-          AttributeName: "TIME"
-          KeyType: "RANGE"
+          AttributeName: 'TIME'
+          KeyType: 'RANGE'
+
+      GlobalSecondaryIndexes: 
+      #index where all attributes are projected with GSI1_PK as PK
+      #and RATINGS_OCCURRED_ON as sort key
+        - 
+          IndexName: 'myGSI2'
+          KeySchema: 
+            - 
+              AttributeName: 'GSI1_PK'
+              KeyType: 'HASH'
+            - 
+              AttributeName: 'RATINGS_OCCURRED_ON'
+              KeyType: 'RANGE'
+
+          #project all attributes
+          Projection: 
+            ProjectionType: 'ALL'
 
       SSESpecification:
           SSEEnabled: true
@@ -322,7 +346,7 @@ Resources:
       Tags:
         -
           Key: keep
-          Value: "yes"
+          Value: 'yes'
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'dynamodb']]
