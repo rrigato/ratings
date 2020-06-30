@@ -10,13 +10,14 @@ This application creates a lambda function that polls the reddit api to retrieve
 
 
 - [table_of_contents](#table_of_contents)
-  - [Development Tooling Overview](#development-tooling-overview)
-    - [cfn-lint (cloudformation Linting)](#cfn-lint-cloudformation-linting)
-    - [Git Secrets Scan](#git-secrets-scan)
-  - [Project Directory Overview](#project-directory-overview)
+  - [dev_tools](#dev_tools)
+    - [cfn_lint](#cfn_lint)
+    - [git_secrets](#git_secrets)
+  - [project_directory_overview](#project_directory_overview)
     - [builds](#builds)
-      - [Buildspec Files](#buildspec-files)
+      - [builds](#builds-1)
     - [devops](#devops)
+    - [dynamodb_erd](#dynamodb_erd)
     - [historical](#historical)
     - [logs](#logs)
     - [scripts](#scripts)
@@ -30,11 +31,11 @@ This application creates a lambda function that polls the reddit api to retrieve
 
 
 
-### Development Tooling Overview
+### dev_tools
 
 Followed [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228206) on how to have multiple rsa key pairs in the same local machine being used with different accounts
 
-#### cfn-lint (cloudformation Linting)
+#### cfn_lint
 [cfn-lint](https://github.com/aws-cloudformation/cfn-python-lint.git) Provides yaml/json cloudformation validation and checks for best practices
 
 - Install
@@ -56,7 +57,7 @@ Followed [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=2
 ```
 
 
-#### Git Secrets Scan
+#### git_secrets
 
 [git secrets](https://github.com/awslabs/git-secrets.git) is a command line utility for validating that you do not have any git credentials stored in your git repo commit history
 
@@ -101,7 +102,7 @@ git secrets --scan -r .
 ```
 
 
-### Project Directory Overview
+### project_directory_overview
 Provides information on each directory/ source file
 
 #### builds
@@ -113,7 +114,8 @@ and Tests backend ratings logic
 
 
 
-##### Buildspec Files
+##### builds
+
 - buildspec_dev.yml = Buildspec to use for the development (QA)
     CodeBuild project
 
@@ -122,6 +124,10 @@ and Tests backend ratings logic
 #### devops
 
 ci.sh = miscellaneous awscli commands to configure environment
+
+#### dynamodb_erd
+
+
 
 #### historical
 - ratings_05262012_to_05272017.json = ratings from May 26th, 2012 until May 27th 2017, credit to these historical ratings [from this source](https://github.com/FOSSforlife/toonami_ratings)
