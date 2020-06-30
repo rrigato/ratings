@@ -3,7 +3,7 @@
   "ModelMetadata": {
     "Author": "",
     "DateCreated": "Jun 28, 2020, 11:46 AM",
-    "DateLastModified": "Jun 30, 2020, 06:02 PM",
+    "DateLastModified": "Jun 30, 2020, 06:29 PM",
     "Description": "Toonami ratings production data model with example access patterns",
     "Version": "1.0"
   },
@@ -30,14 +30,6 @@
           "AttributeType": "S"
         },
         {
-          "AttributeName": "GSIAGGREGATE",
-          "AttributeType": "S"
-        },
-        {
-          "AttributeName": "GSIALLATTRIBUTES",
-          "AttributeType": "S"
-        },
-        {
           "AttributeName": "TOTAL_VIEWERS",
           "AttributeType": "N"
         },
@@ -55,6 +47,14 @@
         },
         {
           "AttributeName": "TOTAL_VIEWERS_AGE_18_49",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSI1_PK",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSI2_PK",
           "AttributeType": "S"
         }
       ],
@@ -101,11 +101,14 @@
             }
           ],
           "NonKeyAttributes": [
-            "SHOW"
-          ],
-          "DataAccess": {
-            "MySql": {}
-          }
+            "SHOW",
+            "TOTAL_VIEWERS",
+            "IS_RERUN",
+            "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+            "PERCENTAGE_OF_HOUSEHOLDS",
+            "TOTAL_VIEWERS_AGE_18_49",
+            "GSI1_PK"
+          ]
         },
         {
           "FacetName": "oneNight",
@@ -116,11 +119,15 @@
           "TableData": [],
           "NonKeyAttributes": [
             "YEAR",
-            "SHOW"
-          ],
-          "DataAccess": {
-            "MySql": {}
-          }
+            "SHOW",
+            "TOTAL_VIEWERS",
+            "IS_RERUN",
+            "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+            "PERCENTAGE_OF_HOUSEHOLDS",
+            "TOTAL_VIEWERS_AGE_18_49",
+            "GSI1_PK",
+            "GSI2_PK"
+          ]
         }
       ],
       "GlobalSecondaryIndexes": [
@@ -128,7 +135,7 @@
           "IndexName": "GSIALLATTRIBUTES_PK",
           "KeyAttributes": {
             "PartitionKey": {
-              "AttributeName": "GSIALLATTRIBUTES",
+              "AttributeName": "GSI1_PK",
               "AttributeType": "S"
             },
             "SortKey": {
@@ -144,7 +151,11 @@
           "IndexName": "AGGREGRATE_PK",
           "KeyAttributes": {
             "PartitionKey": {
-              "AttributeName": "GSIAGGREGATE",
+              "AttributeName": "GSI2_PK",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "GSI1_PK",
               "AttributeType": "S"
             }
           },
