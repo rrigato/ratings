@@ -24,8 +24,7 @@ This application creates a lambda function that polls the reddit api to retrieve
     - [templates](#templates)
     - [tests](#tests)
       - [util](#util)
-    - [Setup Continuous Integration](#setup-continuous-integration)
-    - [Setup Infrastructure](#setup-infrastructure)
+    - [setup_ci](#setup_ci)
 
 
 
@@ -126,7 +125,7 @@ and Tests backend ratings logic
 ci.sh = miscellaneous awscli commands to configure environment
 
 #### dynamodb_erd
-
+prod_ratings.json = Entity relationship diagram built using [NoSQL Workbench for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html). Helps model access patterns before implementation
 
 
 #### historical
@@ -134,10 +133,8 @@ ci.sh = miscellaneous awscli commands to configure environment
   
 - ratings_11102018_04112020.json = ratings from November 10th 2018 through April 11th 2020, source was the reddit api
 
-
 #### logs
 - directory for python log files
-
 
 #### scripts
 - historical_ratings_upload.py = one time upload of json from the [historical](#historical) directory
@@ -148,15 +145,11 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 #### templates
 
-
-
 - code_pipeline.yml = Creates CodeBuild/Code Pipeline resources
     necessary for Dev/Prod
 
 - ratings_backend.yml = Creates the backend storage and compute necessary for
 updating ratings
-
-
 
 #### tests
 
@@ -177,7 +170,7 @@ https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&re
 
 - test_reddit_rating_config.py = fixtures for use in tests/test_reddit_rating.py
 
-#### Setup Continuous Integration
+#### setup_ci
 
 Add the remote repo using the following:
 ```
@@ -200,4 +193,3 @@ has any references you do not
 
 
 
-#### Setup Infrastructure

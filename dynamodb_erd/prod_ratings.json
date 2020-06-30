@@ -1,0 +1,161 @@
+{
+  "ModelName": "prod_toonami_ratings",
+  "ModelMetadata": {
+    "Author": "",
+    "DateCreated": "Jun 28, 2020, 11:46 AM",
+    "DateLastModified": "Jun 30, 2020, 06:02 PM",
+    "Description": "Toonami ratings production data model with example access patterns",
+    "Version": "1.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "prod_toonami_ratings",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "RATINGS_OCCURRED_ON",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "TIME",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "YEAR",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "SHOW",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSIAGGREGATE",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "GSIALLATTRIBUTES",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "TOTAL_VIEWERS",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "IS_RERUN",
+          "AttributeType": "BOOL"
+        },
+        {
+          "AttributeName": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "PERCENTAGE_OF_HOUSEHOLDS",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "TOTAL_VIEWERS_AGE_18_49",
+          "AttributeType": "S"
+        }
+      ],
+      "TableFacets": [
+        {
+          "FacetName": "yearRatingsEndpoint",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "YEAR#<year>",
+            "SortKeyAlias": "Date of ratings"
+          },
+          "TableData": [
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "YEAR#2012"
+              },
+              "TIME": {
+                "S": "2012-05-26"
+              },
+              "SHOW": {
+                "S": "Bleach"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "YEAR#2012"
+              },
+              "TIME": {
+                "S": "2012-05-26"
+              },
+              "SHOW": {
+                "S": "Casshern Sins"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "YEAR#2012"
+              },
+              "TIME": {
+                "S": "2012-06-02"
+              },
+              "SHOW": {
+                "S": "Bleach"
+              }
+            }
+          ],
+          "NonKeyAttributes": [
+            "SHOW"
+          ],
+          "DataAccess": {
+            "MySql": {}
+          }
+        },
+        {
+          "FacetName": "oneNight",
+          "KeyAttributeAlias": {
+            "PartitionKeyAlias": "RATINGS_OCCURRED_ON",
+            "SortKeyAlias": "noSortKeyFilter"
+          },
+          "TableData": [],
+          "NonKeyAttributes": [
+            "YEAR",
+            "SHOW"
+          ],
+          "DataAccess": {
+            "MySql": {}
+          }
+        }
+      ],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "GSIALLATTRIBUTES_PK",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "GSIALLATTRIBUTES",
+              "AttributeType": "S"
+            },
+            "SortKey": {
+              "AttributeName": "RATINGS_OCCURRED_ON",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        },
+        {
+          "IndexName": "AGGREGRATE_PK",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "GSIAGGREGATE",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "KEYS_ONLY"
+          }
+        }
+      ],
+      "DataAccess": {
+        "MySql": {}
+      }
+    }
+  ]
+}
