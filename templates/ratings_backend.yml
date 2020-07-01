@@ -306,11 +306,11 @@ Resources:
           AttributeName: 'TIME'
           AttributeType: 'S'
         -
-          AttributeName: 'GSI1_PK'
+          AttributeName: 'SHOW'
           AttributeType: 'S'
         -
-          AttributeName: 'GSI2_PK'
-          AttributeType: 'S'
+          AttributeName: 'YEAR'
+          AttributeType: 'N'
 
 
     #On demand dynamodb
@@ -327,10 +327,10 @@ Resources:
       #index where all attributes are projected with GSI1_PK as PK
       #and RATINGS_OCCURRED_ON as sort key
         - 
-          IndexName: 'GSIALLATTRIBUTES_PK'
+          IndexName: 'SHOW_ACCESS'
           KeySchema: 
             - 
-              AttributeName: 'GSI1_PK'
+              AttributeName: 'SHOW'
               KeyType: 'HASH'
             - 
               AttributeName: 'RATINGS_OCCURRED_ON'
@@ -342,19 +342,19 @@ Resources:
       #index designed for aggregation of data with GSI2_PK
       #as PK and GSI1_PK as sort key
         - 
-          IndexName: 'AGGREGRATE_PK'
+          IndexName: 'YEAR_ACCESS'
           KeySchema: 
             - 
-              AttributeName: 'GSI2_PK'
+              AttributeName: 'YEAR'
               KeyType: 'HASH'
             - 
-              AttributeName: 'GSI1_PK'
+              AttributeName: 'RATINGS_OCCURRED_ON'
               KeyType: 'RANGE'
 
           #GSI Keys and partition and sort key 
           #for limited storage space
           Projection: 
-            ProjectionType: 'KEYS_ONLY'
+            ProjectionType: 'ALL'
 
 
       SSESpecification:
