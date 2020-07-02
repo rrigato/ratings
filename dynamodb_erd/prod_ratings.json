@@ -3,7 +3,7 @@
   "ModelMetadata": {
     "Author": "",
     "DateCreated": "Jun 28, 2020, 11:46 AM",
-    "DateLastModified": "Jul 02, 2020, 05:54 PM",
+    "DateLastModified": "Jul 02, 2020, 05:57 PM",
     "Description": "Toonami ratings production data model with example access patterns",
     "Version": "1.0"
   },
@@ -154,6 +154,15 @@
               },
               "TIME": {
                 "S": "12:30"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "Samurai 7"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "908"
               }
             },
             {
@@ -162,6 +171,15 @@
               },
               "TIME": {
                 "S": "1:00"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "Casshern Sins"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "807"
               }
             },
             {
@@ -170,6 +188,15 @@
               },
               "TIME": {
                 "S": "1:30"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "Eureka 7"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "756"
               }
             },
             {
@@ -178,6 +205,15 @@
               },
               "TIME": {
                 "S": "2:00"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "FMA Brotherhood"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "773"
               }
             },
             {
@@ -186,6 +222,15 @@
               },
               "TIME": {
                 "S": "2:30"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "Ghost in the Shell"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "726"
               }
             }
           ],
