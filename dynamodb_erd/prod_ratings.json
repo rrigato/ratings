@@ -3,7 +3,7 @@
   "ModelMetadata": {
     "Author": "",
     "DateCreated": "Jun 28, 2020, 11:46 AM",
-    "DateLastModified": "Jul 02, 2020, 05:57 PM",
+    "DateLastModified": "Jul 02, 2020, 06:02 PM",
     "Description": "Toonami ratings production data model with example access patterns",
     "Version": "1.0"
   },
@@ -70,33 +70,51 @@
               "RATINGS_OCCURRED_ON": {
                 "S": "2012-05-26"
               },
+              "TIME": {
+                "S": "3:00"
+              },
               "YEAR": {
                 "N": "2012"
               },
               "SHOW": {
                 "S": "Bleach"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "580"
               }
             },
             {
               "RATINGS_OCCURRED_ON": {
                 "S": "2012-05-26"
               },
+              "TIME": {
+                "S": "1:00"
+              },
               "YEAR": {
                 "N": "2012"
               },
               "SHOW": {
                 "S": "Casshern Sins"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "796"
               }
             },
             {
               "RATINGS_OCCURRED_ON": {
                 "S": "2012-06-02"
               },
+              "TIME": {
+                "S": "12:00"
+              },
               "YEAR": {
                 "N": "2012"
               },
               "SHOW": {
                 "S": "Bleach"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "1274"
               }
             },
             {
@@ -106,8 +124,14 @@
               "TIME": {
                 "S": "12:30"
               },
+              "YEAR": {
+                "N": "2012"
+              },
               "SHOW": {
                 "S": "Naruto"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "908"
               }
             }
           ],
@@ -268,7 +292,7 @@
                 "S": "Bleach"
               },
               "TOTAL_VIEWERS": {
-                "N": "1160"
+                "N": "1060"
               }
             },
             {
