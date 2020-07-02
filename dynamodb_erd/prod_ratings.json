@@ -3,7 +3,7 @@
   "ModelMetadata": {
     "Author": "",
     "DateCreated": "Jun 28, 2020, 11:46 AM",
-    "DateLastModified": "Jul 01, 2020, 06:16 PM",
+    "DateLastModified": "Jul 02, 2020, 05:54 PM",
     "Description": "Toonami ratings production data model with example access patterns",
     "Version": "1.0"
   },
@@ -68,10 +68,10 @@
           "TableData": [
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "2012"
-              },
-              "TIME": {
                 "S": "2012-05-26"
+              },
+              "YEAR": {
+                "N": "2012"
               },
               "SHOW": {
                 "S": "Bleach"
@@ -79,10 +79,10 @@
             },
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "2012"
-              },
-              "TIME": {
                 "S": "2012-05-26"
+              },
+              "YEAR": {
+                "N": "2012"
               },
               "SHOW": {
                 "S": "Casshern Sins"
@@ -90,13 +90,24 @@
             },
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "2012"
-              },
-              "TIME": {
                 "S": "2012-06-02"
+              },
+              "YEAR": {
+                "N": "2012"
               },
               "SHOW": {
                 "S": "Bleach"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-12-08"
+              },
+              "TIME": {
+                "S": "12:30"
+              },
+              "SHOW": {
+                "S": "Naruto"
               }
             }
           ],
@@ -106,7 +117,8 @@
             "IS_RERUN",
             "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "PERCENTAGE_OF_HOUSEHOLDS",
-            "TOTAL_VIEWERS_AGE_18_49"
+            "TOTAL_VIEWERS_AGE_18_49",
+            "YEAR"
           ],
           "DataAccess": {
             "MySql": {}
@@ -121,7 +133,7 @@
           "TableData": [
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "2012-05-26"
+                "S": "2012-11-03"
               },
               "TIME": {
                 "S": "12:00"
@@ -133,7 +145,47 @@
                 "S": "Bleach"
               },
               "TOTAL_VIEWERS": {
-                "N": "1060"
+                "N": "1110"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-11-03"
+              },
+              "TIME": {
+                "S": "12:30"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-11-03"
+              },
+              "TIME": {
+                "S": "1:00"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-11-03"
+              },
+              "TIME": {
+                "S": "1:30"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-11-03"
+              },
+              "TIME": {
+                "S": "2:00"
+              }
+            },
+            {
+              "RATINGS_OCCURRED_ON": {
+                "S": "2012-11-03"
+              },
+              "TIME": {
+                "S": "2:30"
               }
             }
           ],
@@ -159,18 +211,33 @@
           "TableData": [
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "Bleach"
+                "S": "2012-05-26"
               },
               "TIME": {
-                "S": "2012-05-26"
+                "S": "12:00"
+              },
+              "YEAR": {
+                "N": "2012"
+              },
+              "SHOW": {
+                "S": "Bleach"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "1160"
               }
             },
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "Bleach"
+                "S": "2013-09-07"
               },
               "TIME": {
-                "S": "2013-09-07"
+                "S": "12:00"
+              },
+              "YEAR": {
+                "N": "2013"
+              },
+              "SHOW": {
+                "S": "Bleach"
               },
               "TOTAL_VIEWERS": {
                 "N": "1188"
@@ -178,10 +245,25 @@
             },
             {
               "RATINGS_OCCURRED_ON": {
-                "S": "Bleach"
+                "S": "2014-11-15"
               },
               "TIME": {
-                "S": "2013"
+                "S": "2:30"
+              },
+              "YEAR": {
+                "N": "2014"
+              },
+              "SHOW": {
+                "S": "Bleach"
+              },
+              "TOTAL_VIEWERS": {
+                "N": "695"
+              },
+              "PERCENTAGE_OF_HOUSEHOLDS": {
+                "N": "0.50"
+              },
+              "TOTAL_VIEWERS_AGE_18_49": {
+                "S": "392"
               }
             }
           ],
@@ -190,7 +272,9 @@
             "IS_RERUN",
             "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "PERCENTAGE_OF_HOUSEHOLDS",
-            "TOTAL_VIEWERS_AGE_18_49"
+            "TOTAL_VIEWERS_AGE_18_49",
+            "YEAR",
+            "SHOW"
           ],
           "DataAccess": {
             "MySql": {}
