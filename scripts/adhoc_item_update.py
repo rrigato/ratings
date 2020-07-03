@@ -1,3 +1,4 @@
+from datetime import datetime
 from scripts.reddit_ratings import clean_dict_value
 from scripts.reddit_ratings import dict_key_mapping
 from scripts.reddit_ratings import get_boto_clients
@@ -62,6 +63,44 @@ def batch_item_scan(table_name):
     all_prod_items = dynamo_table.scan()
 
     return(all_prod_items["Items"])
+
+
+def get_year_attribute(all_television_ratings):
+    """Places a year attribute on each item
+        Removes IS_RERUN if it is None
+
+        Parameters
+        ----------
+        
+        all_television_ratings : list
+            List of dict where each dict represents a timeslot
+            for a show
+
+
+        Returns
+        -------
+
+        Raises
+        ------
+
+    """
+    for ratings_timeslot in all_television_ratings:
+
+        ratings_timeslot["YEAR"] = datetime.strptime(
+            ratings_timeslot["RATINGS_OCCURRED_ON"], "%Y-%m-%d").year
+        try:
+            '''
+                If the timeslot is a rerun, remove that 
+                key from the dict
+            '''
+            if ratings_timeslot["IS_RERUN"] is None:
+                ratings_timeslot["IS_RERUN"].pop()
+        except KeyError:
+            '''
+                If IS_RERUN is not present
+            '''
+            pass
+
 
 def batch_json_upload(json_file_location, table_name):
     """Batch inserts json file into dynamodb table
