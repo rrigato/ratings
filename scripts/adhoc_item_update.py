@@ -34,18 +34,19 @@ def get_logger(working_directory=os.getcwd()):
     logging.info("\n")
 
 def batch_item_scan(table_name):
-    """Batch inserts json file into dynamodb table
+    """retrieves all items in a large scan operation
 
         Parameters
         ----------
-        json_file_location : str
-            Where the json file is located on local disk
         
         table_name : str
             Name of the dynamodb table to insert into
 
         Returns
         -------
+        all_television_ratings : list
+            List of dict where each dict represents a timeslot
+            for a show
 
         Raises
         ------
@@ -56,6 +57,12 @@ def batch_item_scan(table_name):
             region_name="us-east-1",
             table_name=table_name
     )
+
+    
+    all_prod_items = dynamo_table.scan()
+
+    return(all_prod_items["Items"])
+
 def batch_json_upload(json_file_location, table_name):
     """Batch inserts json file into dynamodb table
 
@@ -87,14 +94,6 @@ def batch_json_upload(json_file_location, table_name):
 
         historical_ratings = json.load(json_file)
 
-        clean_rating_keys = dict_key_mapping(
-            pre_clean_ratings_keys=historical_ratings
-        )
-
-        clean_rating_values = clean_dict_value(
-            ratings_values_to_clean=clean_rating_keys
-        )
-
         '''
             batch writer
         '''
@@ -103,7 +102,7 @@ def batch_json_upload(json_file_location, table_name):
                 Iterate over all items for upload
             '''
             for individual_item in clean_rating_values:
-                batch_insert.put_item(
+                batch_insert.update_item(
                     Item=individual_item
                 )
 
@@ -120,15 +119,7 @@ def main():
         ------
     """
     get_logger()
-    batch_json_upload(
-        json_file_location="historical/ratings_05262012_to_05272017.json",
-        table_name="dev_toonami_ratings"
-    )
-
-    batch_json_upload(
-        json_file_location="historical/ratings_11102018_04112020.json",
-        table_name="dev_toonami_ratings"
-    )
+    batch_item_scan(table_name="prod_toonami_ratings")
 
 if __name__ == "__main__":
     main()
