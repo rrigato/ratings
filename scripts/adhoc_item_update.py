@@ -76,7 +76,6 @@ def get_year_attribute(all_television_ratings):
             '''
             if ratings_timeslot["IS_RERUN"] is None:
                 ratings_timeslot.pop("IS_RERUN")
-                import pdb; pdb.set_trace()
         except KeyError:
             '''
                 If IS_RERUN is not present
@@ -140,6 +139,11 @@ def main():
 
     clean_television_ratings = get_year_attribute(
         all_television_ratings=all_television_ratings
+    )
+
+    batch_put_item(
+        television_ratings=clean_television_ratings,
+        table_name="prod_toonami_ratings"
     )
 
 if __name__ == "__main__":
