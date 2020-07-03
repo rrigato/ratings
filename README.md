@@ -137,6 +137,9 @@ prod_ratings.json = Entity relationship diagram built using [NoSQL Workbench for
 - directory for python log files
 
 #### scripts
+- adhoc_item_update.py = Script to perform ad-hoc updates of all items in 
+  the dynamodb table at once (data quality)
+  
 - historical_ratings_upload.py = one time upload of json from the [historical](#historical) directory
 
 - reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
