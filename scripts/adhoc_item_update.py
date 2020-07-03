@@ -5,34 +5,8 @@ from scripts.reddit_ratings import get_boto_clients
 
 import boto3
 import json
-import logging
 import os
 
-def get_logger(working_directory=os.getcwd()):
-    """Sets up logger
-
-        Parameters
-        ----------
-        working_directory: str
-            Where to put logger, defaults to cwd
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-    '''
-        Adds the file name to the logs/ directory without
-        the extension
-    '''
-    logging.basicConfig(
-        filename=os.path.join(working_directory, "logs/",
-        os.path.basename(__file__).split(".")[0]),
-        format="%(asctime)s %(message)s",
-         datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.DEBUG
-         )
-    logging.info("\n")
 
 def batch_item_scan(table_name):
     """retrieves all items in a large scan operation
@@ -79,6 +53,9 @@ def get_year_attribute(all_television_ratings):
 
         Returns
         -------
+        clean_television_ratings : list
+            all_television ratings where each item has a YEAR
+            attribute
 
         Raises
         ------
@@ -86,8 +63,12 @@ def get_year_attribute(all_television_ratings):
     """
     for ratings_timeslot in all_television_ratings:
 
+        '''
+            Gets the year from the ISO 8601 formatted date
+        '''
         ratings_timeslot["YEAR"] = datetime.strptime(
             ratings_timeslot["RATINGS_OCCURRED_ON"], "%Y-%m-%d").year
+        
         try:
             '''
                 If the timeslot is a rerun, remove that 
@@ -101,6 +82,7 @@ def get_year_attribute(all_television_ratings):
             '''
             pass
 
+    return(all_television_ratings)
 
 def batch_json_upload(json_file_location, table_name):
     """Batch inserts json file into dynamodb table
@@ -141,7 +123,7 @@ def batch_json_upload(json_file_location, table_name):
                 Iterate over all items for upload
             '''
             for individual_item in clean_rating_values:
-                batch_insert.update_item(
+                batch_insert.put_item(
                     Item=individual_item
                 )
 
@@ -157,8 +139,13 @@ def main():
         Raises
         ------
     """
-    get_logger()
-    batch_item_scan(table_name="prod_toonami_ratings")
+    all_television_ratings = batch_item_scan(
+        table_name="prod_toonami_ratings"
+    )
+
+    clean_television_ratings = get_year_attribute(
+        all_television_ratings=all_television_ratings
+    )
 
 if __name__ == "__main__":
     main()
