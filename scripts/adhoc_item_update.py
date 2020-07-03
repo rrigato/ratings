@@ -75,7 +75,8 @@ def get_year_attribute(all_television_ratings):
                 key from the dict
             '''
             if ratings_timeslot["IS_RERUN"] is None:
-                ratings_timeslot["IS_RERUN"].pop()
+                ratings_timeslot.pop("IS_RERUN")
+                import pdb; pdb.set_trace()
         except KeyError:
             '''
                 If IS_RERUN is not present
@@ -84,13 +85,13 @@ def get_year_attribute(all_television_ratings):
 
     return(all_television_ratings)
 
-def batch_json_upload(json_file_location, table_name):
-    """Batch inserts json file into dynamodb table
+def batch_put_item(television_ratings, table_name):
+    """Batch puts updated ratings items
 
         Parameters
         ----------
-        json_file_location : str
-            Where the json file is located on local disk
+        television_ratings : list
+            list of dict where each dict is an item to insert
         
         table_name : str
             Name of the dynamodb table to insert into
@@ -108,24 +109,18 @@ def batch_json_upload(json_file_location, table_name):
             table_name=table_name
     )
 
-    '''
-        Open and load historical file
-    '''
-    with open(json_file_location, "r") as json_file:
 
-        historical_ratings = json.load(json_file)
-
+    '''
+        batch writer
+    '''
+    with dynamo_table.batch_writer() as batch_insert:
         '''
-            batch writer
+            Iterate over all items for upload
         '''
-        with dynamo_table.batch_writer() as batch_insert:
-            '''
-                Iterate over all items for upload
-            '''
-            for individual_item in clean_rating_values:
-                batch_insert.put_item(
-                    Item=individual_item
-                )
+        for individual_item in television_ratings:
+            batch_insert.put_item(
+                Item=individual_item
+            )
 
 
 def main():
