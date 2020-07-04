@@ -671,7 +671,7 @@ def dict_key_mapping(pre_clean_ratings_keys):
         -------
         clean_ratings_columns : list
             list of dict with standardized column names
-            matching one of the following 7:
+            matching one of the following:
             [
                 "PERCENTAGE_OF_HOUSEHOLDS",
                 "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
@@ -679,7 +679,9 @@ def dict_key_mapping(pre_clean_ratings_keys):
                 "SHOW",
                 "TIME", 
                 "TOTAL_VIEWERS", 
-                "TOTAL_VIEWERS_AGE_18_49"
+                "TOTAL_VIEWERS_AGE_18_49",
+                "YEAR",
+                "IS_RERUN"
 
             ]
 
@@ -702,7 +704,9 @@ def dict_key_mapping(pre_clean_ratings_keys):
         "Total": "TOTAL_VIEWERS", 
         "Viewers (000)": "TOTAL_VIEWERS",
         "18-49 Rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        "18-49 Views (000)": "TOTAL_VIEWERS_AGE_18_49"
+        "18-49 Views (000)": "TOTAL_VIEWERS_AGE_18_49",
+        "YEAR": "YEAR",
+        "IS_RERUN": "IS_RERUN"
 
     }
 
