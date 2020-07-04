@@ -494,6 +494,10 @@ def handle_table_clean(reddit_post_html, rating_call_counter,
     '''
     for show_element in body_dict:
         show_element["ratings_occurred_on"] = ratings_occurred_on[0].strftime("%Y-%m-%d")
+        '''
+            Add the YEAR
+        '''
+        show_element["YEAR"] = ratings_occurred_on[0].year
     return(body_dict)
 
 def iterate_handle_table_clean(news_flair_posts, ratings_post_list,

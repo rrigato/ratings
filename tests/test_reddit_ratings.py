@@ -601,10 +601,10 @@ class RedditApi(unittest.TestCase):
             same for each element of the dict
         '''
         for individual_saturday_show in clean_saturday_ratings:
-        '''
-            Using date format that aligns with
-            historical ratings
-        '''
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
             self.assertEqual(
                 individual_saturday_show["ratings_occurred_on"],
                 "2019-11-02"
@@ -614,7 +614,7 @@ class RedditApi(unittest.TestCase):
                 Validate year is added as key to dict
             '''
             self.assertEqual(
-                individual_saturday_show[0]["YEAR"],
+                individual_saturday_show["YEAR"],
                 2019
             )
 
