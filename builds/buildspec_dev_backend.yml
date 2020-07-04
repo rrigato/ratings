@@ -10,10 +10,6 @@
 ############################
 version: 0.2
 
-env:
-  secrets-manager:
-    REDDIT_CLIENT_KEY: /prod/reddit_api_key
-    REDDIT_CLIENT_SECRET: /prod/reddit_api_secret
 
 phases:
   ###########################################
