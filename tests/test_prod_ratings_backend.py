@@ -435,10 +435,14 @@ class BackendTests(unittest.TestCase):
                 ]
 
             },
-            "DATA_ACCESS": {
+            "YEAR_ACCESS": {
                 "Projection": {
                     "ProjectionType":"ALL"
-                }
+                },
+                "KeySchema": [
+                    {"AttributeName": "YEAR", "KeyType": "HASH"}, 
+                    {"AttributeName": "RATINGS_OCCURRED_ON", "KeyType": "RANGE"}
+                ]
             }
             
         }
@@ -464,7 +468,7 @@ class BackendTests(unittest.TestCase):
             )
 
             '''
-                Validate KeySchema Attributes
+                Validate Partition/Sort Key Attributes
             '''
             self.assertEqual(
                 global_secondary_index["KeySchema"],

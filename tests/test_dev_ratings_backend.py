@@ -350,8 +350,8 @@ class BackendTests(unittest.TestCase):
         )
 
 
-    def test_detect_secrets(self):
-        '''Validates no secrets are present in the repo
+    def test_dynamodb_gsi(self):
+        '''Validate dynamodb global secondary index (gsi)
 
             Parameters
             ----------
@@ -362,25 +362,75 @@ class BackendTests(unittest.TestCase):
             Raises
             ------
         '''
-        '''
-            scan all tracked files in the current working directory
-        '''
-        detect_secrets_output = subprocess.run(
-            ["detect-secrets", "scan", "."],
-            capture_output=True
+
+        """
+            Creates dynamodb resource and
+            puts an item in the table
+        """
+        dynamo_client = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1"
+        )
+
+        table_configuration = dynamo_client.describe_table(
+            TableName=self.DYNAMO_TABLE_NAME
         )
 
         '''
-            Load json string from detect-secrets stdout 
+            key is index name, value is attributes of key
         '''
-        secret_scan_result = json.loads(
-            detect_secrets_output.stdout
-        )
+        expected_index_structure = {
+            
+            "SHOW_ACCESS": {
+                "Projection": {
+                    "ProjectionType":"ALL"
+                },
+                "KeySchema": [
+                    {"AttributeName": "SHOW", "KeyType": "HASH"}, 
+                    {"AttributeName": "RATINGS_OCCURRED_ON", "KeyType": "RANGE"}
+                ]
 
-        '''
-            Validate there are no secrets in the current directory
-        '''
+            },
+            "YEAR_ACCESS": {
+                "Projection": {
+                    "ProjectionType":"ALL"
+                },
+                "KeySchema": [
+                    {"AttributeName": "YEAR", "KeyType": "HASH"}, 
+                    {"AttributeName": "RATINGS_OCCURRED_ON", "KeyType": "RANGE"}
+                ]
+            }
+            
+        }
+
+        dynamo_table_gsis = table_configuration["Table"]["GlobalSecondaryIndexes"]
+
         self.assertEqual(
-            secret_scan_result["results"],
-            {}
+            len(dynamo_table_gsis),
+            1
         )
+
+
+        '''
+            Iterate over all GSI's
+        '''
+        for global_secondary_index in dynamo_table_gsis:
+            '''
+                Validate name of the GSI
+            '''
+            self.assertIn(
+                global_secondary_index["IndexName"],
+                list(expected_index_structure.keys())
+            )
+
+            '''
+                Validate Partition/Sort Key Attributes
+            '''
+            self.assertEqual(
+                global_secondary_index["KeySchema"],
+                expected_index_structure[global_secondary_index["IndexName"]]["KeySchema"]
+            )
+
+
+
+
