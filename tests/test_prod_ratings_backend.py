@@ -2,7 +2,6 @@ from datetime import datetime
 from datetime import timedelta
 
 import boto3
-import logging
 import os
 import requests
 import unittest

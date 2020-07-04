@@ -4,7 +4,6 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 
 import json
-import logging
 import os
 import requests
 import unittest
