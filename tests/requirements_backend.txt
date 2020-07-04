@@ -1,6 +1,6 @@
 awscli>=1.18.66
 boto3>=1.13.16
 beautifulsoup4>=4.9.1
-pandas>=1.0.3
+detect-secrets>=0.13.1
 python-dateutil>=2.8.0
 requests>=2.23.0
