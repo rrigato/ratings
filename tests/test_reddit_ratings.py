@@ -1152,9 +1152,9 @@ class RedditApi(unittest.TestCase):
             Testing that household rating value of 9.99 
             is not returned in dict
         '''
-        self.assertIsNone(
-            clean_ratings_list[0]["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"]
-        )   
+        with self.assertRaises(KeyError, msg="PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"):
+            self.assertIsNone(clean_ratings_list[0]["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"])
+ 
 
         '''
             Validating that IS_RERUN is not returned
@@ -1174,8 +1174,8 @@ class RedditApi(unittest.TestCase):
         self.assertTrue(clean_ratings_list[1]["IS_RERUN"]) 
 
         '''
-            Testing what happens if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
-            is not present
+            Testing that a show is only modified if (r) is 
+            in the show name
         '''
         self.assertEqual(
             clean_ratings_list[2]["SHOW"],
