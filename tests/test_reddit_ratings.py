@@ -635,13 +635,26 @@ class RedditApi(unittest.TestCase):
             ratings_title="Toonami Ratings for December 21st, 2019"
         )
         '''
-            Using date format that aligns with
-            historical ratings
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
         '''
-        self.assertEqual(
-            clean_saturday_st[0]["ratings_occurred_on"],
-            "2019-12-21"
-        )
+        for individual_saturday_show_st in clean_saturday_st:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["ratings_occurred_on"],
+                "2019-12-21"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["YEAR"],
+                2019
+            )
 
         clean_saturday_th = handle_table_clean(mock_rating_table,
             rating_call_counter=0,
@@ -657,13 +670,6 @@ class RedditApi(unittest.TestCase):
         )
 
 
-        '''
-            Validate the YEAR that is inserted
-        '''
-        self.assertEqual(
-            clean_saturday_th[0]["ratings_occurred_on"],
-            "2020-01-18"
-        )
 
     def test_iterate_handle_table_clean(self):
         """Tests iteration of ratings data with empty list
