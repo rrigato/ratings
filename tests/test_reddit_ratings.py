@@ -660,14 +660,29 @@ class RedditApi(unittest.TestCase):
             rating_call_counter=0,
             ratings_title="Toonami Ratings for January 18th, 2020"
         )
+
         '''
-            Using date format that aligns with
-            historical ratings
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
         '''
-        self.assertEqual(
-            clean_saturday_th[0]["ratings_occurred_on"],
-            "2020-01-18"
-        )
+        for individual_saturday_show_th in clean_saturday_th:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["ratings_occurred_on"],
+                "2020-01-18"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["YEAR"],
+                2020
+            )
+
 
 
 
