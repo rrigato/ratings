@@ -393,3 +393,40 @@ class BackendTests(unittest.TestCase):
             len(one_punch_man_ratings["Items"]),
             50
         )
+
+    def test_dynamodb_gsi(self):
+        '''Validate dynamodb global secondary index (gsi)
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+
+        """
+            Creates dynamodb resource and
+            puts an item in the table
+        """
+        dynamo_client = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1"
+        )
+
+        table_configuration = dynamo_client.describe_table(
+            TableName=self.DYNAMO_TABLE_NAME
+        )
+
+        import pdb; pdb.set_trace()
+        self.assertEqual(
+            len(table_configuration["Table"]["GlobalSecondaryIndexs"]),
+            2
+        )
+
+        for global_secondary_index in table_configuration["Table"]["GlobalSecondaryIndexs"]:
+
+
+
