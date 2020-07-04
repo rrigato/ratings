@@ -5,7 +5,6 @@ import boto3
 import logging
 import os
 import requests
-import subprocess
 import unittest
 
 
@@ -350,38 +349,3 @@ class BackendTests(unittest.TestCase):
             datetime.now() - timedelta(minutes=10)
         )
 
-
-    def test_detect_secrets(self):
-        '''Validates no secrets are present in the repo
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-        '''
-            scan all tracked files in the current working directory
-        '''
-        detect_secrets_output = subprocess.run(
-            ["detect-secrets", "scan", "."],
-            capture_output=True
-        )
-
-        '''
-            Load json string from detect-secrets stdout 
-        '''
-        secret_scan_result = json.loads(
-            detect_secrets_output.stdout
-        )
-
-        '''
-            Validate there are no secrets in the current directory
-        '''
-        self.assertEqual(
-            secret_scan_result["results"],
-            {}
-        )
