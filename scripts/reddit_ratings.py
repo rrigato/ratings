@@ -118,21 +118,30 @@ def get_client_secrets(region_name="us-east-1"):
         Raises
         ------
     """
-    secrets_manager_client = get_boto_clients(resource_name="secretsmanager")
+    secrets_manager_client = get_boto_clients(
+        resource_name="secretsmanager",
+        region_name=region_name
+    )
 
 
     '''
         Passing the Name of the string to the boto client
     '''
-    reddit_client_secrets = secrets_manager_client.get_secret_value(
+    all_client_secrets = secrets_manager_client.get_secret_value(
         SecretId="/prod/v1/credentials"
     )
 
-    import pdb; pdb.set_trace()
+    '''
+        Secrets are stored in a json string
+    '''
+    client_secrets_dict = json.loads(all_client_secrets["SecretString"])
 
+    '''
+        return reddit api key and secret
+    '''
     return(
-        reddit_client_key["SecretString"],
-        reddit_client_secret["SecretString"]
+        client_secrets_dict["reddit_api_key"],
+        client_secrets_dict["reddit_api_secret"]
     )
 
 
