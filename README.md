@@ -176,10 +176,17 @@ updating ratings
 
 #### tests
 
-- test_dev_ratings_backend.py = tests backend dynamodb/lamdba aws resources
+- test_backup_dynamodb_ratings.py = Unit tests for adhoc dynamodb backups
+
+- test_dev_ratings_backend.py = end-to-end dev tests backend television ratings validation
+
+- test_dev_security.py = static code security analysis for secrets entering code
+
+- test_prod_ratings_backend.py = end-to-end prod backend television ratings validation
 
 - test_reddit_ratings.py = tests logic for making api call to
 return television ratings
+
 
 
 ##### util
