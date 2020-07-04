@@ -420,13 +420,55 @@ class BackendTests(unittest.TestCase):
             TableName=self.DYNAMO_TABLE_NAME
         )
 
-        import pdb; pdb.set_trace()
+        '''
+            key is index name, value is attributes of key
+        '''
+        expected_index_structure = {
+            
+            "SHOW_ACCESS": {
+                "Projection": {
+                    "ProjectionType":"ALL"
+                },
+                "KeySchema": [
+                    {"AttributeName": "SHOW", "KeyType": "HASH"}, 
+                    {"AttributeName": "RATINGS_OCCURRED_ON", "KeyType": "RANGE"}
+                ]
+
+            },
+            "DATA_ACCESS": {
+                "Projection": {
+                    "ProjectionType":"ALL"
+                }
+            }
+            
+        }
+
+        dynamo_table_gsis = table_configuration["Table"]["GlobalSecondaryIndexes"]
+
         self.assertEqual(
-            len(table_configuration["Table"]["GlobalSecondaryIndexs"]),
-            2
+            len(dynamo_table_gsis),
+            1
         )
 
-        for global_secondary_index in table_configuration["Table"]["GlobalSecondaryIndexs"]:
 
+        '''
+            Iterate over all GSI's
+        '''
+        for global_secondary_index in dynamo_table_gsis:
+            '''
+                Validate name of the GSI
+            '''
+            self.assertIn(
+                global_secondary_index["IndexName"],
+                list(expected_index_structure.keys())
+            )
+
+            '''
+                Validate KeySchema Attributes
+            '''
+            self.assertEqual(
+                global_secondary_index["KeySchema"],
+                expected_index_structure[global_secondary_index["IndexName"]]["KeySchema"]
+            )
 
 
