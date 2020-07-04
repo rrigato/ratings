@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import requests
+import subprocess
 import unittest
 
 ENVIRON_DEF = "dev-backend"
@@ -363,7 +364,25 @@ class BackendTests(unittest.TestCase):
             Raises
             ------
         '''
+        '''
+            scan all tracked files in the current working directory
+        '''
         detect_secrets_output = subprocess.run(
-            ["detect-secrets", "scan"],
+            ["detect-secrets", "scan", "."],
             capture_output=True
+        )
+
+        '''
+            Load json string from detect-secrets stdout 
+        '''
+        secret_scan_result = json.loads(
+            detect_secrets_output.stdout
+        )
+
+        '''
+            Validate there are no secrets in the current directory
+        '''
+        self.assertEqual(
+            secret_scan_result["results"],
+            {}
         )
