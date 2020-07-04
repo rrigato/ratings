@@ -348,3 +348,36 @@ class BackendTests(unittest.TestCase):
             datetime.now() - timedelta(minutes=10)
         )
 
+
+
+
+    def test_dynamodb_show_access(self):
+        '''Query using the SHOW_ACCESS GSI
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+
+        from boto3.dynamodb.conditions import Key
+
+        
+        '''
+            Query one show using the GSI
+        '''
+        current_year_items = dynamo_table.query(
+            IndexName="SHOW_ACCESS",
+            FilterExpression=Key("RATINGS_OCCURRED_ON").eq("One Punch Man")
+        )
+
+        import pdb; pdb.set_trace()
