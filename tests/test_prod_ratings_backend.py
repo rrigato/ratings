@@ -451,7 +451,7 @@ class BackendTests(unittest.TestCase):
 
         self.assertEqual(
             len(dynamo_table_gsis),
-            1
+            2
         )
 
 
