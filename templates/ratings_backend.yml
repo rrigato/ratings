@@ -308,9 +308,9 @@ Resources:
         -
           AttributeName: 'SHOW'
           AttributeType: 'S'
-        -
-          AttributeName: 'YEAR'
-          AttributeType: 'N'
+        # -
+        #   AttributeName: 'YEAR'
+        #   AttributeType: 'N'
 
 
     #On demand dynamodb
@@ -339,22 +339,22 @@ Resources:
           #project all attributes
           Projection: 
             ProjectionType: 'ALL'
-      #index designed for aggregation of data with GSI2_PK
-      #as PK and GSI1_PK as sort key
-        - 
-          IndexName: 'YEAR_ACCESS'
-          KeySchema: 
-            - 
-              AttributeName: 'YEAR'
-              KeyType: 'HASH'
-            - 
-              AttributeName: 'RATINGS_OCCURRED_ON'
-              KeyType: 'RANGE'
+      # #index designed for aggregation of data with GSI2_PK
+      # #as PK and GSI1_PK as sort key
+      #   - 
+      #     IndexName: 'YEAR_ACCESS'
+      #     KeySchema: 
+      #       - 
+      #         AttributeName: 'YEAR'
+      #         KeyType: 'HASH'
+      #       - 
+      #         AttributeName: 'RATINGS_OCCURRED_ON'
+      #         KeyType: 'RANGE'
 
-          #GSI Keys and partition and sort key 
-          #for limited storage space
-          Projection: 
-            ProjectionType: 'ALL'
+      #     #GSI Keys and partition and sort key 
+      #     #for limited storage space
+      #     Projection: 
+      #       ProjectionType: 'ALL'
 
 
       SSESpecification:
