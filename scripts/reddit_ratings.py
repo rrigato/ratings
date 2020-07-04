@@ -98,11 +98,14 @@ def get_boto_clients(resource_name, region_name="us-east-1",
 
 
 
-def get_client_secrets():
+def get_client_secrets(region_name="us-east-1"):
     """Returns reddit client key and reddit client secret 
 
         Parameters
         ----------
+        region_name : str
+                aws region you are using, defaults to
+                us-east-1        
 
         Returns
         -------
@@ -121,13 +124,11 @@ def get_client_secrets():
     '''
         Passing the Name of the string to the boto client
     '''
-    reddit_client_key = secrets_manager_client.get_secret_value(
-        SecretId="/prod/reddit_api_key"
+    reddit_client_secrets = secrets_manager_client.get_secret_value(
+        SecretId="/prod/v1/credentials"
     )
 
-    reddit_client_secret = secrets_manager_client.get_secret_value(
-        SecretId="/prod/reddit_api_secret"
-    )
+    import pdb; pdb.set_trace()
 
     return(
         reddit_client_key["SecretString"],
