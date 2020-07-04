@@ -349,3 +349,21 @@ class BackendTests(unittest.TestCase):
             most_recent_backup.replace(tzinfo=None),
             datetime.now() - timedelta(minutes=10)
         )
+
+
+    def test_detect_secrets(self):
+        '''Validates no secrets are present in the repo
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        detect_secrets_output = subprocess.run(
+            ["detect-secrets", "scan"],
+            capture_output=True
+        )
