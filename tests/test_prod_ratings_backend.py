@@ -375,9 +375,21 @@ class BackendTests(unittest.TestCase):
         '''
             Query one show using the GSI
         '''
-        current_year_items = dynamo_table.query(
+        one_punch_man_ratings = dynamo_table.query(
             IndexName="SHOW_ACCESS",
-            FilterExpression=Key("RATINGS_OCCURRED_ON").eq("One Punch Man")
+            KeyConditionExpression=Key("SHOW").eq("One Punch Man")
         )
 
-        import pdb; pdb.set_trace()
+
+        '''
+            Make sure only one show is returned
+        '''
+        for one_punch_man_episode in one_punch_man_ratings["Items"]:
+            self.assertEqual(one_punch_man_episode["SHOW"],
+                "One Punch Man"
+            )
+
+        self.assertGreater(
+            len(one_punch_man_ratings["Items"]),
+            50
+        )
