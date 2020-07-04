@@ -90,7 +90,7 @@ class SecurityAnalysisTests(unittest.TestCase):
             scan all tracked files in the current working directory
         '''
         detect_secrets_output = subprocess.run(
-            ["detect-secrets", "scan", "."],
+            ["detect-secrets", "scan", "--all-files", "."],
             capture_output=True
         )
 
