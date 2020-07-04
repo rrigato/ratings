@@ -597,14 +597,27 @@ class RedditApi(unittest.TestCase):
         )
 
         '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show in clean_saturday_ratings:
+        '''
             Using date format that aligns with
             historical ratings
         '''
-        self.assertEqual(
-            clean_saturday_ratings[0]["ratings_occurred_on"],
-            "2019-11-02"
+            self.assertEqual(
+                individual_saturday_show["ratings_occurred_on"],
+                "2019-11-02"
 
-        )
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show[0]["YEAR"],
+                2019
+            )
+
         self.assertEqual(clean_saturday_ratings[2]["Viewers (000)"],
             "453"
         )
@@ -637,6 +650,15 @@ class RedditApi(unittest.TestCase):
         '''
             Using date format that aligns with
             historical ratings
+        '''
+        self.assertEqual(
+            clean_saturday_th[0]["ratings_occurred_on"],
+            "2020-01-18"
+        )
+
+
+        '''
+            Validate the YEAR that is inserted
         '''
         self.assertEqual(
             clean_saturday_th[0]["ratings_occurred_on"],
