@@ -428,19 +428,30 @@ class BackendTests(unittest.TestCase):
             Make sure only one show is returned
         '''
         for timeslot_rating_2014 in all_year_2014["Items"]:
-            self.assertEqual(one_punch_man_episode["YEAR"],
+            self.assertEqual(
+                timeslot_rating_2014["YEAR"],
                 2014
             )
 
-            self.assertIn(one_punch_man_episode["RATINGS_OCCURRED_ON"],
-                2014
+            self.assertEqual(
+                timeslot_rating_2014["RATINGS_OCCURRED_ON"][0:4],
+                "2014"
             )
 
+
+        '''
+            Item count should not change for 2014
+            Should not be scanning more than 674 items since
+            we are using the index
+        '''
         self.assertEqual(
-            len(one_punch_man_ratings["Items"]),
-            50
+            all_year_2014["Count"],
+            674
         )
-
+        self.assertEqual(
+            all_year_2014["ScannedCount"],
+            674
+        )
 
     def test_dynamodb_gsi(self):
         '''Validate dynamodb global secondary index (gsi)
