@@ -29,8 +29,6 @@ phases:
       - pip install -r tests/requirements_backend.txt
   build:
     commands:
-      - git status
-      - git describe
       - echo Defined build variables
       - echo $BUILD_ENVIRONMENT
       - echo $BACKUP_DYNAMODB_FUNCTION_NAME
