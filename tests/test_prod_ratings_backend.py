@@ -394,6 +394,54 @@ class BackendTests(unittest.TestCase):
             50
         )
 
+    def test_dynamodb_year_access(self):
+        '''Query using the YEAR_ACCESS GSI
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        '''
+        dynamo_client, dynamo_table = get_boto_clients(
+                resource_name="dynamodb",
+                region_name="us-east-1",
+                table_name=self.DYNAMO_TABLE_NAME
+        )
+
+        from boto3.dynamodb.conditions import Key
+
+        
+        '''
+            Query 2014 using the GSI
+        '''
+        all_year_2014 = dynamo_table.query(
+            IndexName="YEAR_ACCESS",
+            KeyConditionExpression=Key("YEAR").eq(2014)
+        )
+
+
+        '''
+            Make sure only one show is returned
+        '''
+        for timeslot_rating_2014 in all_year_2014["Items"]:
+            self.assertEqual(one_punch_man_episode["YEAR"],
+                2014
+            )
+
+            self.assertIn(one_punch_man_episode["RATINGS_OCCURRED_ON"],
+                2014
+            )
+
+        self.assertEqual(
+            len(one_punch_man_ratings["Items"]),
+            50
+        )
+
+
     def test_dynamodb_gsi(self):
         '''Validate dynamodb global secondary index (gsi)
 
