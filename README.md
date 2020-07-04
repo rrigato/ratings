@@ -33,7 +33,7 @@ This application creates a lambda function that polls the reddit api to retrieve
 
 ### dev_tools
 
-The goal of these dev tools is to build security checks into the CI/CD pipeline so that controls are put into place without manual intervention by the developer
+The goal of these dev tools is to build security checks into the CI/CD pipeline so that controls are put into place without manual intervention by the developer.
 
 Follow [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228206) on how to have multiple rsa key pairs in the same local machine being used with different accounts.
 
