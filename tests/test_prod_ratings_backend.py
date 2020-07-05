@@ -12,7 +12,7 @@ ENVIRON_DEF = "prod-backend"
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
-    '''Returns the boto client for various aws resources
+    """Returns the boto client for various aws resources
 
         Parameters
         ----------
@@ -37,7 +37,7 @@ def get_boto_clients(resource_name, region_name="us-east-1",
 
         Raises
         ------
-    '''
+    """
 
     service_client = boto3.client(
             service_name=resource_name, 
@@ -76,7 +76,7 @@ class BackendTests(unittest.TestCase):
     """
     @classmethod
     def setUpClass(cls):
-        '''Unitest function that is run once for the class
+        """Unitest function that is run once for the class
 
             Parameters
             ----------
@@ -86,14 +86,14 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         cls.DYNAMO_TABLE_NAME = "prod_toonami_ratings"
         cls.LAMBDA_FUNCTION_NAME = "prod-ratings-backend-lambda-poll"
         cls.S3_CODE_BUCKET = "prod-ratings-backend-source-code"
         cls.S3_CODE_ZIP_FILE = "built_lambda.zip"
 
     def test_dynamodb_config(self):
-        '''Tests that the dynamodb table is present
+        """Tests that the dynamodb table is present
 
             Parameters
             ----------
@@ -103,7 +103,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         """
             Creates dynamodb resource and
@@ -166,7 +166,7 @@ class BackendTests(unittest.TestCase):
 
 
     def test_lambda_config(self):
-        '''Tests that the lambda function configuration
+        """Tests that the lambda function configuration
 
             Parameters
             ----------
@@ -176,7 +176,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         """
             Creates dynamodb resource and
@@ -212,7 +212,7 @@ class BackendTests(unittest.TestCase):
         )
         
     def test_dynamodb_count(self):
-        '''Tests that the number of items present in dynamodb table
+        """Tests that the number of items present in dynamodb table
 
             Parameters
             ----------
@@ -222,7 +222,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client, dynamo_table = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1",
@@ -244,7 +244,7 @@ class BackendTests(unittest.TestCase):
 
 
     def test_dynamodb_recent_insertion(self):
-        '''Validates the ratings where inserted in the last month
+        """Validates the ratings where inserted in the last month
 
             Parameters
             ----------
@@ -254,7 +254,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client, dynamo_table = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1",
@@ -299,7 +299,7 @@ class BackendTests(unittest.TestCase):
             
         
     def test_dynamodb_backup_time(self):
-        '''Validates a backup was created
+        """Validates a backup was created
 
             Parameters
             ----------
@@ -309,7 +309,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1"
@@ -352,7 +352,7 @@ class BackendTests(unittest.TestCase):
 
 
     def test_dynamodb_show_access(self):
-        '''Query using the SHOW_ACCESS GSI
+        """Query using the SHOW_ACCESS GSI
 
             Parameters
             ----------
@@ -362,7 +362,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client, dynamo_table = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1",
@@ -395,7 +395,7 @@ class BackendTests(unittest.TestCase):
         )
 
     def test_dynamodb_year_access(self):
-        '''Query using the YEAR_ACCESS GSI
+        """Query using the YEAR_ACCESS GSI
 
             Parameters
             ----------
@@ -405,7 +405,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client, dynamo_table = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1",
@@ -454,7 +454,7 @@ class BackendTests(unittest.TestCase):
         )
 
     def test_dynamodb_gsi(self):
-        '''Validate dynamodb global secondary index (gsi)
+        """Validate dynamodb global secondary index (gsi)
 
             Parameters
             ----------
@@ -464,7 +464,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
 
         """
             Creates dynamodb resource and
@@ -515,6 +515,9 @@ class BackendTests(unittest.TestCase):
 
 
         '''
+        '''
+        first_index_item_count = dynamo_table_gsis[0]["ItemCount"]
+        '''
             Iterate over all GSI's
         '''
         for global_secondary_index in dynamo_table_gsis:
@@ -534,4 +537,33 @@ class BackendTests(unittest.TestCase):
                 expected_index_structure[global_secondary_index["IndexName"]]["KeySchema"]
             )
 
+
+
+    def test_dynamodb_gsi_count(self):
+        """Validate that count of items in gsi is equal
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            Raises
+            ------
+        """
+
+        '''
+            Creates dynamodb resource and
+            puts an item in the table
+        '''
+        dynamo_client = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1"
+        )
+
+        table_configuration = dynamo_client.describe_table(
+            TableName=self.DYNAMO_TABLE_NAME
+        )
+
+        dynamo_table_gsis = table_configuration["Table"]["GlobalSecondaryIndexes"]
 
