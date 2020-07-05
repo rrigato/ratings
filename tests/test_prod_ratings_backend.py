@@ -567,3 +567,22 @@ class BackendTests(unittest.TestCase):
 
         dynamo_table_gsis = table_configuration["Table"]["GlobalSecondaryIndexes"]
 
+
+        '''
+            Used to validate the item count is the same
+            for all indexes
+        '''
+        first_index_item_count = dynamo_table_gsis[0]["ItemCount"]
+        '''
+            Iterate over all GSI's
+        '''
+        for global_secondary_index in dynamo_table_gsis:
+            '''
+                Only validate if ALL attributes are projected
+                on the index
+            '''
+            if global_secondary_index["Projection"]["ProjectionType"] == "ALL":
+                self.assertEqual(
+                    first_index_item_count,
+                    global_secondary_index["ItemCount"]
+                )
