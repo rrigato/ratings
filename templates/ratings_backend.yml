@@ -356,6 +356,9 @@ Resources:
           Projection: 
             ProjectionType: 'ALL'
 
+      #Automated backup for the last 35 days
+      PointInTimeRecoverySpecification: 
+        PointInTimeRecoveryEnabled: true
 
       SSESpecification:
           SSEEnabled: true
