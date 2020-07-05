@@ -39,9 +39,9 @@ def batch_item_scan(table_name):
     return(all_prod_items["Items"])
 
 
-def get_year_attribute(all_television_ratings):
+def get_year_attribute(all_television_ratings, attribute_to_check):
     """Places a year attribute on each item
-        Removes IS_RERUN if it is None
+        Removes attribute_to_check if it is None
 
         Parameters
         ----------
@@ -50,6 +50,8 @@ def get_year_attribute(all_television_ratings):
             List of dict where each dict represents a timeslot
             for a show
 
+        attribute_to_check : str
+            Name of attribute to remove if it is None in the Dynamodb Item
 
         Returns
         -------
@@ -63,6 +65,7 @@ def get_year_attribute(all_television_ratings):
     """
     for ratings_timeslot in all_television_ratings:
 
+
         '''
             Gets the year from the ISO 8601 formatted date
         '''
@@ -71,14 +74,14 @@ def get_year_attribute(all_television_ratings):
         
         try:
             '''
-                If the timeslot is a rerun, remove that 
+                If the attribute_to_check is None, remove that 
                 key from the dict
             '''
-            if ratings_timeslot["IS_RERUN"] is None:
-                ratings_timeslot.pop("IS_RERUN")
+            if ratings_timeslot[attribute_to_check] is None:
+                ratings_timeslot.pop(attribute_to_check)
         except KeyError:
             '''
-                If IS_RERUN is not present
+                If attribute_to_check is not present in Item
             '''
             pass
 
@@ -138,7 +141,8 @@ def main():
     )
 
     clean_television_ratings = get_year_attribute(
-        all_television_ratings=all_television_ratings
+        all_television_ratings=all_television_ratings,
+        attribute_to_check="PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"
     )
 
     batch_put_item(
