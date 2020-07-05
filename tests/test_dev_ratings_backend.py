@@ -246,7 +246,7 @@ class BackendTests(unittest.TestCase):
 
 
     def test_dynamodb_recent_insertion(self):
-        '''Validates the ratings where inserted in the last month
+        """Validates the ratings where inserted in the last month
 
             Parameters
             ----------
@@ -256,7 +256,7 @@ class BackendTests(unittest.TestCase):
 
             Raises
             ------
-        '''
+        """
         dynamo_client, dynamo_table = get_boto_clients(
                 resource_name="dynamodb",
                 region_name="us-east-1",
@@ -266,28 +266,39 @@ class BackendTests(unittest.TestCase):
         from boto3.dynamodb.conditions import Key
 
         '''
+            Query the current year ratings
+        '''
+        current_year = datetime.now().year
+
+        '''
+            If we are in the first 14 days of the year,
+            check last year
+        '''
+        if datetime.now().timetuple().tm_yday <= 14:
+            current_year = datetime.now().year - 1
+
+        '''
             Formatting in "YYYY-MM-DD"
         '''
         start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-        end_day = datetime.now().strftime("%Y-%m-%d")
 
         '''
-            Getting all items that occurred in the last 30 days
-            
-            current_year_items["ScannedCount"] = total items in table
-            current_year_items["Count"]= items that met filter criteria
+            Getting the items for the current year that 
+            were in the last 30 days
         '''
-        current_year_items = dynamo_table.scan(
-            FilterExpression=Key("RATINGS_OCCURRED_ON").between(
-                low_value=start_day,
-                high_value=end_day
-            )
+        current_year_items = dynamo_table.query(
+            IndexName="YEAR_ACCESS",
+            KeyConditionExpression=
+            Key("YEAR").eq(current_year) & 
+            Key("RATINGS_OCCURRED_ON").gte(start_day)
+
         )
-        
+      
         self.assertGreater(
             current_year_items["Count"],
-            1
+            5
         )
+
 
         '''
             Validate that SHOW element is not none
@@ -298,6 +309,7 @@ class BackendTests(unittest.TestCase):
             self.assertTrue(
                 show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
             )
+            
             
     def test_dynamodb_backup_time(self):
         '''Validates a backup was created
