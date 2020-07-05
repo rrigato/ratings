@@ -269,7 +269,7 @@ class BackendTests(unittest.TestCase):
         current_year = datetime.now().year
 
         '''
-            If we are in the first 2 weeks of the year,
+            If we are in the first 14 days of the year,
             check last year
         '''
         if datetime.now().timetuple().tm_yday <= 14:
@@ -279,21 +279,24 @@ class BackendTests(unittest.TestCase):
             Formatting in "YYYY-MM-DD"
         '''
         start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
-        end_day = datetime.now().strftime("%Y-%m-%d")
 
         '''
-            Getting the items for the current year
+            Getting the items for the current year that 
+            were in the last 30 days
         '''
         current_year_items = dynamo_table.query(
             IndexName="YEAR_ACCESS",
-            KeyConditionExpression=Key("YEAR").eq(current_year)
+            KeyConditionExpression=
+            Key("YEAR").eq(current_year) & 
+            Key("RATINGS_OCCURRED_ON").gte(start_day)
 
         )
-        
+      
         self.assertGreater(
             current_year_items["Count"],
-            1
+            5
         )
+
 
         '''
             Validate that SHOW element is not none
