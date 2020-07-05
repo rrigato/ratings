@@ -1,6 +1,6 @@
 ![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNWRzcDRZemNOTTZVM1F1ZVNZb2J6UG1ZMFdPWnRobytweG9aOE81RTgyTXlEeFg1RDcvQWFlWm96OXpQSTBBZ0VQNTFDeEJweWdtcU9ORTBYSVRGTmQ4PSIsIml2UGFyYW1ldGVyU3BlYyI6IjRIRExOZk5ZRnFZdFdRVE0iLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master) ![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)
 
-#ratings
+# ratings
 
 This application creates a lambda function that polls the reddit api to retrieve television ratings. The ratings are then parsed from an html table element and inserted into dynamodb.
 
@@ -9,23 +9,24 @@ This application creates a lambda function that polls the reddit api to retrieve
 ## table_of_contents
 
 
-- [table_of_contents](#table_of_contents)
-  - [dev_tools](#dev_tools)
-    - [cfn_lint](#cfn_lint)
-    - [detect_secrets](#detect_secrets)
-    - [git_secrets](#git_secrets)
-  - [project_directory_overview](#project_directory_overview)
-    - [builds](#builds)
-      - [builds](#builds-1)
-    - [devops](#devops)
-    - [dynamodb_erd](#dynamodb_erd)
-    - [historical](#historical)
-    - [logs](#logs)
-    - [scripts](#scripts)
-    - [templates](#templates)
-    - [tests](#tests)
-      - [util](#util)
-    - [setup_ci](#setup_ci)
+- [ratings](#ratings)
+  - [table_of_contents](#table_of_contents)
+    - [dev_tools](#dev_tools)
+      - [cfn_lint](#cfn_lint)
+      - [detect_secrets](#detect_secrets)
+      - [git_secrets](#git_secrets)
+    - [project_directory_overview](#project_directory_overview)
+      - [builds](#builds)
+        - [builds](#builds-1)
+      - [devops](#devops)
+      - [dynamodb_erd](#dynamodb_erd)
+      - [historical](#historical)
+      - [logs](#logs)
+      - [scripts](#scripts)
+      - [templates](#templates)
+      - [tests](#tests)
+        - [util](#util)
+      - [setup_ci](#setup_ci)
 
 
 
