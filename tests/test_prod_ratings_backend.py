@@ -264,22 +264,30 @@ class BackendTests(unittest.TestCase):
         from boto3.dynamodb.conditions import Key
 
         '''
+            Query the current year ratings
+        '''
+        current_year = datetime.now().year
+
+        '''
+            If we are in the first 2 weeks of the year,
+            check last year
+        '''
+        if datetime.now().timetuple().tm_yday <= 14:
+            current_year = datetime.now().year - 1
+
+        '''
             Formatting in "YYYY-MM-DD"
         '''
         start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
         end_day = datetime.now().strftime("%Y-%m-%d")
 
         '''
-            Getting all items that occurred in the last 30 days
-            
-            current_year_items["ScannedCount"] = total items in table
-            current_year_items["Count"]= items that met filter criteria
+            Getting the items for the current year
         '''
-        current_year_items = dynamo_table.scan(
-            FilterExpression=Key("RATINGS_OCCURRED_ON").between(
-                low_value=start_day,
-                high_value=end_day
-            )
+        current_year_items = dynamo_table.query(
+            IndexName="YEAR_ACCESS",
+            KeyConditionExpression=Key("YEAR").eq(current_year)
+
         )
         
         self.assertGreater(
