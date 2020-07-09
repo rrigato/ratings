@@ -142,7 +142,7 @@ def main():
 
     clean_television_ratings = get_year_attribute(
         all_television_ratings=all_television_ratings,
-        attribute_to_check="PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"
+        attribute_to_check="PERCENTAGE_OF_HOUSEHOLDS"
     )
 
     batch_put_item(
