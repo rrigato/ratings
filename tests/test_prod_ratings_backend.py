@@ -549,8 +549,7 @@ class BackendTests(unittest.TestCase):
             )
 
 
-    @unittest.skipIf(datetime.strftime(datetime.now(), "%Y-%m-%d") == "2020-07-05",
-    "Need to wait until GSI item count is recalculated" )
+    
     def test_dynamodb_gsi_count(self):
         """Validate that count of items in gsi is equal
 
