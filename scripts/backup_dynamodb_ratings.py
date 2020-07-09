@@ -72,7 +72,7 @@ def test_dynamodb_recent_insertion(table_name):
         ----------
         table_name : str
             Name of the table to check ratings for
-            
+
         Returns
         -------
 
@@ -116,9 +116,10 @@ def test_dynamodb_recent_insertion(table_name):
 
     )
     
-    self.assertGreater(
-        current_year_items["Count"],
-        5
+    logging.info("Count of ratings added in last 30 days: " + current_year_items["Count"])
+    
+    assert current_year_items["Count"] > 5, (
+        "Less than 5 show ratings recorded in the last 30 days"
     )
 
 
@@ -284,6 +285,8 @@ def lambda_handler(event, context):
     '''
     logging.getLogger().setLevel(logging.INFO)
 
+    test_dynamodb_recent_insertion(table_name=os.environ["DYNAMODB_TABLE_NAME"])
+
     delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
 
     create_dynamodb_backup(
@@ -302,6 +305,8 @@ def main():
         Raises
         ------
     """
+    test_dynamodb_recent_insertion(table_name="prod_toonami_ratings")
+    
     delete_dynamodb_backups(table_name="prod_toonami_ratings")
     create_dynamodb_backup(
         table_name="prod_toonami_ratings",
