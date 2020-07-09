@@ -121,7 +121,7 @@ def test_dynamodb_recent_insertion(table_name):
 
     )
     
-    logging.info("Count of ratings added in last 30 days: " + current_year_items["Count"])
+    logging.info("Count of ratings added in last 30 days: " + str(current_year_items["Count"]))
     
     assert current_year_items["Count"] > 5, (
         "Less than 5 show ratings recorded in the last 30 days"
