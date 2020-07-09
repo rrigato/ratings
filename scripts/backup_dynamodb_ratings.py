@@ -78,6 +78,11 @@ def test_dynamodb_recent_insertion(table_name):
 
         Raises
         ------
+        AssertionError :
+            Raises AssertionError if there has been less than 5 television
+            ratings recorded in the last month, a television rating does not
+            have a SHOW name or the TOTAL_VIEWERS for the ratings show is not
+            numeric
     """
     dynamo_client, dynamo_table = get_boto_clients(
             resource_name="dynamodb",
@@ -128,10 +133,17 @@ def test_dynamodb_recent_insertion(table_name):
         and that TOTAL_VIEWERS is a number if you exclude , or .
     '''
     for show_rating in current_year_items["Items"]:
-        self.assertIsNotNone(show_rating["SHOW"])
-        self.assertTrue(
-            show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
+        assert show_rating["SHOW"] is not None, (
+            "SHOW name is None"
         )
+        
+        '''
+            Validates the viewer count is numeric
+        '''
+        assert True == show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric(),(
+            "TOTAL_VIEWERS is not numeric"
+        )
+        
 
 
 def delete_dynamodb_backups(table_name,
@@ -306,7 +318,7 @@ def main():
         ------
     """
     test_dynamodb_recent_insertion(table_name="prod_toonami_ratings")
-    
+
     delete_dynamodb_backups(table_name="prod_toonami_ratings")
     create_dynamodb_backup(
         table_name="prod_toonami_ratings",
