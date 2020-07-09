@@ -65,6 +65,74 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
+def test_dynamodb_recent_insertion(table_name):
+    """Validates that ratings where inserted in the last month
+
+        Parameters
+        ----------
+        table_name : str
+            Name of the table to check ratings for
+            
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    dynamo_client, dynamo_table = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1",
+            table_name=table_name
+    )
+
+    from boto3.dynamodb.conditions import Key
+
+    '''
+        Query the current year ratings
+    '''
+    current_year = datetime.now().year
+
+    '''
+        If we are in the first 14 days of the year,
+        check last year
+    '''
+    if datetime.now().timetuple().tm_yday <= 14:
+        current_year = datetime.now().year - 1
+
+    '''
+        Formatting in "YYYY-MM-DD"
+    '''
+    start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+
+    '''
+        Getting the items for the current year that 
+        were in the last 30 days
+    '''
+    current_year_items = dynamo_table.query(
+        IndexName="YEAR_ACCESS",
+        KeyConditionExpression=
+        Key("YEAR").eq(current_year) & 
+        Key("RATINGS_OCCURRED_ON").gte(start_day)
+
+    )
+    
+    self.assertGreater(
+        current_year_items["Count"],
+        5
+    )
+
+
+    '''
+        Validate that SHOW element is not none
+        and that TOTAL_VIEWERS is a number if you exclude , or .
+    '''
+    for show_rating in current_year_items["Items"]:
+        self.assertIsNotNone(show_rating["SHOW"])
+        self.assertTrue(
+            show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
+        )
+
+
 def delete_dynamodb_backups(table_name,
     recent_window=29, purge_window=365):
     '''deletes the old/recent dynamodb backups

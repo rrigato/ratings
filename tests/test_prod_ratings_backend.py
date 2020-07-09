@@ -452,7 +452,7 @@ class BackendTests(unittest.TestCase):
 
         '''
             Item count should not change for 2014
-            Should not be scanning more than 674 items since
+            Should query count should equal  674 items since
             we are using the index
         '''
         self.assertEqual(
