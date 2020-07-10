@@ -62,14 +62,14 @@ Resources:
       EvaluationPeriods: 1
       Metrics:
       #metric statistic for the sum of all lambda
-      #invocation errors in a 30 minute period
+      #invocation errors in a 2 hour  period
       - Id: lambdaErrors
         MetricStat:
           Metric:
             MetricName: Errors
             Namespace: AWS/Lambda
-          #every 30 minute window
-          Period: 1800
+          #every 2 hour window
+          Period: 7200
           Stat: Sum
       #dont want any greater than 0 errors
       Threshold: 0
