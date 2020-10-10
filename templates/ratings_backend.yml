@@ -366,3 +366,46 @@ Resources:
         -
           Key: reason
           Value: !Join ['-', [ !Ref ProjectName, 'dynamodb']]
+
+###############################
+#DynamoDb table to store show names and analytics about toonami ratings
+###############################
+  showNamesTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: 'PK'
+          AttributeType: 'S'
+        -
+          AttributeName: 'SK'
+          AttributeType: 'S'
+
+    #On demand dynamodb
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        -
+          AttributeName: 'PK'
+          KeyType: 'HASH'
+        -
+          AttributeName: 'SK'
+          KeyType: 'RANGE'
+      #Automated backup for the last 35 days
+      PointInTimeRecoverySpecification: 
+        PointInTimeRecoveryEnabled: true
+
+      SSESpecification:
+          SSEEnabled: true
+      TableName: 'toonami_analytics'
+      Tags:
+        -
+          Key: gitrepo
+          Value: !Ref ProjectName
+        -
+          Key: keep
+          Value: 'yes'
+        -
+          Key: reason
+          Value: !Join ['-', [ !Ref ProjectName, 'dynamodb']]
+
+        
