@@ -165,6 +165,70 @@ class BackendTests(unittest.TestCase):
         )
 
 
+    def test_dynamodb_toonami_analytics_table(self):
+        """Tests that the toonami_analytics dynamodb table
+        """
+        table_name = "toonami_analytics"
+        """
+            Creates dynamodb resource and
+            puts an item in the table
+        """
+        dynamo_client = get_boto_clients(
+            resource_name="dynamodb",
+            region_name="us-east-1"
+        )
+
+        table_configuration = dynamo_client.describe_table(
+            TableName=table_name
+        )
+
+        self.assertEqual(
+            table_configuration["Table"]["TableName"],
+            table_name
+        )
+
+
+        '''
+            Checking that primary key configuration is valid
+            Only two primary keys:
+            HASH Key - RATINGS_OCCURRED_ON
+            RANGE Key - TIME
+        '''
+        self.assertEqual(
+            len(table_configuration["Table"]["KeySchema"]),
+            2
+        )
+        for primary_key in table_configuration["Table"]["KeySchema"]:
+            if (primary_key["AttributeName"] == "PK"):
+                self.assertEqual(
+                    primary_key["KeyType"],
+                    "HASH"
+                )
+            else:
+                self.assertEqual(
+                    primary_key["AttributeName"],
+                    "SK"
+                )
+                self.assertEqual(
+                    primary_key["KeyType"],
+                    "RANGE"
+                )
+        '''
+            Testing on demand billing type
+            and that encryption is enabled on the dynamodb
+            table
+        '''
+        self.assertEqual(
+            table_configuration["Table"]["BillingModeSummary"]["BillingMode"],
+            "PAY_PER_REQUEST"
+        )
+
+        self.assertEqual(
+            table_configuration["Table"]["SSEDescription"]["Status"],
+            "ENABLED"
+        )
+
+
     def test_lambda_config(self):
         """Tests that the lambda function configuration
 
