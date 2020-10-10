@@ -7,7 +7,7 @@ import requests
 import unittest
 
 
-ENVIRON_DEF = "prod-backend"
+ENVIRON_DEF = "prod"
 
 
 def get_boto_clients(resource_name, region_name="us-east-1",
@@ -168,7 +168,7 @@ class BackendTests(unittest.TestCase):
     def test_dynamodb_toonami_analytics_table(self):
         """Tests that the toonami_analytics dynamodb table
         """
-        table_name = "toonami_analytics"
+        table_name = ENVIRON_DEF + "_toonami_analytics"
         """
             Creates dynamodb resource and
             puts an item in the table

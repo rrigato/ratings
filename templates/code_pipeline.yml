@@ -345,6 +345,7 @@ Resources:
               ParameterOverrides: |
                 {
                     "DynamoDbTableName": "prod_toonami_ratings",
+                    "environPrefix": "prod",
                     "PolicyPrefix": "ProdRatingsBackend",
                     "ProjectName": "prod-ratings-backend"
                 }              

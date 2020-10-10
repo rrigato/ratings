@@ -17,6 +17,10 @@ Parameters:
     Type: String
     Default: dev_toonami_ratings
 
+  environPrefix:
+    Type: String
+    Default: dev
+
   EnableLambdaSchedule:
     Type: String
     Default: false 
@@ -132,6 +136,7 @@ Resources:
       Environment:
         Variables:
           DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
+          ENVIRONMENT_PREFIX: !Ref environPrefix
       Events:
         #cloudwatch event rule that runs 
         #every 12 hours        
@@ -396,7 +401,7 @@ Resources:
 
       SSESpecification:
           SSEEnabled: true
-      TableName: 'toonami_analytics'
+      TableName: !Sub '${environPrefix}_toonami_analytics'
       Tags:
         -
           Key: gitrepo
