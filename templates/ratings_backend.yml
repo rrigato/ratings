@@ -57,20 +57,16 @@ Resources:
       AlarmActions: 
         - !Ref ErrorAlertQueue
       AlarmDescription: !Sub '${ProjectName} Lambda Error alert'
-      AlarmName: !Sub '${ProjectName}LambdaErrorAlarm'
+      AlarmName: !Sub '${ProjectName}-lambda-poll-error'
       ComparisonOperator: GreaterThanThreshold
       EvaluationPeriods: 1
-      Metrics:
-      #metric statistic for the sum of all lambda
-      #invocation errors in a 2 hour  period
-      - Id: lambdaErrors
-        MetricStat:
-          Metric:
-            MetricName: Errors
-            Namespace: AWS/Lambda
-          #every 2 hour window
-          Period: 7200
-          Stat: Sum
+      Dimensions:
+        - Name: 'FunctionName'
+          Value: !Sub '${ProjectName}-lambda-poll'
+      Namespace: 'AWS/Lambda'
+      MetricName: 'Errors'      
+      Statistic: 'Sum'
+      Period: 7200
       #dont want any greater than 0 errors
       Threshold: 0
 
