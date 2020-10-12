@@ -977,26 +977,6 @@ def put_show_names(all_ratings_list, table_name):
             )
     
 
-
-def lambda_handler(event, context):
-    """Handles lambda invocation from cloudwatch events rule
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-    '''
-        Logging required for cloudwatch logs
-    '''
-    logging.getLogger().setLevel(logging.INFO)
-    main()
-
-
 def main():
     """Entry point into the script
         Parameters
@@ -1029,6 +1009,30 @@ def main():
         all_ratings_list=all_ratings_list,
         table_name=(environment_prefix + "_toonami_ratings") 
     )
+
+    put_show_names(
+        all_ratings_list=all_ratings_list,
+        table_name=(environment_prefix + "_toonami_analytics") 
+    )
+
+def lambda_handler(event, context):
+    """Handles lambda invocation from cloudwatch events rule
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    '''
+        Logging required for cloudwatch logs
+    '''
+    logging.getLogger().setLevel(logging.INFO)
+    main()
+
 
 if __name__ == "__main__":
     get_logger()    

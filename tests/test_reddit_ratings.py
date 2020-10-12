@@ -1249,16 +1249,12 @@ class RedditApi(unittest.TestCase):
         put_item_mock = MagicMock()
         
         '''
-            dynamo_table.batch_insert() mock
+            dynamo_table.batch_writer().__enter__().put_item() mock
+            simulating using a with block
         '''
-        dynamo_table_mock.batch_put_writer.return_value = batch_insert_mock
+        dynamo_table_mock.batch_writer.return_value.__enter__.return_value = put_item_mock
 
-        '''
-            dynamo_table.batch_insert().put_item() mock
-        '''
-        batch_insert_mock.put_item.return_value = put_item_mock
-
-
+        print(put_item_mock)
         get_boto_clients_mock.return_value = [dynamo_client_mock, dynamo_table_mock]
         '''
             Mocking not having the given week night in the 
@@ -1282,6 +1278,9 @@ class RedditApi(unittest.TestCase):
             all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
             table_name="mock_table_name"
         )
+
+        import pdb; pdb.set_trace()
+        self.assertEqual(put_item_mock.call_count, len(MOCK_CLEAN_RATINGS_LIST))
 
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
