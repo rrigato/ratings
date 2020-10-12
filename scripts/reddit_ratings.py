@@ -853,23 +853,6 @@ def sort_ratings_occurred_on(ratings_list):
     return(ratings_occurred_on)
 
 
-def ratings_not_in_table(ratings_occurred_on, dynamo_table):
-    """Returns list of ratings that are not already in dynamodb table
-
-        Parameters
-        ----------
-        ratings_occurred_on : list
-            List of str sorted by date
-
-        Returns
-        -------
- 
-
-        Raises
-        ------
-    """
-    pass
-
 def handle_ratings_insertion(all_ratings_list, table_name):
     """Handles inserting ratings into dynamodb
 
@@ -944,6 +927,53 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             return(None)
     return(None)
 
+def put_show_names(ratings_occurred_on, dynamo_table):
+    """Returns list of ratings that are not already in dynamodb table
+
+        Parameters
+        ----------
+        all_ratings_list : list
+            List of dict where each element is
+            one saturday night ratings
+
+        table_name : str
+            name of the dynamodb table
+
+        Returns
+        -------
+ 
+
+        Raises
+        ------
+    """
+    dynamo_client, dynamo_table = get_boto_clients(
+        resource_name="dynamodb",
+        region_name="us-east-1",
+        table_name=table_name
+    )    
+
+    show_name_list = []
+
+    logging.info("put_show_names - getting unique shows")
+
+    for individual_show in all_ratings_list:
+        if individual_show["SHOW"] not in show_name_list:
+            show_name_list.append(individual_show["SHOW"])
+
+    logging.info("put_show_names - number of unique shows " + len(show_name_list))
+    
+    with dynamo_table.batch_writer() as batch_insert:
+        '''
+            Inserting each unique show in the ratings list
+        '''
+        for show_name in show_name_list:
+            batch_insert.put_item(
+                Item={
+                    "PK": "showName",
+                    "SK": show_name
+                }
+            )
+    
 
 
 def lambda_handler(event, context):
