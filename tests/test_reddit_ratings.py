@@ -249,7 +249,7 @@ class RedditApi(unittest.TestCase):
         self.assertEqual(type(put_show_names_kwargs["all_ratings_list"]), list)
         self.assertEqual(type(put_show_names_kwargs["all_ratings_list"][0]), dict)
 
-        
+
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
         '''Tests outgoing boto3 client generation when no region is passed
@@ -1237,7 +1237,6 @@ class RedditApi(unittest.TestCase):
         with self.assertRaises(KeyError, msg="IS_RERUN"):        
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
-    @unittest.skip("Skipping for now")
     @patch("scripts.reddit_ratings.get_boto_clients")
     def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names
@@ -1259,36 +1258,35 @@ class RedditApi(unittest.TestCase):
             dynamo_table.batch_writer().__enter__().put_item() mock
             simulating using a with block
         '''
-        dynamo_table_mock.batch_writer.return_value.__enter__.return_value = put_item_mock
+        dynamo_table_mock.batch_writer.return_value.__enter__.return_value = batch_insert_mock
+        
+        '''
+            dynamo_table.batch_writer().__enter__().put_item() mock
+            simulating using a with block
+        '''
+        batch_insert_mock.put_item = put_item_mock
 
-        print(put_item_mock)
         get_boto_clients_mock.return_value = [dynamo_client_mock, dynamo_table_mock]
-        '''
-            Mocking not having the given week night in the 
-            ratings
-        '''
-        dynamo_table_mock.query.return_value = {
-            "Items":[
-                {
-                    "TIME": "2:30a", 
-                    "SHOW": "Naruto: Shippuden", 
-                    "TOTAL_VIEWERS": "336", 
-                    "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.19",
-                    "TOTAL_VIEWERS_AGE_18_49": "241",
-                    "RATINGS_OCCURRED_ON": "2020-05-09",
-                    "IS_RERUN": None
-                }
-            ]
-        }
+
 
         put_show_names(
             all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
             table_name="mock_table_name"
         )
+        all_show_names = [show["SHOW"] for show in MOCK_CLEAN_RATINGS_LIST]
+        
+        unique_show_names = set(all_show_names)
+        self.assertEqual(put_item_mock.call_count, len(unique_show_names))
 
-        import pdb; pdb.set_trace()
-        self.assertEqual(put_item_mock.call_count, len(MOCK_CLEAN_RATINGS_LIST))
-
+        '''
+            validate outgoing put_item call has a show_name from
+            the list of unique_show_names
+        '''
+        for put_item_call in put_item_mock.call_args_list:
+            put_item_args, put_item_kwargs = put_item_call
+            self.assertEqual(put_item_kwargs["Item"]["PK"], "ratings#showName")
+            self.assertIn(put_item_kwargs["Item"]["SK"], unique_show_names)
+        
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
         function
