@@ -200,11 +200,11 @@ class RedditApi(unittest.TestCase):
 
         ]
 
-
+    @patch("scripts.reddit_ratings.put_show_names")
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        handle_ratings_iteration_mock):
+        handle_ratings_iteration_mock, put_show_names_mock):
         '''Test for main function
 
             Parameters
@@ -242,6 +242,9 @@ class RedditApi(unittest.TestCase):
             all_ratings_list=MOCK_RATINGS_LIST,
             table_name="dev_toonami_ratings"
         )
+
+        
+        self.assertEqual(put_show_names_mock.call_count, 1)
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
@@ -1230,7 +1233,7 @@ class RedditApi(unittest.TestCase):
         with self.assertRaises(KeyError, msg="IS_RERUN"):        
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
-
+    @unittest.skip("Skipping for now")
     @patch("scripts.reddit_ratings.get_boto_clients")
     def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names

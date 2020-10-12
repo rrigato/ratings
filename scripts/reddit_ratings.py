@@ -971,7 +971,7 @@ def put_show_names(all_ratings_list, table_name):
             
             batch_insert.put_item(
                 Item={
-                    "PK": "showName",
+                    "PK": "ratings#showName",
                     "SK": show_name
                 }
             )
