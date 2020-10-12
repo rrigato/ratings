@@ -1259,6 +1259,7 @@ class LambdaHandler(unittest.TestCase):
             Raises
             ------
         """
+        os.environ["AWS_LAMBDA_FUNCTION_NAME"] = "dev"
         '''
             Assigns a class attribute which is 
             a dict that represents news posts

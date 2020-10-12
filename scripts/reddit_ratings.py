@@ -976,6 +976,12 @@ def main():
         Raises
         ------
     """
+    '''
+        get dev or prod from the function name
+    '''
+    environment_prefix = os.environ.get(
+        "AWS_LAMBDA_FUNCTION_NAME").split("-")[0]
+    logging.info("main - running in " + environment_prefix)
 
     all_ratings_list = ratings_iteration(number_posts=25)
 
@@ -987,10 +993,9 @@ def main():
         ratings_values_to_clean=all_ratings_list
     )
 
-
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,
-        table_name=os.environ.get("DYNAMODB_TABLE_NAME")
+        table_name=(environment_prefix + "_toonami_ratings") 
     )
 
 if __name__ == "__main__":
