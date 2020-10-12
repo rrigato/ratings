@@ -243,9 +243,13 @@ class RedditApi(unittest.TestCase):
             table_name="dev_toonami_ratings"
         )
 
-        
+        put_show_names_args, put_show_names_kwargs = put_show_names_mock.call_args
         self.assertEqual(put_show_names_mock.call_count, 1)
+        self.assertEqual(put_show_names_kwargs["table_name"], "dev_toonami_analytics")
+        self.assertEqual(type(put_show_names_kwargs["all_ratings_list"]), list)
+        self.assertEqual(type(put_show_names_kwargs["all_ratings_list"][0]), dict)
 
+        
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
         '''Tests outgoing boto3 client generation when no region is passed
