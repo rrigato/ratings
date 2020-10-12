@@ -927,8 +927,8 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             return(None)
     return(None)
 
-def put_show_names(ratings_occurred_on, dynamo_table):
-    """Returns list of ratings that are not already in dynamodb table
+def put_show_names(all_ratings_list, table_name):
+    """puts unique show_names into dynamodb table
 
         Parameters
         ----------
@@ -960,13 +960,15 @@ def put_show_names(ratings_occurred_on, dynamo_table):
         if individual_show["SHOW"] not in show_name_list:
             show_name_list.append(individual_show["SHOW"])
 
-    logging.info("put_show_names - number of unique shows " + len(show_name_list))
+    logging.info("put_show_names - number of unique shows " + str(len(show_name_list)))
     
     with dynamo_table.batch_writer() as batch_insert:
         '''
             Inserting each unique show in the ratings list
         '''
         for show_name in show_name_list:
+            logging.info("put_show_names - putting show_name" + show_name)
+            
             batch_insert.put_item(
                 Item={
                     "PK": "showName",

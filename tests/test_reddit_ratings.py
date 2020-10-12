@@ -1232,7 +1232,7 @@ class RedditApi(unittest.TestCase):
 
 
     @patch("scripts.reddit_ratings.get_boto_clients")
-    def test_put_show_names(self, get_boto_clients_patch):
+    def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names
         """
         from scripts.reddit_ratings import put_show_names
@@ -1244,11 +1244,22 @@ class RedditApi(unittest.TestCase):
 
         dynamo_table_mock = MagicMock()
 
-        batch_put_item_mock = MagicMock()
+        batch_insert_mock = MagicMock()
+
+        put_item_mock = MagicMock()
         
-        dynamo_table_mock.batch_put_writer.return_value = batch_put_item_mock
+        '''
+            dynamo_table.batch_insert() mock
+        '''
+        dynamo_table_mock.batch_put_writer.return_value = batch_insert_mock
+
+        '''
+            dynamo_table.batch_insert().put_item() mock
+        '''
+        batch_insert_mock.put_item.return_value = put_item_mock
 
 
+        get_boto_clients_mock.return_value = [dynamo_client_mock, dynamo_table_mock]
         '''
             Mocking not having the given week night in the 
             ratings
@@ -1266,6 +1277,11 @@ class RedditApi(unittest.TestCase):
                 }
             ]
         }
+
+        put_show_names(
+            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
+            table_name="mock_table_name"
+        )
 
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
