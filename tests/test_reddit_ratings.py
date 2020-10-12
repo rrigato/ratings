@@ -1231,7 +1231,41 @@ class RedditApi(unittest.TestCase):
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
 
+    @patch("scripts.reddit_ratings.get_boto_clients")
+    def test_put_show_names(self, get_boto_clients_patch):
+        """Tests the put_item call for show names
+        """
+        from scripts.reddit_ratings import put_show_names
 
+        '''
+            Mocking the clients
+        '''
+        dynamo_client_mock = MagicMock()
+
+        dynamo_table_mock = MagicMock()
+
+        batch_put_item_mock = MagicMock()
+        
+        dynamo_table_mock.batch_put_writer.return_value = batch_put_item_mock
+
+
+        '''
+            Mocking not having the given week night in the 
+            ratings
+        '''
+        dynamo_table_mock.query.return_value = {
+            "Items":[
+                {
+                    "TIME": "2:30a", 
+                    "SHOW": "Naruto: Shippuden", 
+                    "TOTAL_VIEWERS": "336", 
+                    "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.19",
+                    "TOTAL_VIEWERS_AGE_18_49": "241",
+                    "RATINGS_OCCURRED_ON": "2020-05-09",
+                    "IS_RERUN": None
+                }
+            ]
+        }
 
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
