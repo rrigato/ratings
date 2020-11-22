@@ -1117,9 +1117,14 @@ class RedditApi(unittest.TestCase):
 
 
     def test_dict_key_mapping_unmapped_column(self):
-        """AssertionError raised when a column name is not mapped
+        """KeyError raised when a column name is not mapped
         """
         from scripts.reddit_ratings import dict_key_mapping
+        '''
+            First element is the dict passed to dict_key_mapping
+            second element is the text that should be raised with 
+            key error
+        '''
         original_json_list_example = [
             [
                 {
@@ -1158,13 +1163,26 @@ class RedditApi(unittest.TestCase):
 
 
         ]
-        for json_show_list in original_json_list_example:
-            with self.subTest(json_show_list=json_show_list):
+        '''
+            Message that should be raised in KeyError
+        '''
+        parameter_key_mapping = [
+            "unmappedcolumn",
+            "househld",
+            "Weekly Show Time".lower()
+        ]
+        for original_headers, key_error_message in zip(
+                ratings_post_original_headers, parameter_key_mapping):
+            with self.subTest(
+                    original_headers=original_headers,
+                    key_error_message=key_error_message
+                ):
+                import pdb; pdb.set_trace()
                 self.assertRaisesRegex(
-                    AssertionError, 
-                    "", 
+                    KeyError, 
+                    key_error_message, 
                     dict_key_mapping, 
-                    pre_clean_ratings_keys=json_show_list
+                    pre_clean_ratings_keys=original_headers
                 )
             
     def test_dict_key_mapping_recent(self):
