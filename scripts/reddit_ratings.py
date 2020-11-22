@@ -360,7 +360,7 @@ def handle_table_header(bs_obj):
     for th_tag in all_th_tags:
         header_columns.append(th_tag.text)
 
-    logging.info("header columns parsed: ")
+    logging.info("handle_table_header - Original ratings post column names")
     logging.info(header_columns)
 
     return(header_columns)
@@ -759,6 +759,9 @@ def dict_key_mapping(pre_clean_ratings_keys):
         '''
         clean_ratings_columns.append(dict_to_clean)
 
+    logging.info("dict_key_mapping - Mapped ratings post column names")
+    logging.info(clean_ratings_columns)
+    
     return(clean_ratings_columns)
 
 def clean_dict_value(ratings_values_to_clean):
