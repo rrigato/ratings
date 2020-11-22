@@ -1077,7 +1077,20 @@ class RedditApi(unittest.TestCase):
                     "Date": "2014-09-06"
 
                 }
+            ],
+            [
+                {
+                    "time": "12",
+                    "Total": "1036",
+                    "Household": "0.70",
+                    "ATotal": "630",
+                    "AHousehold": "0.20",
+                    " proGram ": "sample show",
+                    "Date": "2014-09-06"
+
+                }
             ]
+
         ]
 
         for json_show_list in original_json_list_example:
