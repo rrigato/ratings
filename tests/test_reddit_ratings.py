@@ -1063,49 +1063,44 @@ class RedditApi(unittest.TestCase):
     def test_dict_key_mapping(self):
         """Validating mapping of rating keys to dynamodb columns
 
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         from scripts.reddit_ratings import dict_key_mapping
         original_json_list_example = [
-            {
-                "Time": "12",
-                "Total": "1036",
-                "Household": "0.70",
-                "ATotal": "630",
-                "AHousehold": "0.20",
-                "Show": "sample show",
-                "Date": "2014-09-06"
+            [
+                {
+                    "Time": "12",
+                    "Total": "1036",
+                    "Household": "0.70",
+                    "ATotal": "630",
+                    "AHousehold": "0.20",
+                    "Show": "sample show",
+                    "Date": "2014-09-06"
 
-            }
+                }
+            ]
         ]
 
-        clean_original_values = dict_key_mapping(
-            pre_clean_ratings_keys=original_json_list_example
-        )
-
-        '''
-            Iterates first over each dict in the list
-            then over each key to validate all keys are 
-            in the dynamodb list 
-        '''
-        for cleaned_show_dict in clean_original_values:
-            '''
-                Making sure the unique key values is 7
-            '''
-            self.assertEqual(
-                len(tuple(cleaned_show_dict.keys())),
-                7
+        for json_show_list in original_json_list_example:
+            clean_original_values = dict_key_mapping(
+                pre_clean_ratings_keys=json_show_list
             )
-            for cleaned_key in cleaned_show_dict.keys():
-                self.assertIn(cleaned_key, self.valid_column_names)
-                self.assertTrue(cleaned_key.isupper())
+            with self.subTest(clean_original_values=clean_original_values):
+                '''
+                    Iterates first over each dict in the list
+                    then over each key to validate all keys are 
+                    in the dynamodb list 
+                '''
+                for cleaned_show_dict in clean_original_values:
+                    '''
+                        Making sure the unique key values is 7
+                    '''
+                    self.assertEqual(
+                        len(tuple(cleaned_show_dict.keys())),
+                        7
+                    )
+                    for cleaned_key in cleaned_show_dict.keys():
+                        self.assertIn(cleaned_key, self.valid_column_names)
+                        self.assertTrue(cleaned_key.isupper())
 
 
     def test_dict_key_mapping_recent(self):
