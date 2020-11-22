@@ -1116,6 +1116,57 @@ class RedditApi(unittest.TestCase):
                         self.assertTrue(cleaned_key.isupper())
 
 
+    def test_dict_key_mapping_unmapped_column(self):
+        """AssertionError raised when a column name is not mapped
+        """
+        from scripts.reddit_ratings import dict_key_mapping
+        original_json_list_example = [
+            [
+                {
+                    "Time": "12",
+                    "Total": "1036",
+                    "Household": "0.70",
+                    "ATotal": "630",
+                    "AHousehold": "0.20",
+                    "Show": "sample show",
+                    "Date": "2014-09-06",
+                    "unmappedColumn": "-1"
+
+                }
+            ],
+            [
+                {
+                    "Househld": "0.70",
+                    "Time": "12",
+                    "Total": "1036",
+                    "ATotal": "630",
+                    "AHousehold": "0.20",
+                    "Show": "sample show",
+                    "Date": "2014-09-06"
+
+                }
+            ], [
+                {
+                    "Time": "12",
+                    "Total": "1036",
+                    "Household": "0.70",
+                    "Show": "sample show",
+                    "Weekly Show Time": "2014-09-06",
+
+                }
+            ]
+
+
+        ]
+        for json_show_list in original_json_list_example:
+            with self.subTest(json_show_list=json_show_list):
+                self.assertRaisesRegex(
+                    AssertionError, 
+                    "", 
+                    dict_key_mapping, 
+                    pre_clean_ratings_keys=json_show_list
+                )
+            
     def test_dict_key_mapping_recent(self):
         """Validates recent ratings keys using MOCK_RATINGS_LIST
 
