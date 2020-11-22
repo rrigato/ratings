@@ -704,19 +704,20 @@ def dict_key_mapping(pre_clean_ratings_keys):
             back to a dynamodb column listed in key_to_dynamo_column_map
     """
     key_to_dynamo_column_map = {
-        "ATotal": "TOTAL_VIEWERS_AGE_18_49",
-        "AHousehold": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        "Date": "RATINGS_OCCURRED_ON",
-        "Household": "PERCENTAGE_OF_HOUSEHOLDS",
+        "atotal": "TOTAL_VIEWERS_AGE_18_49",
+        "ahousehold": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+        "date": "RATINGS_OCCURRED_ON",
+        "household": "PERCENTAGE_OF_HOUSEHOLDS",
         "ratings_occurred_on": "RATINGS_OCCURRED_ON",
-        "Show": "SHOW",
-        "Time": "TIME", 
-        "Total": "TOTAL_VIEWERS", 
-        "Viewers (000)": "TOTAL_VIEWERS",
-        "18-49 Rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        "18-49 Views (000)": "TOTAL_VIEWERS_AGE_18_49",
-        "YEAR": "YEAR",
-        "IS_RERUN": "IS_RERUN"
+        "show": "SHOW",
+        "time": "TIME", 
+        "total": "TOTAL_VIEWERS", 
+        "viewers (000)": "TOTAL_VIEWERS",
+        "18-49 rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+        "18-49 views (000)": "TOTAL_VIEWERS_AGE_18_49",
+        "year": "YEAR",
+        "is_rerun": "IS_RERUN",
+        "program": "SHOW"
 
     }
 
@@ -726,6 +727,11 @@ def dict_key_mapping(pre_clean_ratings_keys):
             Iterates over all keys in each dict
         '''
         for original_key in list(dict_to_clean.keys()):
+            '''
+                lower caseing and removing trailing/leading 
+                spaces for comparison
+            '''
+            clean_ratings_key = original_key.lower().strip()
             '''
                 If the key is already a valid output column 
                 name we do nothing
@@ -745,7 +751,7 @@ def dict_key_mapping(pre_clean_ratings_keys):
                     in key_to_dynamo_column_map to dict_to_clean
                 '''
 
-                dict_to_clean[key_to_dynamo_column_map[original_key]] =  dict_to_clean.pop(
+                dict_to_clean[key_to_dynamo_column_map[clean_ratings_key]] =  dict_to_clean.pop(
                     original_key
                 )
         '''
