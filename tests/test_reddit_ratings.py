@@ -1121,11 +1121,9 @@ class RedditApi(unittest.TestCase):
         """
         from scripts.reddit_ratings import dict_key_mapping
         '''
-            First element is the dict passed to dict_key_mapping
-            second element is the text that should be raised with 
-            key error
+            list of dicts passed to dict_key_mapping
         '''
-        original_json_list_example = [
+        ratings_post_original_headers = [
             [
                 {
                     "Time": "12",
@@ -1177,7 +1175,6 @@ class RedditApi(unittest.TestCase):
                     original_headers=original_headers,
                     key_error_message=key_error_message
                 ):
-                import pdb; pdb.set_trace()
                 self.assertRaisesRegex(
                     KeyError, 
                     key_error_message, 
