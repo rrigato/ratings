@@ -1311,6 +1311,48 @@ class RedditApi(unittest.TestCase):
         with self.assertRaises(KeyError, msg="IS_RERUN"):        
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
+
+    def test_clean_dict_value_time(self):
+        """Validates time cleaning logic
+        """
+        from scripts.reddit_ratings import clean_dict_value
+
+        correct_time_mapping = [
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            },
+            {
+                "original_time": "12am",
+                "clean_time": "12a"
+            }
+
+
+        ]
+
+        for time_to_check in correct_time_mapping:
+            with self.subTest(time_to_check=time_to_check):
+                pass
     @patch("scripts.reddit_ratings.get_boto_clients")
     def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names

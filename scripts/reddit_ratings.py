@@ -795,7 +795,8 @@ def clean_adult_household(dict_to_clean):
 
 
 def clean_dict_value(ratings_values_to_clean):
-    """Overrides for ratings data
+    """Calls cleaning helper functions to clean elements of
+        each rating show
 
         Parameters
         ----------
