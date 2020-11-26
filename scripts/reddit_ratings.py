@@ -764,6 +764,36 @@ def dict_key_mapping(pre_clean_ratings_keys):
     
     return(clean_ratings_columns)
 
+def clean_adult_household(dict_to_clean):
+    """Cleans the PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49 field
+
+        Parameters
+        ----------
+        dict_to_clean : dict
+            Individual rating that is pass by reference
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    '''
+        Try catch handles if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
+        is not included in the list of keys
+    '''
+    try:
+        if dict_to_clean["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] == "9.99":
+            dict_to_clean.pop("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
+    except KeyError:
+        '''
+            do nothing if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
+            is not present
+        '''
+        pass
+
+
+
 def clean_dict_value(ratings_values_to_clean):
     """Overrides for ratings data
 
@@ -793,19 +823,7 @@ def clean_dict_value(ratings_values_to_clean):
             dict_to_clean["SHOW"] = dict_to_clean["SHOW"].split(" (r)")[0]
             dict_to_clean["IS_RERUN"] = True
         
-        '''
-            Try catch handles if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
-            is not included in the list of keys
-        '''
-        try:
-            if dict_to_clean["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] == "9.99":
-                dict_to_clean.pop("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
-        except KeyError:
-            '''
-                do nothing if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
-                is not present
-            '''
-            pass
+        clean_adult_household(dict_to_clean=dict_to_clean)
         clean_ratings_values.append(dict_to_clean)
 
     return(clean_ratings_values)
