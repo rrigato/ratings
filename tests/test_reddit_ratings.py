@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from copy import deepcopy
 from datetime import datetime
 from unittest.mock import MagicMock
 from unittest.mock import patch
@@ -1316,7 +1317,7 @@ class RedditApi(unittest.TestCase):
         """Validates time cleaning logic
         """
         from scripts.reddit_ratings import clean_dict_value
-
+        ratings_time_list = deepcopy(MOCK_CLEAN_RATINGS_LIST)
         correct_time_mapping = [
             {
                 "original_time": "12am",
@@ -1351,8 +1352,13 @@ class RedditApi(unittest.TestCase):
         ]
 
         for time_to_check in correct_time_mapping:
+            for show_ratings in ratings_time_list:
+                show_ratings["TIME"] = time_to_check["original_time"]
             with self.subTest(time_to_check=time_to_check):
-                pass
+                clean_dict_value(ratings_values_to_clean=ratings_time_list)
+                for show_ratings in ratings_time_list:
+                    self.assertEqual(show_ratings["TIME"], time_to_check["clean_time"])
+    
     @patch("scripts.reddit_ratings.get_boto_clients")
     def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names
