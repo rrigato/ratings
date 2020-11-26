@@ -131,7 +131,7 @@ Provides information on each directory/ source file
 - buildspec_dev_backend.yml = Creates templates/ratings_backend.yml
 and Tests backend ratings logic
 
-
+- buildspec_prod.yml = updates and invokes prod lambda functions for polling reddit api and backing up dynamodb
 
 
 ##### builds
