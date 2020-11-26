@@ -1324,36 +1324,43 @@ class RedditApi(unittest.TestCase):
                 "clean_time": "12a"
             },
             {
-                "original_time": "12am",
+                "original_time": "3 a",
+                "clean_time": "3a"
+            },
+            {
+                "original_time": "10:00 pm",
+                "clean_time": "10:00"
+            },
+            {
+                "original_time": "1:30 a",
+                "clean_time": "1:30 a"
+            },
+            {
+                "original_time": "12 Am",
                 "clean_time": "12a"
             },
             {
-                "original_time": "12am",
-                "clean_time": "12a"
+                "original_time": "11:30pM",
+                "clean_time": "11:30"
             },
             {
-                "original_time": "12am",
-                "clean_time": "12a"
-            },
-            {
-                "original_time": "12am",
-                "clean_time": "12a"
-            },
-            {
-                "original_time": "12am",
-                "clean_time": "12a"
-            },
-            {
-                "original_time": "12am",
-                "clean_time": "12a"
+                "original_time": "9pm",
+                "clean_time": "9"
             }
 
 
         ]
 
         for time_to_check in correct_time_mapping:
+            '''
+                assign original TIME
+            '''
             for show_ratings in ratings_time_list:
                 show_ratings["TIME"] = time_to_check["original_time"]
+            
+            '''
+                validate clean output time
+            '''
             with self.subTest(time_to_check=time_to_check):
                 clean_dict_value(ratings_values_to_clean=ratings_time_list)
                 for show_ratings in ratings_time_list:
