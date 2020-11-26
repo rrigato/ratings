@@ -792,6 +792,32 @@ def clean_adult_household(dict_to_clean):
         '''
         pass
 
+def clean_time(dict_to_clean):
+    """Cleans the TIME field
+
+        Parameters
+        ----------
+        dict_to_clean : dict
+            Individual rating that is pass by reference
+
+        Returns
+        -------
+
+        Raises
+        ------
+    """
+    logging.info("clean_adult_household - time before clean " + str(dict_to_clean["TIME"]))
+
+    dict_to_clean["TIME"] = dict_to_clean["TIME"].strip().replace(" ", "").lower()
+   
+    if "pm" in dict_to_clean["TIME"]:
+        dict_to_clean["TIME"] = dict_to_clean["TIME"].replace("pm", "")
+    elif "p" in dict_to_clean["TIME"]:
+        dict_to_clean["TIME"] = dict_to_clean["TIME"].replace("p", "")
+    elif "am" in dict_to_clean["TIME"]:
+        dict_to_clean["TIME"] = dict_to_clean["TIME"].replace("am", "a")
+
+    logging.info("clean_adult_household - time after clean " + str(dict_to_clean["TIME"]))
 
 
 def clean_dict_value(ratings_values_to_clean):
@@ -825,6 +851,9 @@ def clean_dict_value(ratings_values_to_clean):
             dict_to_clean["IS_RERUN"] = True
         
         clean_adult_household(dict_to_clean=dict_to_clean)
+        clean_time(dict_to_clean=dict_to_clean)
+        
+
         clean_ratings_values.append(dict_to_clean)
 
     return(clean_ratings_values)

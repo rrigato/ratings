@@ -1333,7 +1333,7 @@ class RedditApi(unittest.TestCase):
             },
             {
                 "original_time": "1:30 a",
-                "clean_time": "1:30 a"
+                "clean_time": "1:30a"
             },
             {
                 "original_time": "12 Am",
@@ -1352,20 +1352,22 @@ class RedditApi(unittest.TestCase):
         ]
 
         for time_to_check in correct_time_mapping:
-            '''
-                assign original TIME
-            '''
-            for show_ratings in ratings_time_list:
-                show_ratings["TIME"] = time_to_check["original_time"]
-            
-            '''
-                validate clean output time
-            '''
+
             with self.subTest(time_to_check=time_to_check):
+                '''
+                    assign original TIME
+                '''
+                for show_ratings in ratings_time_list:
+                    show_ratings["TIME"] = time_to_check["original_time"]
+                
                 clean_dict_value(ratings_values_to_clean=ratings_time_list)
+
+                '''
+                    validate clean output time
+                '''
                 for show_ratings in ratings_time_list:
                     self.assertEqual(show_ratings["TIME"], time_to_check["clean_time"])
-    
+                
     @patch("scripts.reddit_ratings.get_boto_clients")
     def test_put_show_names(self, get_boto_clients_mock):
         """Tests the put_item call for show names
