@@ -35,7 +35,7 @@ phases:
       - echo $LAMBDA_FUNCTION_NAME
       - echo $RATINGS_UPDATE_STACK
 
-      - python -m unittest  tests.test_dev_security
+      - detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
 
       - echo "Creating $RATINGS_UPDATE_STACK"
       - aws cloudformation create-stack --stack-name $RATINGS_UPDATE_STACK

@@ -73,7 +73,7 @@ class SecurityAnalysisTests(unittest.TestCase):
         Raises
         ------
     """
-
+    fake_client_key = "fake key"
     def test_detect_secrets(self):
         '''Validates no secrets are present in the repo
 
