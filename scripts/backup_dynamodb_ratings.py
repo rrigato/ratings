@@ -65,13 +65,16 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
-def test_dynamodb_recent_insertion(table_name):
+def test_dynamodb_recent_insertion(table_name, day_threshold=30):
     """Validates that ratings where inserted in the last month
 
         Parameters
         ----------
         table_name : str
             Name of the table to check ratings for
+
+        day_threshold : int
+            how many days since the ratings were updated
 
         Returns
         -------
@@ -107,11 +110,11 @@ def test_dynamodb_recent_insertion(table_name):
     '''
         Formatting in "YYYY-MM-DD"
     '''
-    start_day = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    start_day = (datetime.now() - timedelta(days=day_threshold)).strftime("%Y-%m-%d")
 
     '''
         Getting the items for the current year that 
-        were in the last 30 days
+        were in the last day_threshold days
     '''
     current_year_items = dynamo_table.query(
         IndexName="YEAR_ACCESS",
@@ -121,10 +124,18 @@ def test_dynamodb_recent_insertion(table_name):
 
     )
     
-    logging.info("Count of ratings added in last 30 days: " + str(current_year_items["Count"]))
+    logging.info(
+        (
+            "Count of ratings added in last {num_days} days: ".format(
+                num_days=day_threshold
+            ) + str(current_year_items["Count"])
+        )
+    )
     
     assert current_year_items["Count"] > 5, (
-        "Less than 5 show ratings recorded in the last 30 days"
+        "Less than 5 show ratings recorded in the last {num_days} days".format(
+            num_days=day_threshold
+        )
     )
 
 
