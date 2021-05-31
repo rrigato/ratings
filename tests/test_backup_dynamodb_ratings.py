@@ -443,8 +443,19 @@ class BackupDynamoDbUnit(unittest.TestCase):
         """
         mock_dynamodb_table = MagicMock()
         get_boto_clients_mock.return_value = (
-            mock_dynamodb_table, MagicMock()
+            MagicMock(), mock_dynamodb_table
         )
+
+        mock_item = {
+            "SHOW": "mock_show",
+            "TOTAL_VIEWERS": "1000"
+        }
+        mock_dynamodb_table.query.return_value = {
+            "Items":[
+                mock_item, mock_item, mock_item, mock_item, mock_item, mock_item
+            ],
+            "Count": 6
+        }
         from scripts.backup_dynamodb_ratings import test_dynamodb_recent_insertion
 
         test_dynamodb_recent_insertion(table_name="mock_table")
