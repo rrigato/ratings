@@ -436,6 +436,20 @@ class BackupDynamoDbUnit(unittest.TestCase):
         )
 
 
+    @patch("scripts.backup_dynamodb_ratings.get_boto_clients")
+    def test_lambda_handler_event(self, get_boto_clients_mock):
+        """Happy path dynamodb ratings in last 60 days
+
+        """
+        mock_dynamodb_table = MagicMock()
+        get_boto_clients_mock.return_value = (
+            mock_dynamodb_table, MagicMock()
+        )
+        from scripts.backup_dynamodb_ratings import test_dynamodb_recent_insertion
+
+        test_dynamodb_recent_insertion(table_name="mock_table")
+
+
 
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
