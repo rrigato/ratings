@@ -84,7 +84,7 @@ detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
 
 [git secrets](https://github.com/awslabs/git-secrets.git) is a command line utility for validating that you do not have any git credentials stored in your git repo commit history
 
-This is useful for not only open source projects, but also to make sure best practices are being followed with limited duration credentials (IAM roles) instead of long term access keys
+
 
 - Global install
 
@@ -114,14 +114,16 @@ Configuring git secrets as a web hook will ensure that git secrets runs on every
 
 Allow the sample lambda cloudwatch event since it uses a fake 
 account
-```
+```bash
     git config --add secrets.allowed "util/lambda_cw_event.json"
 ```
 
 - Run a git secrets check recursively on all files in directory
 
-```
-git secrets --scan -r .
+```bash
+# git ls-files are scanned by default
+
+git secrets --scan 
 ```
 
 
