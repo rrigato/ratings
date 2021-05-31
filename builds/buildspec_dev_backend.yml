@@ -34,8 +34,10 @@ phases:
       - echo $BACKUP_DYNAMODB_FUNCTION_NAME
       - echo $LAMBDA_FUNCTION_NAME
       - echo $RATINGS_UPDATE_STACK
+      - ls -l
       - git init
-      - detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+      - git add *
+      - detect-secrets-hook --baseline .secrets.baseline $(git diff --staged --name-only)
 
       - echo "Creating $RATINGS_UPDATE_STACK"
       - aws cloudformation create-stack --stack-name $RATINGS_UPDATE_STACK
