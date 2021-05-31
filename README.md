@@ -64,18 +64,21 @@ Follow [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228
 
 A detect-secrets scan is run as part of the dev CI build to ensure no secrets are promoted to prod. This enables security to be built into the application ci/cd platform and is recursive by default
 
-```
-#detect secrets in tracked git files
+```bash
+#creates/updates baseline of vulnerabilities 
+# to review false positives
 
-detect-secrets scan .
-```
-
-```
-#detect secrets for all files in cwd
-
-detect-secrets scan --all-files .
+detect-secrets scan > .secrets.baseline
 ```
 
+```bash
+# raise stderr if new secrets have been added to git files
+
+detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+```
+
+
+.secrets.baseline = reviewed to only have false postives 
 
 #### git_secrets
 
