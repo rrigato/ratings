@@ -65,7 +65,7 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
-def test_dynamodb_recent_insertion(table_name, day_threshold=15):
+def test_dynamodb_recent_insertion(table_name, day_threshold=60):
     """Validates that ratings where inserted in the last month
 
         Parameters
