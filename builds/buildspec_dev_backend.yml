@@ -34,7 +34,7 @@ phases:
       - echo $BACKUP_DYNAMODB_FUNCTION_NAME
       - echo $LAMBDA_FUNCTION_NAME
       - echo $RATINGS_UPDATE_STACK
-
+      - git init
       - detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
 
       - echo "Creating $RATINGS_UPDATE_STACK"
