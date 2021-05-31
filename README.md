@@ -62,7 +62,7 @@ Follow [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228
 #### detect_secrets
 [detect-secrets](https://github.com/Yelp/detect-secrets) is a python library that performs static code analysis to ensure no secrets have entered your code base.
 
-A detect-secrets scan is run as part of the dev CI build to ensure no secrets are promoted to prod. This enables security to be built into the application ci/cd platform and is recursive by default
+A detect-secrets scan is run as part of the dev CI build to ensure no secrets are promoted to prod. 
 
 ```bash
 #creates/updates baseline of vulnerabilities 
