@@ -1,3 +1,4 @@
+avenv/*
 logs/*
 templates/lambda_edge.yml
 templates/ratings_vpc.yml
