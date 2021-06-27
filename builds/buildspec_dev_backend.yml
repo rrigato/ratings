@@ -65,6 +65,10 @@ phases:
 
       - pip install --target ./deploypkg bs4
 
+      #recursively copy everything in the ratings clean architecture folder
+      #into deploypkg
+      - cp -r ratings deploypkg
+
       #copy runtime script to deployment package
       - cp scripts/reddit_ratings.py deploypkg
 
