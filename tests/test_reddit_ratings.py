@@ -119,21 +119,7 @@ class IntegrationRedditApi(unittest.TestCase):
             fullname_after="t3_dm3brn"
         )
 
-        '''
-            testing last reddit post in the
-            list
-        '''
-        self.assertEqual(
-            news_search["data"]["children"][6]["data"]["created_utc"],
-            1570559167.0
-        )
-        '''
-            Testing there is 7 posts returned
-        '''
-        self.assertEqual(
-            len(news_search["data"]["children"]),
-            7
-        )
+
         '''
             Unique id of the first post returned
         '''
