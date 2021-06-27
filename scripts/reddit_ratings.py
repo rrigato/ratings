@@ -2,6 +2,7 @@ from boto3.dynamodb import conditions
 from bs4 import BeautifulSoup
 from datetime import datetime
 from dateutil import parser
+from ratings.repo.excluded_ratings_titles import get_excluded_titles
 
 import boto3
 import json
@@ -307,6 +308,10 @@ def _evaluate_ratings_post_title(ratings_title):
             ratings list
 
     """
+    if ratings_title in get_excluded_titles():
+        logging.debug("_evaluate_ratings_post_title - get_excluded_titles guard condition")
+        return(False)
+
     return(ratings_title.lower().find("ratings") != (-1))
 
 

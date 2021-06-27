@@ -486,7 +486,8 @@ class RedditApi(unittest.TestCase):
 
         invalid_ratings_post_titles = [
             "General News post",
-            "Show announcement"
+            "Show announcement",
+            "The Future Of Ratings | Toonami Faithful"
         ]
         for invalid_ratings_title in invalid_ratings_post_titles:
 
