@@ -289,8 +289,30 @@ def get_news_flair(access_token,
 
     return(news_flair_posts.json())
 
+
+def _evaluate_ratings_post_title(ratings_title):
+    """Validates whether the post is a television post
+    based on the title
+
+        Parameters
+        ----------
+        ratings_title : str
+            title of reddit post
+
+        Returns
+        -------
+        valid_ratings_post : bool
+            True if ratings_title includes the string
+            ratings and if it is not in the excluded
+            ratings list
+
+    """
+    pass
+
+
+
 def get_ratings_post(news_flair_posts):
-    """Retrieves
+    """Retrieves posts with ratings in the name
 
         Parameters
         ----------
