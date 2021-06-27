@@ -463,6 +463,38 @@ class RedditApi(unittest.TestCase):
             self.oauth_token_fixture
         )
 
+    def test_evaluate_ratings_post_title(self):
+        """Happy path ratings in the title
+        """
+        from scripts.reddit_ratings import _evaluate_ratings_post_title
+
+        valid_ratings_post_titles = [
+            "Toonami Ratings for May 15th, 2021"
+        ]
+        for valid_ratings_title in valid_ratings_post_titles:
+
+            with self.subTest(valid_ratings_title=valid_ratings_title):
+                self.assertTrue(
+                    _evaluate_ratings_post_title(ratings_title=valid_ratings_title)
+                )
+
+
+    def test_evaluate_ratings_post_title_invalid_title(self):
+        """Unhappy path ratings not in title
+        """
+        from scripts.reddit_ratings import _evaluate_ratings_post_title
+
+        invalid_ratings_post_titles = [
+            "General News post",
+            "Show announcement"
+        ]
+        for invalid_ratings_title in invalid_ratings_post_titles:
+
+            with self.subTest(valid_ratings_title=invalid_ratings_title):
+                self.assertFalse(
+                    _evaluate_ratings_post_title(ratings_title=valid_ratings_title)
+                )
+
     def test_get_ratings_post(self):
         """Tests that only reddit ratings news posts are returned
 
