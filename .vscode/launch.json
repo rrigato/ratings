@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Run ratings as module",
-            "python": "${workspaceFolder}/avenv/bin/python",
+            "pythonPath": "${workspaceFolder}/avenv/bin/python",
             "type": "python",
             "request": "launch",
             "module": "scripts.reddit_ratings"
