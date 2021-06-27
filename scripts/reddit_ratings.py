@@ -307,7 +307,7 @@ def _evaluate_ratings_post_title(ratings_title):
             ratings list
 
     """
-    pass
+    return(ratings_title.lower().find("ratings") != (-1))
 
 
 
@@ -341,8 +341,7 @@ def get_ratings_post(news_flair_posts):
             post after lowercasing the title string
             then we count that as a ratings related post
         '''
-        if (reddit_post["data"]["title"].lower().find("ratings")
-            != (-1)):
+        if (_evaluate_ratings_post_title(ratings_title=reddit_post["data"]["title"])):
             logging.info("Rating post found")
             logging.info(reddit_post["data"]["title"])
             logging.info(reddit_post["data"]["name"])

@@ -490,9 +490,9 @@ class RedditApi(unittest.TestCase):
         ]
         for invalid_ratings_title in invalid_ratings_post_titles:
 
-            with self.subTest(valid_ratings_title=invalid_ratings_title):
+            with self.subTest(invalid_ratings_title=invalid_ratings_title):
                 self.assertFalse(
-                    _evaluate_ratings_post_title(ratings_title=valid_ratings_title)
+                    _evaluate_ratings_post_title(ratings_title=invalid_ratings_title)
                 )
 
     def test_get_ratings_post(self):
