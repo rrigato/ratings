@@ -162,20 +162,17 @@ class RedditApi(unittest.TestCase):
     def setUpClass(cls):
         """Unitest function that is run once for the class
 
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         '''
             How many news posts the client main function is using
         '''
         cls.MAIN_FUNCTION_POST_COUNT = 25
         os.environ["DYNAMODB_TABLE_NAME"] = "dev_toonami_ratings"
+
+        if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
+            print("RedditAPI setUpClass - setting AWS_LAMBDA_FUNCTION_NAME environment variable")
+            os.environ["AWS_LAMBDA_FUNCTION_NAME"] = "dev-ratings-backend-lambda-poll"
+        
         '''
             Assigns a class attribute which is 
             a dict that represents news posts
