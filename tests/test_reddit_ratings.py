@@ -1,12 +1,10 @@
 from bs4 import BeautifulSoup
 from copy import deepcopy
-from datetime import datetime
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
 import json
 import os
-import requests
 import unittest
 
 
@@ -1374,7 +1372,50 @@ class RedditApi(unittest.TestCase):
             put_item_args, put_item_kwargs = put_item_call
             self.assertEqual(put_item_kwargs["Item"]["PK"], "ratings#showName")
             self.assertIn(put_item_kwargs["Item"]["SK"], unique_show_names)
-        
+
+    @unittest.skip("skipping for now")
+    def test_get_news_flair(self):
+        """Tests that we are retriving posts with a news flair
+        """
+        from scripts.reddit_ratings import get_client_secrets
+        from scripts.reddit_ratings import get_news_flair
+
+        from scripts.reddit_ratings import get_oauth_token
+
+        reddit_client_key, reddit_client_secret = get_client_secrets()
+
+        '''
+            Getting an Oauth token and testing for
+            a specific fullname which is a unique
+            identifier for a given reddit api object
+            which ensures the same post will be returned
+            each time
+        '''
+        oauth_token = get_oauth_token(
+            client_key=reddit_client_key,
+            client_secret=reddit_client_secret
+        )
+        '''
+            The fullname will anchor this search to
+            ensure the api always returns the same news
+            posts
+        '''
+        news_search = get_news_flair(
+            access_token=oauth_token["access_token"],
+            posts_to_return=7,
+            fullname_after="t3_dm3brn"
+        )
+
+
+        '''
+            Unique id of the first post returned
+        '''
+        self.assertEqual(
+            news_search["data"]["children"][0]["data"]["name"],
+            "t3_dlyuen"
+        )
+
+
 class LambdaHandler(unittest.TestCase):
     """Tests specific to when the script is run from a lambda
         function
@@ -1448,7 +1489,6 @@ class LambdaHandler(unittest.TestCase):
             main_mock.call_count,
             1
         )
-
 
 
 if __name__ == "__main__":
