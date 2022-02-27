@@ -127,6 +127,8 @@ phases:
         --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
         --handler "backup_dynamodb_ratings.lambda_handler"    
 
+      - aws lambda wait function-updated --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+
       #syncronously invoke the lambda function once
       #with cloudwatch timer event payload
       - aws lambda invoke --function-name $BACKUP_DYNAMODB_FUNCTION_NAME

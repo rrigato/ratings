@@ -63,6 +63,7 @@ phases:
         --function-name $LAMBDA_FUNCTION_NAME
         --handler "reddit_ratings.lambda_handler"
 
+      - aws lambda wait function-updated --function-name $LAMBDA_FUNCTION_NAME
 
       ################################################
       #
@@ -81,6 +82,8 @@ phases:
       - aws lambda update-function-configuration
         --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
         --handler "backup_dynamodb_ratings.lambda_handler"
+
+      - aws lambda wait function-updated --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
 
       #syncronously invoke the lambda backup function once
       #with cloudwatch timer event payload
