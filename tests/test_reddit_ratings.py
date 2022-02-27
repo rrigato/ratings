@@ -1373,47 +1373,29 @@ class RedditApi(unittest.TestCase):
             self.assertEqual(put_item_kwargs["Item"]["PK"], "ratings#showName")
             self.assertIn(put_item_kwargs["Item"]["SK"], unique_show_names)
 
-    @unittest.skip("skipping for now")
-    def test_get_news_flair(self):
-        """Tests that we are retriving posts with a news flair
-        """
-        from scripts.reddit_ratings import get_client_secrets
+    
+    @patch("requests.get")
+    def test_get_news_flair(self, requests_get_mock):
+        """Outgoing api request arguements to reddit api"""
         from scripts.reddit_ratings import get_news_flair
+        mock_fullname = "mock_fullname"
+        mock_token = "mock_token"
+        mock_num_posts = 10
 
-        from scripts.reddit_ratings import get_oauth_token
 
-        reddit_client_key, reddit_client_secret = get_client_secrets()
-
-        '''
-            Getting an Oauth token and testing for
-            a specific fullname which is a unique
-            identifier for a given reddit api object
-            which ensures the same post will be returned
-            each time
-        '''
-        oauth_token = get_oauth_token(
-            client_key=reddit_client_key,
-            client_secret=reddit_client_secret
-        )
-        '''
-            The fullname will anchor this search to
-            ensure the api always returns the same news
-            posts
-        '''
         news_search = get_news_flair(
-            access_token=oauth_token["access_token"],
-            posts_to_return=7,
-            fullname_after="t3_dm3brn"
+            access_token="mock_token",
+            posts_to_return=mock_num_posts,
+            fullname_after=mock_fullname
         )
 
 
-        '''
-            Unique id of the first post returned
-        '''
-        self.assertEqual(
-            news_search["data"]["children"][0]["data"]["name"],
-            "t3_dlyuen"
-        )
+        args, kwargs = requests_get_mock.call_args
+        self.assertIn("user-agent", kwargs["headers"].keys())
+        self.assertIn("Authorization", kwargs["headers"].keys())
+        
+        print("hello world")
+        
 
 
 class LambdaHandler(unittest.TestCase):
