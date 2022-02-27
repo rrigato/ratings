@@ -18,15 +18,6 @@ from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
 
 class IntegrationRedditApi(unittest.TestCase):
     """Integration test for the reddit api pull
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
     """
     def test_get_client_secrets(self):
         """Integration test for the get_client_secrets function
@@ -77,46 +68,6 @@ class IntegrationRedditApi(unittest.TestCase):
         )
         self.assertIsNotNone(oauth_token["access_token"])
 
-    def test_get_news_flair(self):
-        """Tests that we are retriving posts with a news flair
-        """
-        from scripts.reddit_ratings import get_client_secrets
-        from scripts.reddit_ratings import get_news_flair
-
-        from scripts.reddit_ratings import get_oauth_token
-
-        reddit_client_key, reddit_client_secret = get_client_secrets()
-
-        '''
-            Getting an Oauth token and testing for
-            a specific fullname which is a unique
-            identifier for a given reddit api object
-            which ensures the same post will be returned
-            each time
-        '''
-        oauth_token = get_oauth_token(
-            client_key=reddit_client_key,
-            client_secret=reddit_client_secret
-        )
-        '''
-            The fullname will anchor this search to
-            ensure the api always returns the same news
-            posts
-        '''
-        news_search = get_news_flair(
-            access_token=oauth_token["access_token"],
-            posts_to_return=7,
-            fullname_after="t3_dm3brn"
-        )
-
-
-        '''
-            Unique id of the first post returned
-        '''
-        self.assertEqual(
-            news_search["data"]["children"][0]["data"]["name"],
-            "t3_dlyuen"
-        )
 
 
 
