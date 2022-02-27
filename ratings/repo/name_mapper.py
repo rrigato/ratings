@@ -23,6 +23,7 @@ def get_table_column_name_mapping():
             "total": "TOTAL_VIEWERS", 
             "viewers": "TOTAL_VIEWERS",
             "viewers (000)": "TOTAL_VIEWERS",
+            "18-49": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "18-49 rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "18-49 views (000)": "TOTAL_VIEWERS_AGE_18_49",
             "year": "YEAR",

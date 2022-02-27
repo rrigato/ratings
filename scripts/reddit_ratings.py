@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from dateutil import parser
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
+from ratings.repo.name_mapper import get_table_column_name_mapping
 
 import boto3
 import json
@@ -729,23 +730,7 @@ def dict_key_mapping(pre_clean_ratings_keys):
             in pre_clean_ratings_keys cannot be mapped 
             back to a dynamodb column listed in key_to_dynamo_column_map
     """
-    key_to_dynamo_column_map = {
-        "atotal": "TOTAL_VIEWERS_AGE_18_49",
-        "ahousehold": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        "date": "RATINGS_OCCURRED_ON",
-        "household": "PERCENTAGE_OF_HOUSEHOLDS",
-        "ratings_occurred_on": "RATINGS_OCCURRED_ON",
-        "show": "SHOW",
-        "time": "TIME", 
-        "total": "TOTAL_VIEWERS", 
-        "viewers (000)": "TOTAL_VIEWERS",
-        "18-49 rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        "18-49 views (000)": "TOTAL_VIEWERS_AGE_18_49",
-        "year": "YEAR",
-        "is_rerun": "IS_RERUN",
-        "program": "SHOW"
-
-    }
+    key_to_dynamo_column_map = get_table_column_name_mapping()
 
     clean_ratings_columns = []
     for dict_to_clean in pre_clean_ratings_keys:

@@ -15,6 +15,7 @@ class TestNameMapper(unittest.TestCase):
                 str
             )
 
+
     def test_get_table_column_name_mapping_viewers_e2e(self):
         """Bug where viewers key was not mapped"""
         from ratings.repo.name_mapper import get_table_column_name_mapping
@@ -23,4 +24,13 @@ class TestNameMapper(unittest.TestCase):
             type(get_table_column_name_mapping()["viewers"]),
             str
         )      
-        
+
+
+    def test_get_table_column_name_mapping_18_49(self):
+        """Bug where 18-49 key was not mapped"""
+        from ratings.repo.name_mapper import get_table_column_name_mapping
+
+        self.assertEqual(
+            type(get_table_column_name_mapping()["18-49"]),
+            str
+        )    
