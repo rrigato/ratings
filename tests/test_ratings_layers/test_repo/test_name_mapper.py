@@ -15,7 +15,6 @@ class TestNameMapper(unittest.TestCase):
                 str
             )
 
-    @unittest.skip("skipping for now")
     def test_get_table_column_name_mapping_viewers_e2e(self):
         """Bug where viewers key was not mapped"""
         from ratings_layers.repo.name_mapper import get_table_column_name_mapping
