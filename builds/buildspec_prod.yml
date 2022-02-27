@@ -54,6 +54,9 @@ phases:
         --function-name $LAMBDA_FUNCTION_NAME
         --zip-file "fileb://${CODEBUILD_SRC_DIR_BuildDevBackend}/deploypkg/built_lambda.zip"
 
+      #wait for update-function-code to be complete
+      aws lambda wait function-updated --function-name $LAMBDA_FUNCTION_NAME
+
       #changes lambda handler to scripts/reddit_ratings.py
       #lambda_handler function
       - aws lambda update-function-configuration
@@ -68,6 +71,10 @@ phases:
       - aws lambda update-function-code
         --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
         --zip-file "fileb://${CODEBUILD_SRC_DIR_BuildDevBackend}/backup_dynamodb_ratings.zip"
+
+      #wait for update-function-code to be complete
+      aws lambda wait function-updated --function-name $BACKUP_DYNAMODB_FUNCTION_NAME
+
 
       #changes lambda handler to scripts/reddit_ratings.py
       #lambda_handler function
