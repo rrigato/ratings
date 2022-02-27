@@ -1047,14 +1047,6 @@ def put_show_names(all_ratings_list, table_name):
 
 def main():
     """Entry point into the script
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
     """
     '''
         get dev or prod from the function name

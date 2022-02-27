@@ -79,16 +79,6 @@ class IntegrationRedditApi(unittest.TestCase):
 
     def test_get_news_flair(self):
         """Tests that we are retriving posts with a news flair
-
-            Parameters
-            ----------
-
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         from scripts.reddit_ratings import get_client_secrets
         from scripts.reddit_ratings import get_news_flair
