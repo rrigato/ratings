@@ -96,6 +96,8 @@ phases:
         --handler "reddit_ratings.lambda_handler"
 
 
+      - aws lambda wait function-updated --function-name $LAMBDA_FUNCTION_NAME
+
       #syncronously invoke the lambda function once
       #with cloudwatch timer event payload
       - aws lambda invoke --function-name $LAMBDA_FUNCTION_NAME
