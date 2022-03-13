@@ -6,8 +6,10 @@ def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
         Parameters
         ----------
         ratings_date_to_skip: str
+            pass str in YYYY-MM-DD format
             elements of all_ratings_list with RATINGS_OCCURRED_ON
             equal to ratings_date_to_skip will be removed from the list
+        
 
         all_ratings_list : list
             safe source of element structure is scripts.reddit_ratings.clean_dict_value
@@ -28,6 +30,29 @@ def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
 
     logging.info("_manual_skip_date - complete")
     
+
+
+def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ratings_list):
+    """Overrides 
+
+        Parameters
+        ----------
+        date_to_override: str
+            pass str in YYYY-MM-DD format
+
+        correct_ratings_date: str
+            pass str in YYYY-MM-DD format
+            All elements of all_ratings_list with RATINGS_OCCURRED_ON key of
+            date_to_override will be replaced will have that keys value
+            replaced by correct_ratings_date
+        
+
+        all_ratings_list : list
+            safe source of element structure is scripts.reddit_ratings.clean_dict_value
+    """
+    pass
+
+
 
 
 def data_override_factory(all_ratings_list):
