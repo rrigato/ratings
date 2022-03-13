@@ -350,11 +350,11 @@ class RedditApi(unittest.TestCase):
 
 
         mock_client_id="fakeid"
-        mock_client_secret="mock_secret"
+        mock_auth_value="mock_secret"
 
         oauth_token = get_oauth_token(
             client_key=mock_client_id, 
-            client_secret=mock_client_secret
+            client_secret=mock_auth_value
         )
 
         '''
@@ -363,7 +363,7 @@ class RedditApi(unittest.TestCase):
         '''
         requests_post_mock.assert_called_once_with(
             url="https://www.reddit.com/api/v1/access_token",
-            auth=(mock_client_id, mock_client_secret),
+            auth=(mock_client_id, mock_auth_value),
             data={"grant_type":"client_credentials"},
             headers={
                 "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
