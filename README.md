@@ -2,8 +2,7 @@
 
 # ratings
 
-This application creates a lambda function that polls the reddit api to retrieve television ratings. The ratings are then parsed from an html table element and inserted into dynamodb.
-
+This application creates a lambda function that polls the reddit api to retrieve television ratings. The ratings are then parsed from an html table element and inserted into dynamodb. 
 
 
 ## table_of_contents
@@ -23,10 +22,9 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [historical](#historical)
       - [logs](#logs)
       - [scripts](#scripts)
-      - [templates](#templates)
       - [tests](#tests)
         - [util](#util)
-      - [setup_ci](#setup_ci)
+  - [run_locally](#run_locally)
 
 
 
@@ -72,9 +70,10 @@ detect-secrets scan > .secrets.baseline
 ```
 
 ```bash
-# raise stderr if new secrets have been added to git files
+detect-secrets scan
 
-detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+detect-secrets scan | \
+python3 -c "import sys, json; print(json.load(sys.stdin)['results'])"
 ```
 
 
@@ -172,13 +171,6 @@ prod_ratings.json = Entity relationship diagram built using [NoSQL Workbench for
 
 - backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
 
-#### templates
-
-- code_pipeline.yml = Creates CodeBuild/Code Pipeline resources
-    necessary for Dev/Prod
-
-- ratings_backend.yml = Creates the backend storage and compute necessary for
-updating ratings
 
 #### tests
 
@@ -206,26 +198,7 @@ https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&re
 
 - test_reddit_rating_config.py = fixtures for use in tests/test_reddit_rating.py
 
-#### setup_ci
 
-Add the remote repo using the following:
-```
-git init
+## run_locally
 
-git remote add origin <origin_url_or_ssh>
-
-```
-
-
-Fetch origin repo locally and merge if the remote
-
-has any references you do not
-
-```
-    git fetch origin
-
-    git merge origin/<branch_name>
-```
-
-
-
+To run locally you need the ```AWS_LAMBDA_FUNCTION_NAME``` and ```BUILD_ENVIRONMENT``` variables
