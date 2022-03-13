@@ -845,12 +845,13 @@ def clean_dict_value(ratings_values_to_clean):
         -------
         clean_ratings_values : list
             list of dict with the following keys:
-            YEAR - int of year Example - 2022
+            RATINGS_OCCURRED_ON - YYYY-MM-DD date
             TIME - str of timeslot Example 12:00a
             SHOW - str of show  
             TOTAL_VIEWERS - int of viewers in thousands 
             PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49 - float  
-            RATINGS_OCCURRED_ON - YYYY-MM-DD date
+            YEAR - int of year Example - 2022
+            
 
         Raises
         ------
