@@ -50,9 +50,15 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
         all_ratings_list : list
             safe source of element structure is scripts.reddit_ratings.clean_dict_value
     """
-    pass
+    logging.info("_override_ratings_occurred_on - overriding {incorrect} to {correct}".format(
+        incorrect=date_to_override, correct=correct_ratings_date
+    ))
 
+    for tv_rating in all_ratings_list:
+        if tv_rating["RATINGS_OCCURRED_ON"] == date_to_override:
+            tv_rating["RATINGS_OCCURRED_ON"] = correct_ratings_date
 
+    logging.info("_override_ratings_occurred_on - complete")
 
 
 def data_override_factory(all_ratings_list):

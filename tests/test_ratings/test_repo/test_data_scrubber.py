@@ -42,8 +42,6 @@ class TestDataScrubber(unittest.TestCase):
         )
 
 
-
-    @unittest.skip("_override_ratings_occurred_on")
     def test_override_ratings_occurred_on(self):
         """2022-02-12 was incorrectly labeled as 2022-02-15"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data
@@ -61,8 +59,14 @@ class TestDataScrubber(unittest.TestCase):
         )
 
 
-        self.assertEqual(
-            len(mock_ratings_list), 
-            len(ratings_fixture_bad_data()) - 17
-        )
+        count_of_correct_date = 0
+        count_of_incorrect_date = 0
+        for mock_rating in mock_ratings_list:
+            if mock_rating["RATINGS_OCCURRED_ON"] == mock_incorrect_date:
+                count_of_incorrect_date += 1
 
+            if mock_rating["RATINGS_OCCURRED_ON"] == mock_correct_date:
+                count_of_correct_date += 1
+
+        self.assertEqual(count_of_incorrect_date, 0)
+        self.assertEqual(count_of_correct_date, 8)
