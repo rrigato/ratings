@@ -99,6 +99,6 @@ class TestDataScrubber(unittest.TestCase):
 
         self.assertEqual(
             len(mock_ratings_list), 
-            len(ratings_fixture_bad_data()) - 17
+            len(ratings_fixture_bad_data()) - 1
         )
 
