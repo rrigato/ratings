@@ -1043,7 +1043,7 @@ def put_show_names(all_ratings_list, table_name):
             Inserting each unique show in the ratings list
         '''
         for show_name in show_name_list:
-            logging.info("put_show_names - putting show_name" + show_name)
+            logging.info("put_show_names - putting show_name " + show_name)
             
             batch_insert.put_item(
                 Item={

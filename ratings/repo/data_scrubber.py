@@ -50,6 +50,8 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
         all_ratings_list : list
             safe source of element structure is scripts.reddit_ratings.clean_dict_value
     """
+    override_count = 0
+    
     logging.info("_override_ratings_occurred_on - overriding {incorrect} to {correct}".format(
         incorrect=date_to_override, correct=correct_ratings_date
     ))
@@ -57,8 +59,9 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
     for tv_rating in all_ratings_list:
         if tv_rating["RATINGS_OCCURRED_ON"] == date_to_override:
             tv_rating["RATINGS_OCCURRED_ON"] = correct_ratings_date
+            override_count += 1
 
-    logging.info("_override_ratings_occurred_on - complete")
+    logging.info("_override_ratings_occurred_on - override_count " + str(override_count))
 
 
 
@@ -84,7 +87,6 @@ def _remove_missing_time(all_ratings_list):
     for element_to_drop in elements_to_drop:
         removed_rating = all_ratings_list.pop(element_to_drop)
         
-
     logging.info("_remove_missing_time - complete")
     
 
@@ -120,8 +122,6 @@ def data_override_factory(all_ratings_list):
     logging.info("data_override_factory - _override_ratings_occurred_on - " + 
         str(len(all_ratings_list))
     )
-
-
 
     _remove_missing_time(all_ratings_list=all_ratings_list)
 
