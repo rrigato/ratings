@@ -2,6 +2,7 @@ from boto3.dynamodb import conditions
 from bs4 import BeautifulSoup
 from datetime import datetime
 from dateutil import parser
+from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
 from ratings.repo.name_mapper import get_table_column_name_mapping
 
@@ -1071,6 +1072,13 @@ def main():
     clean_rating_values = clean_dict_value(
         ratings_values_to_clean=all_ratings_list
     )
+
+    logging.info("main - clean_dict_value - " + str(len(all_ratings_list)))
+    
+    data_override_factory(all_ratings_list=all_ratings_list)
+
+    logging.info("main - data_override_factory - " + str(len(all_ratings_list)))
+
 
     handle_ratings_insertion(
         all_ratings_list=all_ratings_list,

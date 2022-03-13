@@ -123,29 +123,16 @@ class RedditApi(unittest.TestCase):
 
         ]
 
+
+    @patch("scripts.reddit_ratings.data_override_factory")
     @patch("scripts.reddit_ratings.put_show_names")
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        handle_ratings_iteration_mock, put_show_names_mock):
-        '''Test for main function
-
-            Parameters
-            ----------
-            ratings_iteration_mock : unittest.mock.MagicMock
-                Mock object to make sure the reddit api is 
-                not called
-
-            handle_ratings_iteration_mock : unittest.mock.MagicMock
-                Mock object used to ensure no logging is setup
-                for the test
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
+        handle_ratings_iteration_mock, put_show_names_mock,
+        data_override_factory_mock):
+        """Test for main function
+        """
         from scripts.reddit_ratings import main
 
         ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
@@ -171,7 +158,7 @@ class RedditApi(unittest.TestCase):
         self.assertEqual(put_show_names_kwargs["table_name"], "dev_toonami_analytics")
         self.assertEqual(type(put_show_names_kwargs["all_ratings_list"]), list)
         self.assertEqual(type(put_show_names_kwargs["all_ratings_list"][0]), dict)
-
+        self.assertEqual(data_override_factory_mock.call_count, 1)
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
@@ -1394,7 +1381,6 @@ class RedditApi(unittest.TestCase):
         self.assertIn("user-agent", kwargs["headers"].keys())
         self.assertIn("Authorization", kwargs["headers"].keys())
         
-        print("hello world")
         
 
 
