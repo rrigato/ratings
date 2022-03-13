@@ -121,3 +121,9 @@ def data_override_factory(all_ratings_list):
         str(len(all_ratings_list))
     )
 
+
+
+    _remove_missing_time(all_ratings_list=all_ratings_list)
+
+    logging.info("data_override_factory - _remove_missing_time - " + str(len(all_ratings_list)))
+
