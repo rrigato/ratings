@@ -33,7 +33,7 @@ def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
 
 
 def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ratings_list):
-    """Overrides 
+    """Overrides incorrect RATINGS_OCCURRED_ON values
 
         Parameters
         ----------
@@ -72,7 +72,7 @@ def data_override_factory(all_ratings_list):
             safe source of element structure is scripts.reddit_ratings.clean_dict_value
    
     """
-    logging.info("data_override_factory - abstraction layer")
+    logging.info("data_override_factory - abstraction layer - " + str(len(all_ratings_list)))
 
     _manual_skip_date(
         ratings_date_to_skip="2022-01-29",
@@ -80,4 +80,15 @@ def data_override_factory(all_ratings_list):
     )
 
 
-    logging.info("data_override_factory - _manual_skip_date complete")
+    logging.info("data_override_factory - _manual_skip_date - " + str(len(all_ratings_list)))
+
+    _override_ratings_occurred_on(
+        date_to_override="2022-02-15",
+        correct_ratings_date="2022-02-12",
+        all_ratings_list=all_ratings_list
+    )
+
+    logging.info("data_override_factory - _override_ratings_occurred_on - " + 
+        str(len(all_ratings_list))
+    )
+

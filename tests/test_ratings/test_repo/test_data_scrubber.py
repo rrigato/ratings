@@ -3,23 +3,28 @@ import unittest
 
 class TestDataScrubber(unittest.TestCase):
 
+    @patch("ratings.repo.data_scrubber._override_ratings_occurred_on")
     @patch("ratings.repo.data_scrubber._manual_skip_date")
-    def test_data_override_factory(self, manual_skip_date_mock):
-        """Factory function invoke correct private cleaning scrubbers"""
+    def test_data_override_factory(self, manual_skip_date_mock, 
+        mock_override_ratings_occurred_on):
+        """Tests outgoing private cleaning scrubbers call args"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data
-
         from ratings.repo.data_scrubber import data_override_factory
 
 
-        data_override_factory(all_ratings_list=ratings_fixture_bad_data())
+        data_override_factory(all_ratings_list=ratings_fixture_bad_data()[0:2])
 
 
         manual_skip_date_mock.assert_called_once_with(
             ratings_date_to_skip="2022-01-29",
-            all_ratings_list=ratings_fixture_bad_data()
+            all_ratings_list=ratings_fixture_bad_data()[0:2]
         )
 
-
+        mock_override_ratings_occurred_on.assert_called_once_with(
+            date_to_override="2022-02-15",
+            correct_ratings_date="2022-02-12",
+            all_ratings_list=ratings_fixture_bad_data()[0:2]
+        )
 
 
     def test_manual_skip_date(self):
