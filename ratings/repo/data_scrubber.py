@@ -22,6 +22,8 @@ def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
         if all_ratings_list[rating_element]["RATINGS_OCCURRED_ON"] == ratings_date_to_skip:
             elements_to_drop.append(rating_element)
 
+    elements_to_drop.sort(reverse=True)
+    
     logging.info(elements_to_drop)
 
     for element_to_drop in elements_to_drop:
