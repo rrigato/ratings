@@ -52,6 +52,26 @@ class TestDataScrubber(unittest.TestCase):
         )
 
 
+    def test_manual_skip_date_out_of_index(self):
+        """Drop elements from end of list to avoid IndexError"""
+        from fixtures.get_all_ratings_list import ratings_fixture_bad_data
+        from ratings.repo.data_scrubber import _manual_skip_date
+
+        mock_ratings_list = ratings_fixture_bad_data()
+
+
+        _manual_skip_date(
+            ratings_date_to_skip="2022-01-15",
+            all_ratings_list=mock_ratings_list
+        )
+
+
+        self.assertEqual(
+            len(mock_ratings_list), 
+            len(ratings_fixture_bad_data()) - 8
+        )
+
+
     def test_override_ratings_occurred_on(self):
         """2022-02-12 was incorrectly labeled as 2022-02-15"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data
