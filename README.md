@@ -11,20 +11,17 @@ This application creates a lambda function that polls the reddit api to retrieve
 - [ratings](#ratings)
   - [table_of_contents](#table_of_contents)
     - [dev_tools](#dev_tools)
-      - [cfn_lint](#cfn_lint)
       - [detect_secrets](#detect_secrets)
       - [git_secrets](#git_secrets)
     - [project_directory_overview](#project_directory_overview)
       - [builds](#builds)
-        - [builds](#builds-1)
       - [devops](#devops)
-      - [dynamodb_erd](#dynamodb_erd)
       - [historical](#historical)
-      - [logs](#logs)
       - [scripts](#scripts)
       - [tests](#tests)
         - [util](#util)
   - [run_locally](#run_locally)
+  - [unit-tests](#unit-tests)
 
 
 
@@ -36,26 +33,6 @@ The goal of these dev tools is to build security checks into the CI/CD pipeline 
 
 Follow [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228206) on how to have multiple rsa key pairs in the same local machine being used with different accounts.
 
-#### cfn_lint
-[cfn-lint](https://github.com/aws-cloudformation/cfn-python-lint.git) Provides yaml/json cloudformation validation and checks for best practices
-
-- Install
-
-```
-    pip install cfn-lint
-```
-
-- Run on a file
-```
-    cfn-lint <filename.yml>
-
-    cfn-lint templates/code_pipeline.yml
-```
-
-- Run on all files in Directory
-```
-    cfn-lint templates/*.yml
-```
 
 #### detect_secrets
 [detect-secrets](https://github.com/Yelp/detect-secrets) is a python library that performs static code analysis to ensure no secrets have entered your code base.
@@ -138,19 +115,11 @@ and Tests backend ratings logic
 - buildspec_prod.yml = updates and invokes prod lambda functions for polling reddit api and backing up dynamodb
 
 
-##### builds
-
-- buildspec_dev.yml = Buildspec to use for the development (QA)
-    CodeBuild project
-
-- buildspec_prod.yml = Buildspec to use for the prod deployment CodeBuild project
 
 #### devops
 
 ci.sh = miscellaneous awscli commands to configure environment
 
-#### dynamodb_erd
-prod_ratings.json = Entity relationship diagram built using [NoSQL Workbench for DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.html). Helps model access patterns before implementation
 
 
 #### historical
@@ -158,8 +127,6 @@ prod_ratings.json = Entity relationship diagram built using [NoSQL Workbench for
   
 - ratings_11102018_04112020.json = ratings from November 10th 2018 through April 11th 2020, source was the reddit api
 
-#### logs
-- directory for python log files
 
 #### scripts
 - adhoc_item_update.py = Script to perform ad-hoc updates of all items in 
@@ -188,7 +155,6 @@ return television ratings
 
 
 ##### util
-- lambda_cw_event.json = lambda cloudwatch invokation event json
 
 - news_flair_fixture.json = reddit response with posts that have a news flair for unit testing
   
@@ -202,3 +168,9 @@ https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&re
 ## run_locally
 
 To run locally you need the ```AWS_LAMBDA_FUNCTION_NAME``` and ```BUILD_ENVIRONMENT``` variables
+
+
+## unit-tests
+```bash
+python -m unittest tests.test_backup_dynamodb_ratings
+```
