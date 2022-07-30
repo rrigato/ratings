@@ -1,6 +1,9 @@
 from unittest.mock import patch
 import unittest
 
+from fixtures.get_all_ratings_list import ratings_fixture_2022_07_23
+
+@unittest.skip("TODO")
 class TestDataScrubber(unittest.TestCase):
 
     @patch("ratings.repo.data_scrubber._remove_missing_time")
@@ -122,3 +125,42 @@ class TestDataScrubber(unittest.TestCase):
             len(ratings_fixture_bad_data()) - 1
         )
 
+
+class MyTest(unittest.TestCase):
+    def test_manual_override_by_date_of_night(self):
+        """2022-07-23 incorrectly had two premiere times of 12:00am"""
+        from fixtures.get_all_ratings_list import ratings_fixture_bad_data
+        from ratings.repo.data_scrubber import _manual_override_by_date
+
+        mock_ratings_list = ratings_fixture_2022_07_23()
+        date_in_need_of_override = "2022-07-23"
+
+
+        _manual_override_by_date(
+            date_to_override=date_in_need_of_override,
+            all_ratings_list=mock_ratings_list
+        )
+
+
+        clean_ratings_distinct_times = []
+        original_ratings_clean_times = []
+        for mock_clean_ratings, mock_original_ratings in zip(
+            mock_ratings_list, ratings_fixture_2022_07_23()):
+            if (mock_clean_ratings["RATINGS_OCCURRED_ON"] 
+                == date_in_need_of_override):
+                clean_ratings_distinct_times.append(
+                    mock_clean_ratings["TIME"]
+                )
+            if (mock_original_ratings["RATINGS_OCCURRED_ON"] 
+                == date_in_need_of_override):
+                original_ratings_clean_times.append(
+                    mock_original_ratings["TIME"]
+                )
+
+        self.assertEqual(len(mock_ratings_list), 
+        len(ratings_fixture_2022_07_23()))
+
+        self.assertEqual(
+            len(set(clean_ratings_distinct_times)), 
+            len(set(original_ratings_clean_times)) + 1
+        )

@@ -1,3 +1,4 @@
+from typing import Union
 import logging
 
 def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
@@ -64,6 +65,30 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
             override_count += 1
 
     logging.info("_override_ratings_occurred_on - override_count " + str(override_count))
+
+
+def _manual_override_by_date(date_to_override: str, 
+    all_ratings_list: list[dict[str, Union[str, int]]]) -> None:
+    """Applies manual ovverrides based on 
+
+        Parameters
+        ----------
+
+        date_to_override
+            YYYY-MM-DD format
+            
+
+        all_ratings_list : list
+            safe source of element structure is scripts.reddit_ratings.clean_dict_value
+    """
+    override_count = 0
+    
+
+    for tv_rating in all_ratings_list:
+        if tv_rating["RATINGS_OCCURRED_ON"] == date_to_override:
+            override_count += 1
+
+    logging.info("_manual_override_by_date - override_count " + str(override_count))
 
 
 
