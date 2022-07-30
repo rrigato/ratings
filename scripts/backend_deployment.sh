@@ -19,14 +19,18 @@ zip -r9 built_lambda.zip . \
 cd ..
 
 
-aws lambda update-function-code --region us-east-1 \
---function-name $LAMBDA_FUNCTION_NAME \
---zip-file fileb://deployment/built_lambda.zip
 
 aws lambda update-function-configuration --region us-east-1 \
 --function-name $LAMBDA_FUNCTION_NAME \
---handler "reddit_ratings.lambda_handler" \
---no-cli-pager
+--no-cli-pager \
+--handler "reddit_ratings.lambda_handler" 
+
+echo "---------------completed handler update---------------------"
+
+aws lambda update-function-code --region us-east-1 \
+--function-name $LAMBDA_FUNCTION_NAME \
+--no-cli-pager \
+--zip-file fileb://deployment/built_lambda.zip
 
 #cleanup
 rm -r deployment
