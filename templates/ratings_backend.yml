@@ -174,8 +174,8 @@ Resources:
           - Sid: !Sub '${PolicyPrefix}LambdaSecretsMangerAllow'
             Effect: Allow
             Action:
-              - secretsmanager:GetSecret
-              - secretsmanager:GetSecretValue
+              - secretsmanager:GetSecret # pragma: allowlist secret
+              - secretsmanager:GetSecretValue # pragma: allowlist secret
 
             Resource:
               - '*'         
@@ -265,8 +265,8 @@ Resources:
           - Sid: !Sub '${PolicyPrefix}LambdaSecretsMangerAllow'
             Effect: Allow
             Action:
-              - secretsmanager:GetSecret
-              - secretsmanager:GetSecretValue
+              - secretsmanager:GetSecret # pragma: allowlist secret
+              - secretsmanager:GetSecretValue # pragma: allowlist secret
 
             Resource:
               - '*'         

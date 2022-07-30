@@ -473,9 +473,9 @@ Resources:
                 - Sid: SecretsManagerAccess
                   Effect: Allow
                   Action:
-                    - secretsmanager:GetSecretValue
-                    - secretsmanager:UpdateSecret
-                    - secretsmanager:DeleteSecret
+                    - secretsmanager:GetSecretValue # pragma: allowlist secret
+                    - secretsmanager:UpdateSecret # pragma: allowlist secret
+                    - secretsmanager:DeleteSecret # pragma: allowlist secret
                   Resource:
                     - "*"
 
@@ -552,10 +552,10 @@ Resources:
                 - Sid: !Join ['', [!Ref ProjectName,'SecretsMangerDeploy']]
                   Effect: Allow
                   Action:
-                    - secretsmanager:CreateSecret
-                    - secretsmanager:DeleteSecret
-                    - secretsmanager:TagResource
-                    - secretsmanager:UpdateSecret
+                    - secretsmanager:CreateSecret # pragma: allowlist secret
+                    - secretsmanager:DeleteSecret # pragma: allowlist secret
+                    - secretsmanager:TagResource # pragma: allowlist secret
+                    - secretsmanager:UpdateSecret # pragma: allowlist secret
                   Resource:
                     - "*"
 
