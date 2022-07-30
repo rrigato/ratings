@@ -3,3 +3,7 @@ logs/*
 templates/lambda_edge.yml
 templates/ratings_vpc.yml
 /deploypkg
+__pycache__/
+deployment/
+*.zip
+.DS_Store
