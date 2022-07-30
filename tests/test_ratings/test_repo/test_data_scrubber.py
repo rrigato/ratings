@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 import unittest
 
 from fixtures.get_all_ratings_list import ratings_fixture_2022_07_23
@@ -6,11 +6,14 @@ from fixtures.get_all_ratings_list import ratings_fixture_2022_07_23
 @unittest.skip("TODO")
 class TestDataScrubber(unittest.TestCase):
 
+    @patch("ratings.repo.data_scrubber._manual_override_mock")
     @patch("ratings.repo.data_scrubber._remove_missing_time")
     @patch("ratings.repo.data_scrubber._override_ratings_occurred_on")
     @patch("ratings.repo.data_scrubber._manual_skip_date")
-    def test_data_override_factory(self, manual_skip_date_mock, 
-        override_ratings_occurred_on_mock, remove_missing_time_mock):
+    def test_data_override_factory(self, manual_skip_date_mock: MagicMock, 
+        override_ratings_occurred_on_mock: MagicMock, 
+        remove_missing_time_mock: MagicMock,
+        manual_override_mock: MagicMock):
         """Tests outgoing private cleaning scrubbers call args"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data
         from ratings.repo.data_scrubber import data_override_factory
@@ -33,6 +36,8 @@ class TestDataScrubber(unittest.TestCase):
         remove_missing_time_mock.assert_called_once_with(
             all_ratings_list=ratings_fixture_bad_data()[0:2]
         )
+
+        manual_override_mock.assert_called()
 
 
     def test_manual_skip_date(self):
