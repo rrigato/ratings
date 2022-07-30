@@ -1,0 +1,714 @@
+[
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "234",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "190",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "167",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "138",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "131",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "116",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "103",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "66",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.02",
+        "RATINGS_OCCURRED_ON": "2022-07-23"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "223",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "184",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "155",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "131",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.06",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "130",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.06",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "139",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "124",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "86",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.03",
+        "RATINGS_OCCURRED_ON": "2022-07-16"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "287",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.15",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "210",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "169",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "152",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "133",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "125",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "102",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "115",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.06",
+        "RATINGS_OCCURRED_ON": "2022-07-09"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "214",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "TOTAL_VIEWERS_AGE_18_49": "112",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "142",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "TOTAL_VIEWERS_AGE_18_49": "71",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "137",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "TOTAL_VIEWERS_AGE_18_49": "70",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "102",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "TOTAL_VIEWERS_AGE_18_49": "56",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "87",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "TOTAL_VIEWERS_AGE_18_49": "50",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "81",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.03",
+        "TOTAL_VIEWERS_AGE_18_49": "45",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "83",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.03",
+        "TOTAL_VIEWERS_AGE_18_49": "40",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "98",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "TOTAL_VIEWERS_AGE_18_49": "46",
+        "RATINGS_OCCURRED_ON": "2022-07-02"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "264",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.12",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "199",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "175",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "147",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.06",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "122",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "121",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "103",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "74",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-06-25"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "184",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "152",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "117",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "109",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "93",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "84",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "90",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.04",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "89",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-18"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "355",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.17",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Assassination Classroom",
+        "TOTAL_VIEWERS": "299",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.13",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "197",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "178",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "181",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "163",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "116",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "104",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.03",
+        "RATINGS_OCCURRED_ON": "2022-06-11"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "348",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.17",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Assassination Classroom",
+        "TOTAL_VIEWERS": "291",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.13",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "255",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.11",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "226",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.11",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "190",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "173",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "168",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "138",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-06-04"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "293",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.14",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Assassination Classroom",
+        "TOTAL_VIEWERS": "255",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.12",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "213",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.11",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "203",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.11",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "184",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "151",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "140",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "128",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-05-28"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "325",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.15",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Assassination Classroom",
+        "TOTAL_VIEWERS": "263",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.12",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "240",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.12",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "198",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "172",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "142",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "116",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.06",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "114",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-05-21"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:00a",
+        "SHOW": "Primal",
+        "TOTAL_VIEWERS": "287",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.14",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "12:30a",
+        "SHOW": "Assassination Classroom",
+        "TOTAL_VIEWERS": "217",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.10",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:00a",
+        "SHOW": "Lupin the 3rd Part 6",
+        "TOTAL_VIEWERS": "184",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "1:30a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "178",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.09",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:00a",
+        "SHOW": "One Piece",
+        "TOTAL_VIEWERS": "166",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.08",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "2:30a",
+        "SHOW": "Naruto Shippuden",
+        "TOTAL_VIEWERS": "142",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.07",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:00a",
+        "SHOW": "Shenmue",
+        "TOTAL_VIEWERS": "129",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    },
+    {
+        "YEAR": 2022,
+        "TIME": "3:30a",
+        "SHOW": "Attack on Titan",
+        "TOTAL_VIEWERS": "111",
+        "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.05",
+        "RATINGS_OCCURRED_ON": "2022-05-14"
+    }
+]
