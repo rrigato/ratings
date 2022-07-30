@@ -144,6 +144,7 @@ class MyTest(unittest.TestCase):
 
         clean_ratings_distinct_times = []
         original_ratings_clean_times = []
+
         for mock_clean_ratings, mock_original_ratings in zip(
             mock_ratings_list, ratings_fixture_2022_07_23()):
             if (mock_clean_ratings["RATINGS_OCCURRED_ON"] 

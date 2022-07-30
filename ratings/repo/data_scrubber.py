@@ -86,7 +86,13 @@ def _manual_override_by_date(date_to_override: str,
 
     for tv_rating in all_ratings_list:
         if tv_rating["RATINGS_OCCURRED_ON"] == date_to_override:
-            override_count += 1
+            if tv_rating["TOTAL_VIEWERS"] == "234":
+                if tv_rating["TIME"] == "12:00a":
+                    logging.info(f"""
+                    _manual_override_by_date - override {tv_rating["TIME"]}
+                    to 11:30p
+                    """)
+                    tv_rating["TIME"] = "11:30p"
 
     logging.info("_manual_override_by_date - override_count " + str(override_count))
 
