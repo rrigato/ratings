@@ -13,7 +13,8 @@ cp scripts/reddit_ratings.py deployment
 
 cd deployment
 
-zip -r9 built_lambda.zip .
+zip -r9 built_lambda.zip . \
+-x *__pycache__* --quiet
 
 cd ..
 
@@ -26,3 +27,9 @@ aws lambda update-function-configuration --region us-east-1 \
 --function-name $LAMBDA_FUNCTION_NAME \
 --handler "reddit_ratings.lambda_handler" \
 --no-cli-pager
+
+#cleanup
+rm -r deployment
+
+
+echo "---------------deployment complete----------------"

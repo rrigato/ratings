@@ -90,9 +90,9 @@ def _manual_override_by_date(date_to_override: str,
                 if tv_rating["TIME"] == "12:00a":
                     logging.info(f"""
                     _manual_override_by_date - override {tv_rating["TIME"]}
-                    to 11:30p
+                    to 11:30
                     """)
-                    tv_rating["TIME"] = "11:30p"
+                    tv_rating["TIME"] = "11:30"
 
     logging.info("_manual_override_by_date - override_count " + str(override_count))
 
@@ -159,4 +159,13 @@ def data_override_factory(all_ratings_list):
     _remove_missing_time(all_ratings_list=all_ratings_list)
 
     logging.info("data_override_factory - _remove_missing_time - " + str(len(all_ratings_list)))
+
+    _manual_override_by_date(
+        date_to_override="2022-07-23",
+        all_ratings_list=all_ratings_list
+    )
+
+    logging.info("data_override_factory - _manual_override_by_date - " + 
+        str(len(all_ratings_list))
+    )
 
