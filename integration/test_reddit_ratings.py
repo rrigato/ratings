@@ -11,6 +11,45 @@ import unittest
 class IntegrationRedditApi(unittest.TestCase):
     """Integration test for the reddit api pull
     """    
+    @classmethod
+    def setUpClass(cls):
+        """Unitest function that is run once for the class
+
+        """
+        '''
+            How many news posts the client main function is using
+        '''
+        cls.MAIN_FUNCTION_POST_COUNT = 25
+        os.environ["DYNAMODB_TABLE_NAME"] = "dev_toonami_ratings"
+
+        os.environ["AWS_LAMBDA_FUNCTION_NAME"] = "dev-ratings-backend-lambda-poll"
+        
+        '''
+            Assigns a class attribute which is 
+            a dict that represents news posts
+        '''
+        with open("util/news_flair_fixture.json", "r") as news_flair:
+            cls.news_flair_fixture = json.load(news_flair)
+        
+        cls.oauth_token_fixture = {
+            "access_token": "FIXTURETOKEN123",
+            "token_type": "bearer",
+            "expires_in": 3600,
+            "scope": "*"
+        }
+
+        cls.valid_column_names = [
+            "PERCENTAGE_OF_HOUSEHOLDS",
+            "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+            "RATINGS_OCCURRED_ON",
+            "SHOW",
+            "TIME", 
+            "TOTAL_VIEWERS", 
+            "TOTAL_VIEWERS_AGE_18_49"
+
+        ]
+
+
     def test_get_client_secrets(self):
         """Integration test for the get_client_secrets function
 
