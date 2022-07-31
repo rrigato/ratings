@@ -16,7 +16,7 @@ from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
 
 class IntegrationRedditApi(unittest.TestCase):
     """Integration test for the reddit api pull
-    """
+    """    
     def test_get_client_secrets(self):
         """Integration test for the get_client_secrets function
 
