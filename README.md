@@ -18,7 +18,7 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
-      - [tests](#tests)
+      - [integration-tests](#integration-tests)
         - [util](#util)
   - [run_locally](#run_locally)
   - [unit-tests](#unit-tests)
@@ -139,18 +139,16 @@ ci.sh = miscellaneous awscli commands to configure environment
 - backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
 
 
-#### tests
+#### integration-tests
 
-- test_backup_dynamodb_ratings.py = Unit tests for adhoc dynamodb backups
 
-- test_dev_ratings_backend.py = end-to-end dev tests backend television ratings validation
+- test_dev_ratings_backend.py = end-to-end dev tests used by 
+  - builds/buildspec_dev_backend.yml
 
-- test_dev_security.py = static code security analysis for secrets entering code
+- test_prod_ratings_backend.py = end-to-end prod validation used by
+  - builds/buildspec_prod.yml
 
-- test_prod_ratings_backend.py = end-to-end prod backend television ratings validation
-
-- test_reddit_ratings.py = tests logic for making api call to
-return television ratings
+- test_reddit_ratings.py = local integration tests
 
 
 
@@ -167,10 +165,10 @@ https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&re
 
 ## run_locally
 
-To run locally you need the ```AWS_LAMBDA_FUNCTION_NAME``` and ```BUILD_ENVIRONMENT``` variables
+```scripts.reddit_ratings``` = To run locally you need the ```AWS_LAMBDA_FUNCTION_NAME``` and ```BUILD_ENVIRONMENT``` variables
 
 
 ## unit-tests
 ```bash
-python -m unittest tests.test_backup_dynamodb_ratings
+python -m unittest
 ```
