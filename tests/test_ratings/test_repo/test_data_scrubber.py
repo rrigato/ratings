@@ -3,17 +3,17 @@ import unittest
 
 from fixtures.get_all_ratings_list import ratings_fixture_2022_07_23
 
-@unittest.skip("TODO")
+
 class TestDataScrubber(unittest.TestCase):
 
-    @patch("ratings.repo.data_scrubber._manual_override_mock")
+    @patch("ratings.repo.data_scrubber._manual_override_by_date")
     @patch("ratings.repo.data_scrubber._remove_missing_time")
     @patch("ratings.repo.data_scrubber._override_ratings_occurred_on")
     @patch("ratings.repo.data_scrubber._manual_skip_date")
     def test_data_override_factory(self, manual_skip_date_mock: MagicMock, 
         override_ratings_occurred_on_mock: MagicMock, 
         remove_missing_time_mock: MagicMock,
-        manual_override_mock: MagicMock):
+        manual_override_by_date_mock: MagicMock):
         """Tests outgoing private cleaning scrubbers call args"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data
         from ratings.repo.data_scrubber import data_override_factory
@@ -37,7 +37,7 @@ class TestDataScrubber(unittest.TestCase):
             all_ratings_list=ratings_fixture_bad_data()[0:2]
         )
 
-        manual_override_mock.assert_called()
+        manual_override_by_date_mock.assert_called()
 
 
     def test_manual_skip_date(self):
@@ -131,7 +131,6 @@ class TestDataScrubber(unittest.TestCase):
         )
 
 
-class MyTest(unittest.TestCase):
     def test_manual_override_by_date_of_night(self):
         """2022-07-23 incorrectly had two premiere times of 12:00am"""
         from fixtures.get_all_ratings_list import ratings_fixture_bad_data

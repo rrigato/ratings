@@ -4,7 +4,7 @@ from typing import Union
 import json
 
 
-def ratings_fixture_bad_data():
+def ratings_fixture_bad_data() -> list[dict[str, Union[str, int]]]:
     """Fixture of bad data from production ratings source in 2022 Q1
     
         Returns
