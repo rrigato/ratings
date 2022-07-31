@@ -17,8 +17,9 @@ fi
 python -m unittest -k tests.test_ratings
 
 
-pip install --target ./deployment requests
-pip install --target ./deployment bs4
+pip install --target ./deployment \
+-r requirements/requirements-bundle.txt
+
 
 cp -r ratings deployment
 cp scripts/reddit_ratings.py deployment
