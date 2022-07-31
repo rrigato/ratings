@@ -5,6 +5,18 @@ set -e
 
 LAMBDA_FUNCTION_NAME="prod-ratings-backend-lambda-poll"
 
+secret_scan_results=$(detect-secrets scan | \
+python3 -c "import sys, json; print(json.load(sys.stdin)['results'])" )
+
+# static scan for security credentials that terminates if any secrets are found
+if [ "${secret_scan_results}" != "{}" ]; then
+    echo "detect-secrets scan failed"
+    exit 125
+fi
+
+python -m unittest -k tests.test_ratings
+
+
 pip install --target ./deployment requests
 pip install --target ./deployment bs4
 
@@ -35,5 +47,6 @@ aws lambda update-function-code --region us-east-1 \
 #cleanup
 rm -r deployment
 
+git push origin master
 
 echo "---------------deployment complete----------------"
