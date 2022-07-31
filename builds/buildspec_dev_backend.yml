@@ -51,11 +51,7 @@ phases:
 
 
       #Running reddit rating tests
-      - python -m unittest tests/test_reddit_ratings.py
-
-      #running dynamodb backup unit tests
-      - python -m unittest tests.test_backup_dynamodb_ratings.LambdaHandler
-      - python -m unittest tests.test_backup_dynamodb_ratings.BackupDynamoDbUnit
+      - python -m unittest -k tests.test_ratings
 
       #Creating Deployment package for lambda dependencies
       - mkdir deploypkg
@@ -136,7 +132,7 @@ phases:
         "${BACKUP_DYNAMODB_FUNCTION_NAME}_output.json"
 
 
-      - python -m unittest tests/test_dev_ratings_backend.py
+      - python -m unittest integration/test_dev_ratings_backend.py
 
   post_build:
     commands:
