@@ -38,12 +38,20 @@ aws lambda update-function-configuration --region us-east-1 \
 --no-cli-pager \
 --handler "reddit_ratings.lambda_handler" 
 
+aws lambda wait function-updated --region us-east-1 \
+--function-name $LAMBDA_FUNCTION_NAME
+
 echo "---------------completed handler update---------------------"
 
 aws lambda update-function-code --region us-east-1 \
 --function-name $LAMBDA_FUNCTION_NAME \
 --no-cli-pager \
 --zip-file fileb://deployment/built_lambda.zip
+
+aws lambda wait function-updated --region us-east-1 \
+--function-name $LAMBDA_FUNCTION_NAME
+
+
 
 #cleanup
 rm -r deployment
