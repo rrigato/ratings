@@ -26,7 +26,7 @@ phases:
       - LAMBDA_FUNCTION_NAME="${BUILD_ENVIRONMENT}-backend-lambda-poll"
       - RATINGS_UPDATE_STACK="${BUILD_ENVIRONMENT}-backend"           
       - REPO_NAME=ratings
-      - pip install -r tests/requirements_prod.txt
+      - pip install -r requirements/requirements-prod.txt
       - ls -l
     finally:
 

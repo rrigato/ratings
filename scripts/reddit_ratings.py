@@ -1,7 +1,6 @@
 from boto3.dynamodb import conditions
 from bs4 import BeautifulSoup
 from datetime import datetime
-from dateutil import parser
 from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
 from ratings.repo.name_mapper import get_table_column_name_mapping
