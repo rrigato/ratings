@@ -14,7 +14,7 @@ if [ "${secret_scan_results}" != "{}" ]; then
     exit 125
 fi
 
-python -m unittest -k tests.test_ratings
+python -m unittest
 
 
 pip install --target ./deployment \
