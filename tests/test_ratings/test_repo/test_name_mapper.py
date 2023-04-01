@@ -36,12 +36,22 @@ class TestNameMapper(unittest.TestCase):
         )    
 
 
-    def test_get_table_column_name_mappingtimeslot(self):
+    def test_get_table_column_name_mapping_timeslot(self):
         """Bug where timeslot is not mapped"""
         from ratings.repo.name_mapper import get_table_column_name_mapping
 
         self.assertEqual(
             type(get_table_column_name_mapping()["timeslot"]),
+            str
+        )    
+
+
+    def test_get_table_column_name_mapping_rating(self):
+        """Bug where rating is not mapped"""
+        from ratings.repo.name_mapper import get_table_column_name_mapping
+
+        self.assertEqual(
+            type(get_table_column_name_mapping()["rating"]),
             str
         )    
 

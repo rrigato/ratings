@@ -1,3 +1,4 @@
+from typing import Dict, List
 from boto3.dynamodb import conditions
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -697,7 +698,8 @@ def ratings_iteration(number_posts=10):
                 ratings_post_list[len(ratings_post_list) - 1]
                 ]["data"]["name"]
 
-def dict_key_mapping(pre_clean_ratings_keys):
+def dict_key_mapping(
+        pre_clean_ratings_keys: List[Dict]):
     """Maps inconsistent source data to column names for dynamodb
 
         Parameters
@@ -763,7 +765,9 @@ def dict_key_mapping(pre_clean_ratings_keys):
                     in key_to_dynamo_column_map to dict_to_clean
                 '''
 
-                dict_to_clean[key_to_dynamo_column_map[clean_ratings_key]] =  dict_to_clean.pop(
+                dict_to_clean[
+                    key_to_dynamo_column_map[clean_ratings_key]
+                ] =  dict_to_clean.pop(
                     original_key
                 )
         '''
