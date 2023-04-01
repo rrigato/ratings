@@ -9,18 +9,18 @@ This application creates a lambda function that polls the reddit api to retrieve
 
 
 - [ratings](#ratings)
-  - [table_of_contents](#table_of_contents)
-    - [dev_tools](#dev_tools)
-      - [detect_secrets](#detect_secrets)
-      - [git_secrets](#git_secrets)
-    - [project_directory_overview](#project_directory_overview)
+  - [table\_of\_contents](#table_of_contents)
+    - [dev\_tools](#dev_tools)
+      - [detect\_secrets](#detect_secrets)
+      - [git\_secrets](#git_secrets)
+    - [project\_directory\_overview](#project_directory_overview)
       - [builds](#builds)
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
       - [integration-tests](#integration-tests)
         - [util](#util)
-  - [run_locally](#run_locally)
+  - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
 
 
@@ -165,7 +165,14 @@ https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&re
 
 ## run_locally
 
-```scripts.reddit_ratings``` = To run locally you need the ```AWS_LAMBDA_FUNCTION_NAME``` and ```BUILD_ENVIRONMENT``` variables
+
+```bash
+#I know, I know, this was build before I knew better
+export AWS_LAMBDA_FUNCTION_NAME="dev-ratings-backend-lambda-poll"
+export BUILD_ENVIRONMENT="dev"
+
+python -m scripts.reddit_ratings
+```
 
 
 ## unit-tests
