@@ -701,44 +701,48 @@ def ratings_iteration(number_posts=10):
 
 def _standardize_key_name(
         dict_to_clean: Dict[str, Union[str, int]]
-    ) -> Dict:
+    ) -> None:
     """Mutates key names for dict_to_clean 
     to align with dict_key_mapping return value"""
     '''
             Iterates over all keys in each dict
     '''
-    for original_key in list(dict_to_clean.keys()):
+    for user_input_key in list(dict_to_clean.keys()):
         '''
-                lower caseing and removing trailing/leading 
-                spaces for comparison
-            '''
-        clean_ratings_key = original_key.lower().strip()
+            lower caseing and removing trailing/leading 
+            spaces for comparison
         '''
-                If the key is already a valid output column 
-                name we do nothing
+        clean_ratings_key = user_input_key.lower().strip()
+        
+        if clean_ratings_key in get_table_column_name_mapping(
+        ).values():
+            return(None)
+        
+        if clean_ratings_key in get_table_column_name_mapping().keys():
             '''
-        if original_key in list(
-            get_table_column_name_mapping().values()
-        ):
-            pass
-        else:
-            '''
-                    static mapping to standardize dynamodb
-                    keys that removes old key and adds the correct dynamo
-                    column name mapping
-                    original_key will be one of the keys in key_to_dynamo_column_map
-                    Will pop (remove) that key from original dict and 
-                    assign the corresponding value for original_key 
-                    in key_to_dynamo_column_map to dict_to_clean
-                '''
-
+                pops old key value from dict_to_clean
+                and adds the correct dynamo
+                column name mapping
+                user_input_key will be one of the keys in 
+                get_table_column_name_mapping
+                assign the corresponding value for user_input_key 
+                in get_table_column_name_mapping to dict_to_clean
+            '''            
             dict_to_clean[
                     get_table_column_name_mapping()[
                         clean_ratings_key
                     ]
                 ] =  dict_to_clean.pop(
-                    original_key
+                    user_input_key
                 )
+                
+        
+        
+        if clean_ratings_key not in get_table_column_name_mapping(
+        ).keys():
+            raise KeyError(f"_standardize_key_name - "+
+            f" No match for {clean_ratings_key}")
+            
 
 
 def dict_key_mapping(
@@ -777,7 +781,7 @@ def dict_key_mapping(
         KeyError :
             KeyError is raised if the keys for a dict
             in pre_clean_ratings_keys cannot be mapped 
-            back to a dynamodb column listed in key_to_dynamo_column_map
+            back to a dynamodb column listed in get_table_column_name_mapping
     """
 
     clean_ratings_columns = []
