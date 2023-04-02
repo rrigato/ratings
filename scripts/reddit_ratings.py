@@ -714,20 +714,19 @@ def _standardize_key_name(
         '''
         clean_ratings_key = user_input_key.lower().strip()
         
-        if clean_ratings_key in get_table_column_name_mapping(
+        '''Do nothing if we match the correct column names'''
+        if user_input_key in get_table_column_name_mapping(
         ).values():
             return(None)
-        
+        '''
+            pops old key value from dict_to_clean
+            and adds the correct dynamo
+            column name mapping
+            user_input_key will be one of the keys in 
+            get_table_column_name_mapping
+        '''            
         if clean_ratings_key in get_table_column_name_mapping().keys():
-            '''
-                pops old key value from dict_to_clean
-                and adds the correct dynamo
-                column name mapping
-                user_input_key will be one of the keys in 
-                get_table_column_name_mapping
-                assign the corresponding value for user_input_key 
-                in get_table_column_name_mapping to dict_to_clean
-            '''            
+            
             dict_to_clean[
                     get_table_column_name_mapping()[
                         clean_ratings_key
