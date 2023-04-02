@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 from boto3.dynamodb import conditions
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -698,18 +698,64 @@ def ratings_iteration(number_posts=10):
                 ratings_post_list[len(ratings_post_list) - 1]
                 ]["data"]["name"]
 
+
+def _standardize_key_name(
+        dict_to_clean: Dict[str, Union[str, int]]
+    ) -> Dict:
+    """Mutates key names for dict_to_clean 
+    to align with dict_key_mapping return value"""
+    '''
+            Iterates over all keys in each dict
+    '''
+    for original_key in list(dict_to_clean.keys()):
+        '''
+                lower caseing and removing trailing/leading 
+                spaces for comparison
+            '''
+        clean_ratings_key = original_key.lower().strip()
+        '''
+                If the key is already a valid output column 
+                name we do nothing
+            '''
+        if original_key in list(
+            get_table_column_name_mapping().values()
+        ):
+            pass
+        else:
+            '''
+                    static mapping to standardize dynamodb
+                    keys that removes old key and adds the correct dynamo
+                    column name mapping
+                    original_key will be one of the keys in key_to_dynamo_column_map
+                    Will pop (remove) that key from original dict and 
+                    assign the corresponding value for original_key 
+                    in key_to_dynamo_column_map to dict_to_clean
+                '''
+
+            dict_to_clean[
+                    get_table_column_name_mapping()[
+                        clean_ratings_key
+                    ]
+                ] =  dict_to_clean.pop(
+                    original_key
+                )
+
+
 def dict_key_mapping(
-        pre_clean_ratings_keys: List[Dict]):
+        pre_clean_ratings_keys: List[Dict]
+        ) -> List[Dict[str, Union[str, int]]]:
     """Maps inconsistent source data to column names for dynamodb
 
         Parameters
         ----------
-        pre_clean_ratings_keys : list
-            list of dict whose 
+        pre_clean_ratings_keys
+            refer to keys of get_table_column_name_mapping return
+            value for potential key names since this is user input data
+            that can be highly inconsistent
 
         Returns
         -------
-        clean_ratings_columns : list
+        clean_ratings_columns
             list of dict with standardized column names
             matching one of the following:
             [
@@ -733,43 +779,10 @@ def dict_key_mapping(
             in pre_clean_ratings_keys cannot be mapped 
             back to a dynamodb column listed in key_to_dynamo_column_map
     """
-    key_to_dynamo_column_map = get_table_column_name_mapping()
 
     clean_ratings_columns = []
     for dict_to_clean in pre_clean_ratings_keys:
-        '''
-            Iterates over all keys in each dict
-        '''
-        for original_key in list(dict_to_clean.keys()):
-            '''
-                lower caseing and removing trailing/leading 
-                spaces for comparison
-            '''
-            clean_ratings_key = original_key.lower().strip()
-            '''
-                If the key is already a valid output column 
-                name we do nothing
-            '''
-            if original_key in list(key_to_dynamo_column_map.values()):
-                pass
-            else:
-                '''
-                    static mapping to standardize dynamodb
-                    keys that removes old key and adds the correct dynamo
-                    column name mapping
-
-                    original_key will be one of the keys in key_to_dynamo_column_map
-
-                    Will pop (remove) that key from original dict and 
-                    assign the corresponding value for original_key 
-                    in key_to_dynamo_column_map to dict_to_clean
-                '''
-
-                dict_to_clean[
-                    key_to_dynamo_column_map[clean_ratings_key]
-                ] =  dict_to_clean.pop(
-                    original_key
-                )
+        _standardize_key_name(dict_to_clean)
         '''
             Append each cleaned dict
         '''
