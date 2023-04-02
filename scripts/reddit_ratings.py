@@ -1,18 +1,20 @@
-from typing import Dict, List, Optional, Union
-from boto3.dynamodb import conditions
-from bs4 import BeautifulSoup
-from datetime import datetime
-from dateutil import parser
-from ratings.repo.data_scrubber import data_override_factory
-from ratings.repo.excluded_ratings_titles import get_excluded_titles
-from ratings.repo.name_mapper import get_table_column_name_mapping
-
-import boto3
 import json
 import logging
 import math
 import os
+from datetime import datetime
+from typing import Dict, List, Optional, Union
+
+import boto3
 import requests
+from boto3.dynamodb import conditions
+from bs4 import BeautifulSoup
+from dateutil import parser
+
+from ratings.repo.data_scrubber import data_override_factory
+from ratings.repo.excluded_ratings_titles import get_excluded_titles
+from ratings.repo.name_mapper import (get_table_column_name_mapping,
+                                      keys_to_ignore)
 
 '''
     Special user agent that is recommended according to the
@@ -708,16 +710,22 @@ def _standardize_key_name(
             Iterates over all keys in each dict
     '''
     for user_input_key in list(dict_to_clean.keys()):
+        '''Do nothing if we match the correct column names'''
+        if user_input_key in get_table_column_name_mapping(
+        ).values():
+            return(None)
+
+
         '''
             lower caseing and removing trailing/leading 
             spaces for comparison
         '''
         clean_ratings_key = user_input_key.lower().strip()
         
-        '''Do nothing if we match the correct column names'''
-        if user_input_key in get_table_column_name_mapping(
-        ).values():
+        '''Do nothing if we if it is an excluded key'''
+        if clean_ratings_key in keys_to_ignore():
             return(None)
+
         '''
             pops old key value from dict_to_clean
             and adds the correct dynamo

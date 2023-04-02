@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import List
 
 def get_table_column_name_mapping():
     """Ratings post column name to dynamodb mapping logic
@@ -34,3 +35,12 @@ def get_table_column_name_mapping():
 
         }
     ))
+
+
+def keys_to_ignore() -> List[str]:
+    """user input keys to ignore
+    """
+    return([
+        "rank (/150)"
+    ])
+

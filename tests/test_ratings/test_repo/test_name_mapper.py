@@ -55,3 +55,17 @@ class TestNameMapper(unittest.TestCase):
             str
         )    
 
+
+    def test_keys_to_ignore(self):
+        """Each column name mapping value for a ratings post is a str"""
+        from ratings.repo.name_mapper import keys_to_ignore
+        
+        self.assertGreater(
+            len(keys_to_ignore()),
+            0
+        )
+        for key_name in keys_to_ignore():
+            self.assertIsInstance(
+                key_name,
+                str
+            )
