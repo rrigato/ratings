@@ -120,3 +120,41 @@ class TelevisionRating:
                 "TelevisionRating - rating_year datatype" +
                 " must be a int")
         self._rating_year = rating_year
+
+
+class SecretConfig():
+    """Any secrets and environment config"""
+    def __init__(self):
+        """Initialize all attributes to None"""
+        self.reddit_client_secret = None
+        self.reddit_client_id = None
+
+    @property
+    def reddit_client_id(self) -> Optional[str]:
+        return(self._reddit_client_id)
+
+    @reddit_client_id.setter
+    def reddit_client_id(self, reddit_client_id: Optional[str]):
+        if type(reddit_client_id) not in (
+            str, type(None)):
+            raise TypeError(
+                "SecretConfig - reddit_client_id datatype " +
+                "must be a str or None"
+            )
+        self._reddit_client_id = reddit_client_id
+
+
+    @property
+    def reddit_client_secret(self) -> Optional[str]:
+        return(self._reddit_client_secret)
+
+    @reddit_client_secret.setter
+    def reddit_client_secret(self, reddit_client_secret: Optional[str]):
+        if type(reddit_client_secret) not in (
+            str, type(None)):
+            raise TypeError(
+                "SecretConfig - reddit_client_secret datatype " +
+                "must be a str or None"
+            )
+        self._reddit_client_secret = reddit_client_secret
+
