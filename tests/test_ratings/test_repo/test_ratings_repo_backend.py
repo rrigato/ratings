@@ -4,7 +4,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
     @unittest.skip("skipping for now")
     def test_ratings_from_internet(self):
         """Parsing of TelevisionRatings entities"""
-        from ratings.entities.entity_model import TelevisionRating
+        from ratings.entities.ratings_entities import TelevisionRating
         from ratings.repo.ratings_repo_backend import ratings_from_internet
         
 

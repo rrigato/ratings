@@ -4,7 +4,7 @@ class TestEntityModel(unittest.TestCase):
 
     def test_television_rating_bad_input_str_attributes(self):
         """TelevisionRating str attributes passed invalid input raises TypeError"""
-        from ratings.entities.entity_model import TelevisionRating
+        from ratings.entities.ratings_entities import TelevisionRating
 
         mock_invalid_types = [
             set(["a", "b"]),
@@ -29,7 +29,7 @@ class TestEntityModel(unittest.TestCase):
 
     def test_television_rating_bad_input_numeric_attributes(self):
         """TelevisionRating numeric attributes passed invalid input raises TypeError"""
-        from ratings.entities.entity_model import TelevisionRating
+        from ratings.entities.ratings_entities import TelevisionRating
 
         mock_invalid_types = [
             set(["a", "b"]),
@@ -63,7 +63,7 @@ class TestEntityModel(unittest.TestCase):
     def test_television_ratings_matches_fixture(self):
         """Each attribute in fixutre is a property for the entity"""
         from fixtures.ratings_fixtures import get_mock_television_ratings
-        from ratings.entities.entity_model import TelevisionRating
+        from ratings.entities.ratings_entities import TelevisionRating
 
 
         fixture_television_rating_attributes = [

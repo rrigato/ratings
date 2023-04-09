@@ -2,7 +2,7 @@ from copy import deepcopy
 from datetime import date
 from random import randint
 from random import paretovariate
-from ratings.entities.entity_model import TelevisionRating
+from ratings.entities.ratings_entities import TelevisionRating
 from typing import Union
 
 import json

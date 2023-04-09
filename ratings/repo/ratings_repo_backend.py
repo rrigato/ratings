@@ -2,7 +2,7 @@ from copy import deepcopy
 import logging
 from typing import List, Optional, Union
 
-from ratings.entities.entity_model import TelevisionRating
+from ratings.entities.ratings_entities import TelevisionRating
 
 
 def ratings_from_internet() -> Union[
