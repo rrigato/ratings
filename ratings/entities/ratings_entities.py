@@ -128,6 +128,8 @@ class SecretConfig():
         """Initialize all attributes to None"""
         self.reddit_client_secret = None
         self.reddit_client_id = None
+        self.reddit_password = None
+        self.reddit_username = None
 
     @property
     def reddit_client_id(self) -> Optional[str]:
@@ -157,4 +159,33 @@ class SecretConfig():
                 "must be a str or None"
             )
         self._reddit_client_secret = reddit_client_secret
+
+    @property
+    def reddit_password(self) -> Optional[str]:
+        return(self._reddit_password)
+
+    @reddit_password.setter
+    def reddit_password(self, reddit_password: Optional[str]):
+        if type(reddit_password) not in (
+            str, type(None)):
+            raise TypeError(
+                "SecretConfig - reddit_password datatype " +
+                "must be a str or None"
+            )
+        self._reddit_password = reddit_password
+
+
+    @property
+    def reddit_username(self) -> Optional[str]:
+        return(self._reddit_username)
+
+    @reddit_username.setter
+    def reddit_username(self, reddit_username: Optional[str]):
+        if type(reddit_username) not in (
+            str, type(None)):
+            raise TypeError(
+                "SecretConfig - reddit_username datatype " +
+                "must be a str or None"
+            )
+        self._reddit_username = reddit_username
 
