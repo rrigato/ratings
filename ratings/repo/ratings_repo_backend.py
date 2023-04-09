@@ -12,8 +12,5 @@ def ratings_from_internet() -> Union[
     None, None if no error but no TelevisionRating
     None, str if error
     """
-    logging.info(f"ratings_from_internet - invocation begin")
-    
-    logging.info(f"ratings_from_internet - invocation end")
     return(None)
 
