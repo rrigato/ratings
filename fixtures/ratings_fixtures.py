@@ -2,7 +2,7 @@ from copy import deepcopy
 from datetime import date
 from random import randint
 from random import paretovariate
-from ratings.entities.ratings_entities import TelevisionRating
+from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from typing import Union
 
 import json
@@ -41,4 +41,34 @@ def get_mock_television_ratings(number_of_ratings: int
 
     return(deepcopy(television_ratings_list))
 
+
+
+def mock_secret_config(
+    ) -> SecretConfig:
+    """Every attribute of the SecretConfig entity is populated
+    """
+    
+    
+    object_properties = [
+        attr_name for attr_name in dir(SecretConfig)
+        if not attr_name.startswith("_")
+    ]
+    
+    mock_entity = SecretConfig()
+
+    mock_entity.reddit_client_id = "mockclientid"
+    # pragma: allowlist nextline secret
+    mock_entity.reddit_client_secret = "mockvalue"    
+    # pragma: allowlist nextline secret
+    mock_entity.reddit_password = "mockvalue2"    
+    mock_entity.reddit_username = "mockvalue3"    
+
+    for object_property in object_properties:
+        assert getattr(
+            mock_entity, object_property
+        ) is not None, (
+            f"mock_secret_config = fixture missing {object_property}"
+        )
+    
+    return(deepcopy(mock_entity))
 

@@ -8,15 +8,6 @@ import boto3
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 
 
-def ratings_from_internet() -> Union[
-    Optional[List[TelevisionRating]], Optional[str]
-]:
-    """Returns List[TelevsionRating], None if success
-    None, None if no error but no TelevisionRating
-    None, str if error
-    """
-    return(None)
-
 def _populate_secret_config(sdk_response: Dict) -> SecretConfig:
     """https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/secretsmanager.html#SecretsManager.Client.get_secret_value
     """
@@ -68,4 +59,45 @@ def load_secret_config() -> Optional[SecretConfig]:
     except Exception as errror_suppression:
         logging.exception(errror_suppression)
         return(None)
+
+
+
+def ratings_from_internet() -> Union[
+    Optional[List[TelevisionRating]], Optional[str]
+]:
+    """Returns List[TelevsionRating], None if success
+    None, None if no error but no TelevisionRating
+    None, str if error
+    """
+    secret_config = load_secret_config()
+
+    if secret_config is None:
+        logging.info(
+            f"ratings_from_internet - secret retrieval error")
+        return(None, "secret retrieval error")
+
+    logging.info(
+        f"ratings_from_internet - obtained secret_config"
+    )
+
+
+    return([], None)
+
+
+
+
+if __name__ == "__main__":
+    import logging
+    import os
+    from time import strftime
+    os.environ["AWS_REGION"] = "us-east-1"
+    logging.basicConfig(
+        format=("%(levelname)s | %(asctime)s.%(msecs)03d" +
+            strftime("%z") + " | %(message)s"
+        ),
+        datefmt="%Y-%m-%dT%H:%M:%S", 
+        level=logging.INFO
+    )
+    tv_ratings, retreival_error = ratings_from_internet()
+
 

@@ -1,15 +1,24 @@
-from copy import deepcopy
 import json
 import unittest
+from copy import deepcopy
 from unittest.mock import MagicMock, patch
 
+from fixtures.ratings_fixtures import mock_secret_config
+
+
 class TestRatingsRepoBackend(unittest.TestCase):
-    @unittest.skip("skipping for now")
-    def test_ratings_from_internet(self):
+
+    @patch("ratings.repo.ratings_repo_backend.load_secret_config")
+    def test_ratings_from_internet(
+        self,
+        load_secret_config: MagicMock
+        ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
         from ratings.repo.ratings_repo_backend import ratings_from_internet
-        
+
+        load_secret_config.return_value = mock_secret_config()        
+
 
         television_ratings, unexpected_error = ratings_from_internet()
 
@@ -19,6 +28,9 @@ class TestRatingsRepoBackend(unittest.TestCase):
                 television_rating, TelevisionRating
             )
         self.assertIsNone(unexpected_error)
+        '''TODO - remove coupled test'''
+        load_secret_config.assert_called()
+
 
     @patch("boto3.client")
     def test_load_secret_config(self, 

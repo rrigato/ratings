@@ -7,7 +7,7 @@
             "python": "${workspaceFolder}/avenv/bin/python",
             "type": "python",
             "request": "launch",
-            "module": "scripts.reddit_ratings"
+            "module": "ratings.repo.ratings_repo_backend"
         }
     ]
 }
