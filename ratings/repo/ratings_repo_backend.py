@@ -2,6 +2,7 @@ import json
 import logging
 from copy import deepcopy
 from typing import Dict, List, Optional, Union
+from urllib.request import Request
 
 import boto3
 
@@ -59,6 +60,19 @@ def load_secret_config() -> Optional[SecretConfig]:
     except Exception as errror_suppression:
         logging.exception(errror_suppression)
         return(None)
+
+
+
+def _orchestrate_http_request(
+    secret_config: SecretConfig
+    ) -> Dict:
+    """creates http api request and returns
+    dict
+    """
+    logging.info(f"_orchestrate_http_request - invocation begin")
+    Request("")
+    logging.info(f"_orchestrate_http_request - invocation end")
+    return(None)
 
 
 

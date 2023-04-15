@@ -2,22 +2,28 @@ import json
 import unittest
 from copy import deepcopy
 from unittest.mock import MagicMock, patch
+from urllib.request import Request
 
 from fixtures.ratings_fixtures import mock_secret_config
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
 
+    @patch("urllib.request.urlopen")
     @patch("ratings.repo.ratings_repo_backend.load_secret_config")
     def test_ratings_from_internet(
         self,
-        load_secret_config: MagicMock
+        load_secret_config_mock: MagicMock,
+        urlopen_mock: MagicMock
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
         from ratings.repo.ratings_repo_backend import ratings_from_internet
 
-        load_secret_config.return_value = mock_secret_config()        
+        load_secret_config_mock.return_value = mock_secret_config()        
+        urlopen_mock.return_value.__enter__.return_value = (
+            MagicMock
+        )
 
 
         television_ratings, unexpected_error = ratings_from_internet()
@@ -29,7 +35,9 @@ class TestRatingsRepoBackend(unittest.TestCase):
             )
         self.assertIsNone(unexpected_error)
         '''TODO - remove coupled test'''
-        load_secret_config.assert_called()
+        load_secret_config_mock.assert_called()
+        args, kwargs = urlopen_mock.call_args
+        self.assertIsInstance(args[0], Request)
 
 
     @patch("boto3.client")

@@ -56,6 +56,6 @@ aws lambda wait function-updated --region us-east-1 \
 #cleanup
 rm -r deployment
 
-git push origin master
+git push origin dev
 
 echo "---------------deployment complete----------------"
