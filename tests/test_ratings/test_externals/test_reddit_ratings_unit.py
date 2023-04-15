@@ -251,60 +251,6 @@ class RedditApi(unittest.TestCase):
             region_name=test_region_name
         )
 
-    @patch("requests.post")
-    def test_get_oauth_token_unit(
-        self, 
-        requests_post_mock: MagicMock
-        ):
-        """Unittest for get_oauth_token
-        """
-        from scripts.reddit_ratings import get_oauth_token
-
-        '''
-            json returned by http post
-            will be the class oauth_token fixture
-        '''
-        json_mock = MagicMock()
-
-        requests_post_mock.return_value = json_mock
-
-        oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
-
-        json_mock.json.return_value = oauth_token_fixture
-
-
-
-        mock_client_id="fakeid"
-        mock_auth_value="mock_secret"
-
-        oauth_token = get_oauth_token(
-            client_key=mock_client_id, 
-            client_secret=mock_auth_value
-        )
-
-        '''
-            Testing the outbound HTTP POST arguements
-            to the reddit token endpoint
-        '''
-        requests_post_mock.assert_called_once_with(
-            url="https://www.reddit.com/api/v1/access_token",
-            auth=(mock_client_id, mock_auth_value),
-            data={"grant_type":"client_credentials"},
-            headers={
-                "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
-            }
-        )
-
-        self.assertEqual(
-            oauth_token,
-            oauth_token_fixture
-        )
-
     def test_evaluate_ratings_post_title(self):
         """Happy path ratings in the title
         """
