@@ -63,58 +63,6 @@ def load_secret_config() -> Optional[SecretConfig]:
         return(None)
 
 
-
-def _orchestrate_http_request(
-    secret_config: SecretConfig
-    ) -> Dict:
-    """creates http api request and returns
-    dict
-    """
-    logging.info(f"_orchestrate_http_request - invocation begin")
-    Request("")
-    logging.info(f"_orchestrate_http_request - invocation end")
-    return(None)
-
-
-
-def ratings_from_internet() -> Union[
-    Optional[List[TelevisionRating]], Optional[str]
-]:
-    """Returns List[TelevsionRating], None if success
-    None, None if no error but no TelevisionRating
-    None, str if error
-    """
-    secret_config = load_secret_config()
-
-    if secret_config is None:
-        logging.info(
-            f"ratings_from_internet - secret retrieval error")
-        return(None, "secret retrieval error")
-
-    logging.info(
-        f"ratings_from_internet - obtained secret_config"
-    )
-
-
-    return([], None)
-
-
-
-
-if __name__ == "__main__":
-    import logging
-    import os
-    from time import strftime
-    os.environ["AWS_REGION"] = "us-east-1"
-    logging.basicConfig(
-        format=("%(levelname)s | %(asctime)s.%(msecs)03d" +
-            strftime("%z") + " | %(message)s"
-        ),
-        datefmt="%Y-%m-%dT%H:%M:%S", 
-        level=logging.INFO
-    )
-    tv_ratings, retreival_error = ratings_from_internet()
-
 '''
     Special user agent that is recommended according to the
     api docs
@@ -169,3 +117,64 @@ def get_oauth_token(
 
 
 
+def _orchestrate_http_request(
+    secret_config: SecretConfig
+    ) -> Dict:
+    """creates http api request and returns
+    dict
+    """
+    oauth_response = get_oauth_token(
+        secret_config.reddit_client_id,
+        secret_config.reddit_client_secret
+    )
+    logging.info(f"_orchestrate_http_request - oauth_response")
+    # Request("")
+
+    logging.info(f"_orchestrate_http_request - invocation end")
+    return(None)
+
+
+
+def ratings_from_internet() -> Union[
+    Optional[List[TelevisionRating]], Optional[str]
+]:
+    """Returns List[TelevsionRating], None if success
+    None, None if no error but no TelevisionRating
+    None, str if error
+    """
+    secret_config = load_secret_config()
+
+    if secret_config is None:
+        logging.info(
+            f"ratings_from_internet - secret retrieval error")
+        return(None, "secret retrieval error")
+
+    logging.info(
+        f"ratings_from_internet - obtained secret_config"
+    )
+
+    news_posts = _orchestrate_http_request(secret_config)
+
+
+    logging.info(
+        f"ratings_from_internet - obtained news_posts"
+    )
+
+    return([], None)
+
+
+
+
+if __name__ == "__main__":
+    import logging
+    import os
+    from time import strftime
+    os.environ["AWS_REGION"] = "us-east-1"
+    logging.basicConfig(
+        format=("%(levelname)s | %(asctime)s.%(msecs)03d" +
+            strftime("%z") + " | %(message)s"
+        ),
+        datefmt="%Y-%m-%dT%H:%M:%S", 
+        level=logging.INFO
+    )
+    tv_ratings, retreival_error = ratings_from_internet()
