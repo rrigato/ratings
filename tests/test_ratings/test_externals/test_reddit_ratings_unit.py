@@ -43,12 +43,6 @@ class RedditApi(unittest.TestCase):
         with open("util/news_flair_fixture.json", "r") as news_flair:
             cls.news_flair_fixture = json.load(news_flair)
         
-        cls.oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
 
         cls.valid_column_names = [
             "PERCENTAGE_OF_HOUSEHOLDS",
@@ -258,21 +252,12 @@ class RedditApi(unittest.TestCase):
         )
 
     @patch("requests.post")
-    def test_get_oauth_token_unit(self, requests_post_mock):
-        '''Unittest for get_oauth_token
-
-            Parameters
-            ----------
-            requests_post_mock : unittest.mock.MagicMock
-                Mock object used to patch http post to reddit
-                api client service
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
+    def test_get_oauth_token_unit(
+        self, 
+        requests_post_mock: MagicMock
+        ):
+        """Unittest for get_oauth_token
+        """
         from scripts.reddit_ratings import get_oauth_token
 
         '''
@@ -283,7 +268,14 @@ class RedditApi(unittest.TestCase):
 
         requests_post_mock.return_value = json_mock
 
-        json_mock.json.return_value = self.oauth_token_fixture
+        oauth_token_fixture = {
+            "access_token": "FIXTURETOKEN123",
+            "token_type": "bearer",
+            "expires_in": 3600,
+            "scope": "*"
+        }
+
+        json_mock.json.return_value = oauth_token_fixture
 
 
 
@@ -310,7 +302,7 @@ class RedditApi(unittest.TestCase):
 
         self.assertEqual(
             oauth_token,
-            self.oauth_token_fixture
+            oauth_token_fixture
         )
 
     def test_evaluate_ratings_post_title(self):
