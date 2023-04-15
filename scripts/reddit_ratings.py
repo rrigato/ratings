@@ -15,14 +15,7 @@ from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
 from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
-
-'''
-    Special user agent that is recommended according to the
-    api docs
-    <platform>:<app ID>:<version string> (by /u/<reddit username>)
-'''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
-
+from ratings.repo.ratings_repo_backend import REDDIT_USER_AGENT
 
 def get_logger(working_directory=os.getcwd()):
     """Sets up logger

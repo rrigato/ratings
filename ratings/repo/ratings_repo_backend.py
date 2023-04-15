@@ -114,4 +114,11 @@ if __name__ == "__main__":
     )
     tv_ratings, retreival_error = ratings_from_internet()
 
+'''
+    Special user agent that is recommended according to the
+    api docs
+    <platform>:<app ID>:<version string> (by /u/<reddit username>)
+'''
+REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+
 
