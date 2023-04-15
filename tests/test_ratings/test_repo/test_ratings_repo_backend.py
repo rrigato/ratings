@@ -118,7 +118,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
         requests_post_mock: MagicMock
         ):
         """oauth_token returned"""
-        from scripts.reddit_ratings import get_oauth_token
+        from ratings.repo.ratings_repo_backend import get_oauth_token
 
         '''
             json returned by http post

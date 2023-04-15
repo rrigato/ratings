@@ -200,7 +200,7 @@ class IntegrationRedditApi(unittest.TestCase):
             ------
         """
 
-        from scripts.reddit_ratings import get_oauth_token
+        from ratings.repo.ratings_repo_backend import get_oauth_token
         from scripts.reddit_ratings import get_client_secrets
         reddit_client_key, reddit_client_secret = get_client_secrets()
 

@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Union
 from urllib.request import Request
 
 import boto3
+import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 
@@ -120,5 +121,55 @@ if __name__ == "__main__":
     <platform>:<app ID>:<version string> (by /u/<reddit username>)
 '''
 REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+
+
+def get_oauth_token(
+        client_key: str, client_secret: str
+    )-> Dict[str, Union[str, int]]:
+    """Gets an Oath token from the reddit API
+        Parameters
+        ----------
+        client_key
+            Key for the reddit api
+        client_secret
+            Secret for the reddit api
+        Returns
+        -------
+        oauth_token : dict
+            Dictionary with the oauth_token and expires_in
+            keys. Ex:
+            {
+                "access_token": "<token_value>",
+                "token_type": "bearer",
+                "expires_in": 3600,
+                "scope": "*"
+            }
+    """
+    '''
+        user agent specification outlined here:
+        https://github.com/reddit-archive/reddit/wiki/API
+    '''
+    reddit_headers = {
+        "user-agent": REDDIT_USER_AGENT
+    }
+    logging.info("Custom Headers: ")
+    logging.info(reddit_headers)
+    '''
+        grant_type=client_credentials is
+        x-www-form-urlencoded which is what indicates
+        this is a application only with no
+        user sign in
+        auth basic auth where key is reddit client key
+        and password is reddit client secret
+    '''
+    oauth_token = requests.post(
+        url="https://www.reddit.com/api/v1/access_token",
+        auth=(client_key, client_secret),
+        data={"grant_type":"client_credentials"},
+        headers=reddit_headers
+    )
+
+    return(oauth_token.json())
+
 
 

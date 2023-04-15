@@ -16,6 +16,7 @@ from ratings.repo.excluded_ratings_titles import get_excluded_titles
 from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
 from ratings.repo.ratings_repo_backend import REDDIT_USER_AGENT
+from ratings.repo.ratings_repo_backend import get_oauth_token
 
 def get_logger(working_directory=os.getcwd()):
     """Sets up logger
@@ -143,58 +144,6 @@ def get_client_secrets(region_name="us-east-1"):
         client_secrets_dict["reddit_api_secret"]
     )
 
-
-def get_oauth_token(client_key, client_secret):
-    """Gets an Oath token from the reddit API
-
-        Parameters
-        ----------
-        client_key : str
-            Key for the reddit api
-
-        client_secret : str
-            Secret for the reddit api
-
-        Returns
-        -------
-        oauth_token : dict
-            Dictionary with the oauth_token and expires_in
-            keys. Ex:
-            {
-                "access_token": "<token_value>",
-                "token_type": "bearer",
-                "expires_in": 3600,
-                "scope": "*"
-            }
-
-        Raises
-        ------
-    """
-    '''
-        user agent specification outlined here:
-        https://github.com/reddit-archive/reddit/wiki/API
-    '''
-    reddit_headers = {
-        "user-agent": REDDIT_USER_AGENT
-    }
-    logging.info("Custom Headers: ")
-    logging.info(reddit_headers)
-    '''
-        grant_type=client_credentials is
-        x-www-form-urlencoded which is what indicates
-        this is a application only with no
-        user sign in
-        auth basic auth where key is reddit client key
-        and password is reddit client secret
-    '''
-    oauth_token = requests.post(
-        url="https://www.reddit.com/api/v1/access_token",
-        auth=(client_key, client_secret),
-        data={"grant_type":"client_credentials"},
-        headers=reddit_headers
-    )
-    
-    return(oauth_token.json())
 
 def get_news_flair(access_token,
     posts_to_return, fullname_after=None):
