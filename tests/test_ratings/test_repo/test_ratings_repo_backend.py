@@ -4,7 +4,8 @@ from copy import deepcopy
 from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from fixtures.ratings_fixtures import mock_secret_config
+from fixtures.ratings_fixtures import (mock_oauth_token_response,
+                                       mock_secret_config)
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -128,14 +129,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
         requests_post_mock.return_value = json_mock
 
-        oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
-
-        json_mock.json.return_value = oauth_token_fixture
+        json_mock.json.return_value = mock_oauth_token_response()
 
 
 
@@ -162,6 +156,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
         self.assertEqual(
             oauth_token,
-            oauth_token_fixture
+            mock_oauth_token_response()
         )
 
