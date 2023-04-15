@@ -145,10 +145,6 @@ def get_oauth_token(
                 "scope": "*"
             }
     """
-    '''
-        user agent specification outlined here:
-        https://github.com/reddit-archive/reddit/wiki/API
-    '''
     reddit_headers = {
         "user-agent": REDDIT_USER_AGENT
     }
