@@ -120,22 +120,25 @@ def get_oauth_token(
 
 
 
-def _evaluate_ratings_post_title(ratings_title):
+def _evaluate_ratings_post_title(
+        ratings_title: str) -> bool:
     """Validates whether the post is a television post
     based on the title
         Parameters
         ----------
-        ratings_title : str
+        ratings_title
             title of reddit post
         Returns
         -------
-        valid_ratings_post : bool
-            True if ratings_title includes the string
+        True if ratings_title includes the string
             ratings and if it is not in the excluded
             ratings list
     """
     if ratings_title in get_excluded_titles():
-        logging.debug("_evaluate_ratings_post_title - get_excluded_titles guard condition")
+        logging.info("_evaluate_ratings_post_title - " +
+                     "get_excluded_titles - " +
+                     ratings_title
+                )
         return(False)
 
     return(ratings_title.lower().find("ratings") != (-1))
