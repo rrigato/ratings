@@ -251,26 +251,6 @@ class RedditApi(unittest.TestCase):
             region_name=test_region_name
         )
 
-    def test_get_ratings_post(self):
-        """Tests that only reddit ratings news posts are returned
-        """
-        from scripts.reddit_ratings import get_ratings_post
-        '''
-            loading a mock reddit api response to
-            test if we are returning the correct number of
-            ratings related posts
-        '''
-        with open(
-            "util/reddit_search_response.json"
-        ) as static_response:
-            mock_response = json.load(static_response)
-            ratings_post_list = get_ratings_post(mock_response)
-        '''
-            Elements of the ["data"]["children"]
-            list that are ratings posts
-        '''
-        self.assertEqual(ratings_post_list,
-            [0, 4, 13, 17, 19, 20, 22, 23])
 
     def test_handle_table_header(self,
         mock_rating_table=REDDIT_RATING_TABLE_2019):

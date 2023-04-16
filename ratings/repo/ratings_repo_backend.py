@@ -119,7 +119,6 @@ def get_oauth_token(
     return(oauth_token.json())
 
 
-
 def evaluate_ratings_post_title(
         ratings_title: str) -> bool:
     """Validates whether the post is a television post
