@@ -144,9 +144,14 @@ def _orchestrate_http_request(
     
     reddit_api_request = Request(
         "https://oauth.reddit.com" +
-        "/r/toonami/search.json" +
+        "/r/toonami/search.json?" +
         url_encoded_params
     )
+
+    reddit_api_request.add_header("Authorization",
+        "Bearer " + oauth_response["access_token"]
+    )
+
 
     api_response : HTTPResponse
     with urlopen(
