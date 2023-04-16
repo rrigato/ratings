@@ -181,7 +181,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
     def test_evaluate_ratings_post_title(self):
         """Happy path ratings in the title"""
-        from scripts.reddit_ratings import _evaluate_ratings_post_title
+        from ratings.repo.ratings_repo_backend import _evaluate_ratings_post_title
 
         valid_ratings_post_titles = [
             "Toonami Ratings for May 15th, 2021"
@@ -200,7 +200,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
     def test_evaluate_ratings_post_title_invalid_title(self):
         """Unhappy path ratings not in title"""
-        from scripts.reddit_ratings import _evaluate_ratings_post_title
+        from ratings.repo.ratings_repo_backend import _evaluate_ratings_post_title
 
         invalid_ratings_post_titles = [
             "General News post",

@@ -10,6 +10,7 @@ import boto3
 import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
+from ratings.repo.excluded_ratings_titles import get_excluded_titles
 
 
 def _populate_secret_config(sdk_response: Dict) -> SecretConfig:
@@ -119,6 +120,28 @@ def get_oauth_token(
 
 
 
+def _evaluate_ratings_post_title(ratings_title):
+    """Validates whether the post is a television post
+    based on the title
+        Parameters
+        ----------
+        ratings_title : str
+            title of reddit post
+        Returns
+        -------
+        valid_ratings_post : bool
+            True if ratings_title includes the string
+            ratings and if it is not in the excluded
+            ratings list
+    """
+    if ratings_title in get_excluded_titles():
+        logging.debug("_evaluate_ratings_post_title - get_excluded_titles guard condition")
+        return(False)
+
+    return(ratings_title.lower().find("ratings") != (-1))
+
+
+
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
@@ -212,3 +235,4 @@ if __name__ == "__main__":
         level=logging.INFO
     )
     tv_ratings, retreival_error = ratings_from_internet()
+
