@@ -10,7 +10,7 @@ from fixtures.ratings_fixtures import (mock_oauth_token_response,
 
 class TestRatingsRepoBackend(unittest.TestCase):
 
-    # @unittest.skip("TODO")
+    
     @patch("urllib.request.urlopen")
     @patch("ratings.repo.ratings_repo_backend.get_oauth_token")
     @patch("ratings.repo.ratings_repo_backend.load_secret_config")
@@ -42,10 +42,13 @@ class TestRatingsRepoBackend(unittest.TestCase):
         '''TODO - remove coupled test'''
         load_secret_config_mock.assert_called()
         get_oauth_token_mock.assert_called()
-        '''TODO - outgoing http get to api
+        
         args, kwargs = urlopen_mock.call_args
-        self.assertIsInstance(args[0], Request)
-        '''
+        self.assertIsInstance(
+            kwargs["url"], 
+            Request
+        )
+        
 
 
     @patch("boto3.client")

@@ -1,8 +1,10 @@
+from http.client import HTTPResponse
 import json
 import logging
 from copy import deepcopy
 from typing import Dict, List, Optional, Union
-from urllib.request import Request
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 import boto3
 import requests
@@ -128,7 +130,34 @@ def _orchestrate_http_request(
         secret_config.reddit_client_secret
     )
     logging.info(f"_orchestrate_http_request - oauth_response")
-    # Request("")
+    
+    
+
+    url_encoded_params = urlencode({
+        "limit": 25,
+        "q":"flair:news",
+        "raw_json": 1,
+        "restrict_sr":"on",
+        "sort":"new",
+        "t":"all"
+    })
+    
+    reddit_api_request = Request(
+        "https://oauth.reddit.com" +
+        "/r/toonami/search.json" +
+        url_encoded_params
+    )
+
+    api_response : HTTPResponse
+    with urlopen(
+            url=reddit_api_request
+        ) as api_response:
+
+        logging.info(f"_orchestrate_http_request - status_code " +
+                     str(api_response.status)
+        )    
+        
+
 
     logging.info(f"_orchestrate_http_request - invocation end")
     return(None)
