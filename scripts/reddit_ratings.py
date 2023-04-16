@@ -14,9 +14,10 @@ from dateutil import parser
 from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
-from ratings.repo.ratings_repo_backend import REDDIT_USER_AGENT
-from ratings.repo.ratings_repo_backend import get_oauth_token
-from ratings.repo.ratings_repo_backend import _evaluate_ratings_post_title
+from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
+                                               evaluate_ratings_post_title,
+                                               get_oauth_token)
+
 
 def get_logger(working_directory=os.getcwd()):
     """Sets up logger
@@ -268,7 +269,7 @@ def get_ratings_post(news_flair_posts):
             post after lowercasing the title string
             then we count that as a ratings related post
         '''
-        if (_evaluate_ratings_post_title(ratings_title=reddit_post["data"]["title"])):
+        if (evaluate_ratings_post_title(ratings_title=reddit_post["data"]["title"])):
             logging.info("Rating post found")
             logging.info(reddit_post["data"]["title"])
             logging.info(reddit_post["data"]["name"])

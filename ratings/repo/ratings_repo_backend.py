@@ -1,7 +1,7 @@
-from http.client import HTTPResponse
 import json
 import logging
 from copy import deepcopy
+from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -120,7 +120,7 @@ def get_oauth_token(
 
 
 
-def _evaluate_ratings_post_title(
+def evaluate_ratings_post_title(
         ratings_title: str) -> bool:
     """Validates whether the post is a television post
     based on the title
@@ -135,7 +135,7 @@ def _evaluate_ratings_post_title(
             ratings list
     """
     if ratings_title in get_excluded_titles():
-        logging.info("_evaluate_ratings_post_title - " +
+        logging.info("evaluate_ratings_post_title - " +
                      "get_excluded_titles - " +
                      ratings_title
                 )
