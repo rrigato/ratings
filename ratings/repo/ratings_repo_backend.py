@@ -144,6 +144,44 @@ def evaluate_ratings_post_title(
 
 
 
+def get_ratings_post(
+        news_flair_posts: Dict) -> List[Dict]:
+    """Retrieves posts with ratings in the name
+        
+        Returns
+        -------
+        ratings_post_list 
+            list providing the elements of the reddit
+            search api response that are ratings posts
+            Ex: [0, 3, 8]
+        
+    """
+    ratings_post_list = []
+    element_counter = 0
+    '''
+        Iterates over every reddit post 
+        looking for news ratings
+    '''
+    for reddit_post in news_flair_posts["data"]["children"]:
+
+        if (evaluate_ratings_post_title(
+            ratings_title=reddit_post["data"]["title"]
+            )
+            ):
+            logging.info(
+                "get_ratings_post - valid title" +
+                str(reddit_post["data"]["title"])
+            )
+            logging.info(
+                "get_ratings_post - valid name" +
+                str(reddit_post["data"]["name"])
+            )
+
+            ratings_post_list.append(element_counter)
+        element_counter += 1
+    return(ratings_post_list)
+
+
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
@@ -188,7 +226,9 @@ def _orchestrate_http_request(
         )    
         
 
-
+    # ratings_posts_news_flair = get_ratings_post(
+    #     api_response
+    # )
     logging.info(f"_orchestrate_http_request - invocation end")
     return(None)
 

@@ -5,7 +5,7 @@ from copy import deepcopy
 from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from fixtures.ratings_fixtures import (mock_oauth_token_response,
+from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
                                        mock_secret_config)
 
 
@@ -223,22 +223,20 @@ class TestRatingsRepoBackend(unittest.TestCase):
     def test_get_ratings_post(self):
         """Tests that only reddit ratings news posts are returned
         """
-        from scripts.reddit_ratings import get_ratings_post
+        from ratings.repo.ratings_repo_backend import get_ratings_post
         '''
             loading a mock reddit api response to
             test if we are returning the correct number of
             ratings related posts
         '''
-        with open(
-            "util/reddit_search_response.json"
-        ) as static_response:
-            mock_response = json.load(static_response)
-            ratings_post_list = get_ratings_post(mock_response)
+        
+        ratings_post_list = get_ratings_post(
+            mock_reddit_search_response()
+        )
         '''
             Elements of the ["data"]["children"]
             list that are ratings posts
         '''
         self.assertEqual(ratings_post_list,
             [0, 4, 13, 17, 19, 20, 22, 23])
-        
         
