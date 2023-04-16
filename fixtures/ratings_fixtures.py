@@ -1,11 +1,10 @@
+import json
 from copy import deepcopy
 from datetime import date
-from random import randint
-from random import paretovariate
-from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
-from typing import Union
+from random import paretovariate, randint
+from typing import Dict, Union
 
-import json
+from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 
 
 def get_mock_television_ratings(number_of_ratings: int
@@ -71,4 +70,20 @@ def mock_secret_config(
         )
     
     return(deepcopy(mock_entity))
+
+
+
+def mock_oauth_token_response(
+    ) -> Dict[str, Union[str, int]]:
+    """Mock reddit token api response
+    """
+    
+    return(deepcopy(
+        {
+            "access_token": "FIXTURETOKEN123",
+            "token_type": "bearer",
+            "expires_in": 3600,
+            "scope": "*"
+        }
+    ))
 

@@ -5,6 +5,8 @@ import json
 import os
 import unittest
 
+from fixtures.ratings_fixtures import mock_oauth_token_response
+
 
 
 
@@ -30,13 +32,6 @@ class IntegrationRedditApi(unittest.TestCase):
         '''
         with open("util/news_flair_fixture.json", "r") as news_flair:
             cls.news_flair_fixture = json.load(news_flair)
-        
-        cls.oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
 
         cls.valid_column_names = [
             "PERCENTAGE_OF_HOUSEHOLDS",
@@ -153,7 +148,7 @@ class IntegrationRedditApi(unittest.TestCase):
         '''
             setting return values for mock
         '''
-        oauth_token_mock.return_value = self.oauth_token_fixture
+        oauth_token_mock.return_value = mock_oauth_token_response()
 
         news_flair_patch.return_value = self.news_flair_fixture
         
@@ -200,7 +195,7 @@ class IntegrationRedditApi(unittest.TestCase):
             ------
         """
 
-        from scripts.reddit_ratings import get_oauth_token
+        from ratings.repo.ratings_repo_backend import get_oauth_token
         from scripts.reddit_ratings import get_client_secrets
         reddit_client_key, reddit_client_secret = get_client_secrets()
 

@@ -43,12 +43,6 @@ class RedditApi(unittest.TestCase):
         with open("util/news_flair_fixture.json", "r") as news_flair:
             cls.news_flair_fixture = json.load(news_flair)
         
-        cls.oauth_token_fixture = {
-            "access_token": "FIXTURETOKEN123",
-            "token_type": "bearer",
-            "expires_in": 3600,
-            "scope": "*"
-        }
 
         cls.valid_column_names = [
             "PERCENTAGE_OF_HOUSEHOLDS",
@@ -255,62 +249,6 @@ class RedditApi(unittest.TestCase):
         boto3_client_mock.assert_called_once_with(
             service_name=test_service_name,
             region_name=test_region_name
-        )
-
-    @patch("requests.post")
-    def test_get_oauth_token_unit(self, requests_post_mock):
-        '''Unittest for get_oauth_token
-
-            Parameters
-            ----------
-            requests_post_mock : unittest.mock.MagicMock
-                Mock object used to patch http post to reddit
-                api client service
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-        from scripts.reddit_ratings import get_oauth_token
-
-        '''
-            json returned by http post
-            will be the class oauth_token fixture
-        '''
-        json_mock = MagicMock()
-
-        requests_post_mock.return_value = json_mock
-
-        json_mock.json.return_value = self.oauth_token_fixture
-
-
-
-        mock_client_id="fakeid"
-        mock_auth_value="mock_secret"
-
-        oauth_token = get_oauth_token(
-            client_key=mock_client_id, 
-            client_secret=mock_auth_value
-        )
-
-        '''
-            Testing the outbound HTTP POST arguements
-            to the reddit token endpoint
-        '''
-        requests_post_mock.assert_called_once_with(
-            url="https://www.reddit.com/api/v1/access_token",
-            auth=(mock_client_id, mock_auth_value),
-            data={"grant_type":"client_credentials"},
-            headers={
-                "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
-            }
-        )
-
-        self.assertEqual(
-            oauth_token,
-            self.oauth_token_fixture
         )
 
     def test_evaluate_ratings_post_title(self):

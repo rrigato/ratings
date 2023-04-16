@@ -2,22 +2,33 @@ import json
 import unittest
 from copy import deepcopy
 from unittest.mock import MagicMock, patch
+from urllib.request import Request
 
-from fixtures.ratings_fixtures import mock_secret_config
+from fixtures.ratings_fixtures import (mock_oauth_token_response,
+                                       mock_secret_config)
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
 
+    # @unittest.skip("TODO")
+    @patch("urllib.request.urlopen")
+    @patch("ratings.repo.ratings_repo_backend.get_oauth_token")
     @patch("ratings.repo.ratings_repo_backend.load_secret_config")
     def test_ratings_from_internet(
         self,
-        load_secret_config: MagicMock
+        load_secret_config_mock: MagicMock,
+        get_oauth_token_mock: MagicMock,
+        urlopen_mock: MagicMock
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
         from ratings.repo.ratings_repo_backend import ratings_from_internet
 
-        load_secret_config.return_value = mock_secret_config()        
+        load_secret_config_mock.return_value = mock_secret_config()
+        get_oauth_token_mock.return_value = mock_oauth_token_response()
+        urlopen_mock.return_value.__enter__.return_value = (
+            MagicMock
+        )
 
 
         television_ratings, unexpected_error = ratings_from_internet()
@@ -29,7 +40,12 @@ class TestRatingsRepoBackend(unittest.TestCase):
             )
         self.assertIsNone(unexpected_error)
         '''TODO - remove coupled test'''
-        load_secret_config.assert_called()
+        load_secret_config_mock.assert_called()
+        get_oauth_token_mock.assert_called()
+        '''TODO - outgoing http get to api
+        args, kwargs = urlopen_mock.call_args
+        self.assertIsInstance(args[0], Request)
+        '''
 
 
     @patch("boto3.client")
@@ -101,3 +117,51 @@ class TestRatingsRepoBackend(unittest.TestCase):
             mock_reddit_password,
             msg="\n\ne2e bug where password not populated correctly"
         )
+
+
+    @patch("requests.post")
+    def test_get_oauth_token_unit(
+        self, 
+        requests_post_mock: MagicMock
+        ):
+        """oauth_token returned"""
+        from ratings.repo.ratings_repo_backend import get_oauth_token
+
+        '''
+            json returned by http post
+            will be the class oauth_token fixture
+        '''
+        json_mock = MagicMock()
+
+        requests_post_mock.return_value = json_mock
+
+        json_mock.json.return_value = mock_oauth_token_response()
+
+
+
+        mock_client_id="fakeid"
+        mock_auth_value="mock_secret"
+
+        oauth_token = get_oauth_token(
+            client_key=mock_client_id, 
+            client_secret=mock_auth_value
+        )
+
+        '''
+            Testing the outbound HTTP POST arguements
+            to the reddit token endpoint
+        '''
+        requests_post_mock.assert_called_once_with(
+            url="https://www.reddit.com/api/v1/access_token",
+            auth=(mock_client_id, mock_auth_value),
+            data={"grant_type":"client_credentials"},
+            headers={
+                "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+            }
+        )
+
+        self.assertEqual(
+            oauth_token,
+            mock_oauth_token_response()
+        )
+
