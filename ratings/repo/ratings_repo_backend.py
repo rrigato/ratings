@@ -169,16 +169,22 @@ def get_ratings_post(
             )
             ):
             logging.info(
-                "get_ratings_post - valid title" +
+                "get_ratings_post - valid title - " +
                 str(reddit_post["data"]["title"])
             )
             logging.info(
-                "get_ratings_post - valid name" +
+                "get_ratings_post - valid name - " +
                 str(reddit_post["data"]["name"])
             )
 
             ratings_post_list.append(element_counter)
         element_counter += 1
+
+    logging.info(
+        "get_ratings_post - len(ratings_post_list) - " +
+        f"{len(ratings_post_list)}"
+    )
+
     return(ratings_post_list)
 
 
@@ -226,9 +232,9 @@ def _orchestrate_http_request(
         )    
         
 
-    # ratings_posts_news_flair = get_ratings_post(
-    #     api_response
-    # )
+        ratings_posts_news_flair = get_ratings_post(
+            json.loads(api_response.read())
+        )
     logging.info(f"_orchestrate_http_request - invocation end")
     return(None)
 

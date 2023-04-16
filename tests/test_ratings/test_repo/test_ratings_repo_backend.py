@@ -29,8 +29,11 @@ class TestRatingsRepoBackend(unittest.TestCase):
         get_oauth_token_mock.return_value = mock_oauth_token_response()
         mock_api_response = MagicMock()
         mock_api_response.status.return_value = 200
+        mock_api_response.read.return_value = (
+            json.dumps(mock_reddit_search_response())
+        )
         urlopen_mock.return_value.__enter__.return_value = (
-            MagicMock()
+            mock_api_response
         )
 
 
