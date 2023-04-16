@@ -70,7 +70,7 @@ def load_secret_config() -> Optional[SecretConfig]:
     api docs
     <platform>:<app ID>:<version string> (by /u/<reddit username>)
 '''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+REDDIT_USER_AGENT = "Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
 
 
 def get_oauth_token(
@@ -122,8 +122,8 @@ def get_oauth_token(
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
-    """creates http api request and returns
-    dict
+    """reddit http api request to
+    load news posts
     """
     oauth_response = get_oauth_token(
         secret_config.reddit_client_id,

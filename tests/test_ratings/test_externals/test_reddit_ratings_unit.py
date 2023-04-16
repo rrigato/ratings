@@ -286,16 +286,6 @@ class RedditApi(unittest.TestCase):
 
     def test_get_ratings_post(self):
         """Tests that only reddit ratings news posts are returned
-
-            Parameters
-            ----------
-
-
-            Returns
-            -------
-
-            Raises
-            ------
         """
         from scripts.reddit_ratings import get_ratings_post
         '''
@@ -303,7 +293,9 @@ class RedditApi(unittest.TestCase):
             test if we are returning the correct number of
             ratings related posts
         '''
-        with open("util/reddit_search_response.json") as static_response:
+        with open(
+            "util/reddit_search_response.json"
+        ) as static_response:
             mock_response = json.load(static_response)
             ratings_post_list = get_ratings_post(mock_response)
         '''

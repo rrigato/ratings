@@ -54,7 +54,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
             Request
         )
 
-        # print(kwargs["url"].headers)
         self.assertIsNotNone(
             len(kwargs["url"].headers["Authorization"]),
             msg="\n\n Not passing Authorization header"
@@ -170,7 +169,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             auth=(mock_client_id, mock_auth_value),
             data={"grant_type":"client_credentials"},
             headers={
-                "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+                "user-agent":"Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
             }
         )
 
