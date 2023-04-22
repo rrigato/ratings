@@ -7,6 +7,7 @@ from urllib.request import Request
 
 from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
                                        mock_secret_config)
+from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -254,3 +255,105 @@ class TestRatingsRepoBackend(unittest.TestCase):
         self.assertEqual(ratings_post_list,
             [0, 4, 13, 17, 19, 20, 22, 23])
         
+
+
+
+    def test_handle_table_clean(self):
+        """HTML table to parsed dict"""
+        from scripts.reddit_ratings import handle_table_clean
+        clean_saturday_ratings = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for November 2nd, 2019"
+        )
+
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show in clean_saturday_ratings:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show["ratings_occurred_on"],
+                "2019-11-02"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show["YEAR"],
+                2019
+            )
+
+        self.assertEqual(clean_saturday_ratings[2]["Viewers (000)"],
+            "453"
+        )
+        self.assertEqual(
+            len(clean_saturday_ratings), 7
+        )
+        '''
+            Checking the value of the date parsed from the
+            title for different variations
+
+            ex: 1st, 2nd, 3rd, 5th, etc.
+        '''
+        clean_saturday_st = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for December 21st, 2019"
+        )
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show_st in clean_saturday_st:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["ratings_occurred_on"],
+                "2019-12-21"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["YEAR"],
+                2019
+            )
+
+        clean_saturday_th = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for January 18th, 2020"
+        )
+
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show_th in clean_saturday_th:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["ratings_occurred_on"],
+                "2020-01-18"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["YEAR"],
+                2020
+            )
+
+
