@@ -260,7 +260,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
     def test_handle_table_clean(self):
         """HTML table to parsed dict"""
-        from scripts.reddit_ratings import handle_table_clean
+        from ratings.repo.ratings_repo_backend import handle_table_clean
         clean_saturday_ratings = handle_table_clean(
             REDDIT_RATING_TABLE_2020,
             rating_call_counter=0,
