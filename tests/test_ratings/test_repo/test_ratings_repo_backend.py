@@ -23,10 +23,12 @@ class TestRatingsRepoBackend(unittest.TestCase):
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
+        from ratings.repo.ratings_repo_backend import get_ratings_post
         from ratings.repo.ratings_repo_backend import ratings_from_internet
 
         load_secret_config_mock.return_value = mock_secret_config()
         get_oauth_token_mock.return_value = mock_oauth_token_response()
+        
         mock_api_response = MagicMock()
         mock_api_response.status.return_value = 200
         mock_api_response.read.return_value = (
@@ -40,6 +42,15 @@ class TestRatingsRepoBackend(unittest.TestCase):
         television_ratings, unexpected_error = ratings_from_internet()
 
 
+
+        self.assertEqual(
+            len(get_ratings_post(mock_reddit_search_response())),
+            len(television_ratings),
+            msg=("\n\ncheck that one TelevisionRating " +
+                 "is returned for each ratings post in " +
+                 "mock_reddit_search_response return value"
+            )
+        )
         for television_rating in television_ratings:
             self.assertIsInstance(
                 television_rating, TelevisionRating

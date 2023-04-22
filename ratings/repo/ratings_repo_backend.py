@@ -188,6 +188,33 @@ def get_ratings_post(
     return(ratings_post_list)
 
 
+
+
+def _populate_television_ratings_entities(
+    reddit_api_response: Dict   
+    ) -> List[TelevisionRating]:
+    """
+    Parameters
+    ----------
+    https://www.reddit.com/dev/api/#GET_search
+    """
+    logging.info(f"_populate_television_ratings_entities - invocation begin")
+    
+    ratings_posts: List[TelevisionRating] = []
+    
+    for news_post in reddit_api_response["data"]["children"]:
+        if evaluate_ratings_post_title(
+            news_post["data"]["title"]
+        ):
+            #TODO - append created entity to list
+            pass
+    
+    logging.info(f"_populate_television_ratings_entities - invocation end")
+    
+    return(None)
+
+
+
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
@@ -231,7 +258,7 @@ def _orchestrate_http_request(
                      str(api_response.status)
         )    
         
-
+        
         ratings_posts_news_flair = get_ratings_post(
             json.loads(api_response.read())
         )
