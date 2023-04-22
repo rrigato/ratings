@@ -12,11 +12,12 @@ from bs4 import BeautifulSoup
 from dateutil import parser
 
 from ratings.repo.data_scrubber import data_override_factory
-from ratings.repo.excluded_ratings_titles import get_excluded_titles
 from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
-from ratings.repo.ratings_repo_backend import REDDIT_USER_AGENT
-from ratings.repo.ratings_repo_backend import get_oauth_token
+from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
+                                               get_oauth_token)
+from ratings.repo.ratings_repo_backend import get_ratings_post
+
 
 def get_logger(working_directory=os.getcwd()):
     """Sets up logger
@@ -236,71 +237,6 @@ def get_news_flair(access_token,
     logging.info("Successfully made search request")
 
     return(news_flair_posts.json())
-
-
-def _evaluate_ratings_post_title(ratings_title):
-    """Validates whether the post is a television post
-    based on the title
-
-        Parameters
-        ----------
-        ratings_title : str
-            title of reddit post
-
-        Returns
-        -------
-        valid_ratings_post : bool
-            True if ratings_title includes the string
-            ratings and if it is not in the excluded
-            ratings list
-
-    """
-    if ratings_title in get_excluded_titles():
-        logging.debug("_evaluate_ratings_post_title - get_excluded_titles guard condition")
-        return(False)
-
-    return(ratings_title.lower().find("ratings") != (-1))
-
-
-
-def get_ratings_post(news_flair_posts):
-    """Retrieves posts with ratings in the name
-
-        Parameters
-        ----------
-        news_flair_posts : dict
-            Dict of all posts after fullname_after
-
-        Returns
-        -------
-        ratings_post_list : list
-            list providing the elements of the reddit
-            search api response that are ratings posts
-            Ex: [0, 3, 8]
-
-        Raises
-        ------
-    """
-    ratings_post_list = []
-    element_counter = 0
-    '''
-        Iterates over every reddit post looking for
-    '''
-    for reddit_post in news_flair_posts["data"]["children"]:
-
-        '''
-            If the string "ratings" is in the title of the
-            post after lowercasing the title string
-            then we count that as a ratings related post
-        '''
-        if (_evaluate_ratings_post_title(ratings_title=reddit_post["data"]["title"])):
-            logging.info("Rating post found")
-            logging.info(reddit_post["data"]["title"])
-            logging.info(reddit_post["data"]["name"])
-
-            ratings_post_list.append(element_counter)
-        element_counter += 1
-    return(ratings_post_list)
 
 
 def handle_table_header(bs_obj):
@@ -1082,3 +1018,5 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     get_logger()    
     main()
+
+

@@ -251,67 +251,6 @@ class RedditApi(unittest.TestCase):
             region_name=test_region_name
         )
 
-    def test_evaluate_ratings_post_title(self):
-        """Happy path ratings in the title
-        """
-        from scripts.reddit_ratings import _evaluate_ratings_post_title
-
-        valid_ratings_post_titles = [
-            "Toonami Ratings for May 15th, 2021"
-        ]
-        for valid_ratings_title in valid_ratings_post_titles:
-
-            with self.subTest(valid_ratings_title=valid_ratings_title):
-                self.assertTrue(
-                    _evaluate_ratings_post_title(ratings_title=valid_ratings_title)
-                )
-
-
-    def test_evaluate_ratings_post_title_invalid_title(self):
-        """Unhappy path ratings not in title
-        """
-        from scripts.reddit_ratings import _evaluate_ratings_post_title
-
-        invalid_ratings_post_titles = [
-            "General News post",
-            "Show announcement",
-            "The Future Of Ratings | Toonami Faithful"
-        ]
-        for invalid_ratings_title in invalid_ratings_post_titles:
-
-            with self.subTest(invalid_ratings_title=invalid_ratings_title):
-                self.assertFalse(
-                    _evaluate_ratings_post_title(ratings_title=invalid_ratings_title)
-                )
-
-    def test_get_ratings_post(self):
-        """Tests that only reddit ratings news posts are returned
-
-            Parameters
-            ----------
-
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import get_ratings_post
-        '''
-            loading a mock reddit api response to
-            test if we are returning the correct number of
-            ratings related posts
-        '''
-        with open("util/reddit_search_response.json") as static_response:
-            mock_response = json.load(static_response)
-            ratings_post_list = get_ratings_post(mock_response)
-        '''
-            Elements of the ["data"]["children"]
-            list that are ratings posts
-        '''
-        self.assertEqual(ratings_post_list,
-            [0, 4, 13, 17, 19, 20, 22, 23])
 
     def test_handle_table_header(self,
         mock_rating_table=REDDIT_RATING_TABLE_2019):

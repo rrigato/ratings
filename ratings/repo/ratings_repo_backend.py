@@ -1,13 +1,16 @@
 import json
 import logging
 from copy import deepcopy
+from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
-from urllib.request import Request
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 import boto3
 import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
+from ratings.repo.excluded_ratings_titles import get_excluded_titles
 
 
 def _populate_secret_config(sdk_response: Dict) -> SecretConfig:
@@ -68,7 +71,7 @@ def load_secret_config() -> Optional[SecretConfig]:
     api docs
     <platform>:<app ID>:<version string> (by /u/<reddit username>)
 '''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+REDDIT_USER_AGENT = "Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
 
 
 def get_oauth_token(
@@ -116,20 +119,122 @@ def get_oauth_token(
     return(oauth_token.json())
 
 
+def evaluate_ratings_post_title(
+        ratings_title: str) -> bool:
+    """Validates whether the post is a television post
+    based on the title
+        Parameters
+        ----------
+        ratings_title
+            title of reddit post
+        Returns
+        -------
+        True if ratings_title includes the string
+            ratings and if it is not in the excluded
+            ratings list
+    """
+    if ratings_title in get_excluded_titles():
+        logging.info("evaluate_ratings_post_title - " +
+                     "get_excluded_titles - " +
+                     ratings_title
+                )
+        return(False)
+
+    return(ratings_title.lower().find("ratings") != (-1))
+
+
+
+def get_ratings_post(
+        news_flair_posts: Dict) -> List[Dict]:
+    """Retrieves posts with ratings in the name
+        
+        Returns
+        -------
+        ratings_post_list 
+            list providing the elements of the reddit
+            search api response that are ratings posts
+            Ex: [0, 3, 8]
+        
+    """
+    ratings_post_list = []
+    element_counter = 0
+    '''
+        Iterates over every reddit post 
+        looking for news ratings
+    '''
+    for reddit_post in news_flair_posts["data"]["children"]:
+
+        if (evaluate_ratings_post_title(
+            ratings_title=reddit_post["data"]["title"]
+            )
+            ):
+            logging.info(
+                "get_ratings_post - valid title - " +
+                str(reddit_post["data"]["title"])
+            )
+            logging.info(
+                "get_ratings_post - valid name - " +
+                str(reddit_post["data"]["name"])
+            )
+
+            ratings_post_list.append(element_counter)
+        element_counter += 1
+
+    logging.info(
+        "get_ratings_post - len(ratings_post_list) - " +
+        f"{len(ratings_post_list)}"
+    )
+
+    return(ratings_post_list)
+
 
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
-    """creates http api request and returns
-    dict
+    """reddit http api request to
+    load news posts
     """
     oauth_response = get_oauth_token(
         secret_config.reddit_client_id,
         secret_config.reddit_client_secret
     )
     logging.info(f"_orchestrate_http_request - oauth_response")
-    # Request("")
+    
+    
 
+    url_encoded_params = urlencode({
+        "limit": 25,
+        "q":"flair:news",
+        "raw_json": 1,
+        "restrict_sr":"on",
+        "sort":"new",
+        "t":"all"
+    })
+    
+    reddit_api_request = Request(
+        "https://oauth.reddit.com" +
+        "/r/toonami/search.json?" +
+        url_encoded_params
+    )
+
+    reddit_api_request.add_header("Authorization",
+        "Bearer " + oauth_response["access_token"]
+    )
+
+
+    api_response : HTTPResponse
+    with urlopen(
+            url=reddit_api_request
+        ) as api_response:
+
+        logging.info(f"_orchestrate_http_request - status_code " +
+                     str(api_response.status)
+        )    
+        
+
+        ratings_posts_news_flair = get_ratings_post(
+            json.loads(api_response.read())
+        )
     logging.info(f"_orchestrate_http_request - invocation end")
     return(None)
 
@@ -178,3 +283,4 @@ if __name__ == "__main__":
         level=logging.INFO
     )
     tv_ratings, retreival_error = ratings_from_internet()
+

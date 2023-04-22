@@ -1,17 +1,18 @@
+
 import json
 import unittest
 from copy import deepcopy
 from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from fixtures.ratings_fixtures import (mock_oauth_token_response,
+from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
                                        mock_secret_config)
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
 
-    # @unittest.skip("TODO")
-    @patch("urllib.request.urlopen")
+    
+    @patch("ratings.repo.ratings_repo_backend.urlopen")
     @patch("ratings.repo.ratings_repo_backend.get_oauth_token")
     @patch("ratings.repo.ratings_repo_backend.load_secret_config")
     def test_ratings_from_internet(
@@ -26,8 +27,13 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
         load_secret_config_mock.return_value = mock_secret_config()
         get_oauth_token_mock.return_value = mock_oauth_token_response()
+        mock_api_response = MagicMock()
+        mock_api_response.status.return_value = 200
+        mock_api_response.read.return_value = (
+            json.dumps(mock_reddit_search_response())
+        )
         urlopen_mock.return_value.__enter__.return_value = (
-            MagicMock
+            mock_api_response
         )
 
 
@@ -42,10 +48,20 @@ class TestRatingsRepoBackend(unittest.TestCase):
         '''TODO - remove coupled test'''
         load_secret_config_mock.assert_called()
         get_oauth_token_mock.assert_called()
-        '''TODO - outgoing http get to api
+        
         args, kwargs = urlopen_mock.call_args
-        self.assertIsInstance(args[0], Request)
-        '''
+
+        
+        self.assertIsInstance(
+            kwargs["url"], 
+            Request
+        )
+
+        self.assertIsNotNone(
+            len(kwargs["url"].headers["Authorization"]),
+            msg="\n\n Not passing Authorization header"
+        )
+        
 
 
     @patch("boto3.client")
@@ -156,7 +172,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             auth=(mock_client_id, mock_auth_value),
             data={"grant_type":"client_credentials"},
             headers={
-                "user-agent":"Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
+                "user-agent":"Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
             }
         )
 
@@ -165,3 +181,65 @@ class TestRatingsRepoBackend(unittest.TestCase):
             mock_oauth_token_response()
         )
 
+
+    def test_evaluate_ratings_post_title(self):
+        """Happy path ratings in the title"""
+        from ratings.repo.ratings_repo_backend import \
+            evaluate_ratings_post_title
+
+        valid_ratings_post_titles = [
+            "Toonami Ratings for May 15th, 2021"
+        ]
+        for valid_ratings_title in valid_ratings_post_titles:
+
+            with self.subTest(
+                valid_ratings_title=valid_ratings_title
+                ):
+                self.assertTrue(
+                    evaluate_ratings_post_title(
+                        ratings_title=valid_ratings_title
+                    )
+                )
+
+
+    def test_evaluate_ratings_post_title_invalid_title(self):
+        """Unhappy path ratings not in title"""
+        from ratings.repo.ratings_repo_backend import \
+            evaluate_ratings_post_title
+
+        invalid_ratings_post_titles = [
+            "General News post",
+            "Show announcement",
+            "The Future Of Ratings | Toonami Faithful"
+        ]
+        for invalid_ratings_title in invalid_ratings_post_titles:
+
+            with self.subTest(
+                invalid_ratings_title=invalid_ratings_title
+                ):
+                self.assertFalse(
+                    evaluate_ratings_post_title(
+                        ratings_title=invalid_ratings_title
+                    )
+                )
+
+    def test_get_ratings_post(self):
+        """Tests that only reddit ratings news posts are returned
+        """
+        from ratings.repo.ratings_repo_backend import get_ratings_post
+        '''
+            loading a mock reddit api response to
+            test if we are returning the correct number of
+            ratings related posts
+        '''
+        
+        ratings_post_list = get_ratings_post(
+            mock_reddit_search_response()
+        )
+        '''
+            Elements of the ["data"]["children"]
+            list that are ratings posts
+        '''
+        self.assertEqual(ratings_post_list,
+            [0, 4, 13, 17, 19, 20, 22, 23])
+        
