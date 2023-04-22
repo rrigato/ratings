@@ -17,6 +17,7 @@ from ratings.repo.name_mapper import (get_table_column_name_mapping,
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                get_oauth_token)
 from ratings.repo.ratings_repo_backend import get_ratings_post
+from ratings.repo.ratings_repo_backend import handle_table_body
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -273,77 +274,6 @@ def handle_table_header(bs_obj):
     logging.info(header_columns)
 
     return(header_columns)
-
-def handle_table_body(bs_obj, header_columns):
-    """Converts table body for the html table into dict
-
-        Parameters
-        ----------
-        bs_obj : bs4.BeautifulSoup
-            BeautifulSoup Object to parse table header
-
-        header_columns : list
-            list of header columns parsed from html table header
-
-        Returns
-        -------
-        saturday_ratings : list
-            list of dict of one saturday nights ratings where the key
-            is from the header_columns list and the value
-            is from the <tr> html tag
-
-        Raises
-        ------
-    """
-    '''
-        Gets all table header html tags
-        And putting the contents of each of those in a
-        list
-    '''
-    all_tr_tags = bs_obj.find("tbody").findAll("tr")
-
-    logging.info("Found this many shows: ")
-    logging.info(len(all_tr_tags))
-
-    saturday_ratings = []
-    '''
-        First iteration is over list of <tr>
-        table rows
-
-        individual_show = list of bs4.element.Tag
-    '''
-    for individual_show in all_tr_tags:
-        show_dict = {}
-        '''
-        Second iteration
-        is the columns that will be used for key values
-        of each dict in the list
-
-        Iterating over the column name and
-        the associated td which will be the value
-        of the dict
-
-        These two lists will always be the same length
-        becuase each <td> (table data) needs a corresponding
-        <tr> (table row)
-
-        dict_key : str
-        dict_value : bs4.element.Tag
-        '''
-        for dict_key, dict_value in zip(header_columns,
-            individual_show.findAll("td")):
-            '''
-                will be something like
-                show_dict["Time"] = "11:00"
-                Taking text from td tag
-            '''
-            show_dict[dict_key] = dict_value.text
-
-        ''' Append dict to list '''
-        saturday_ratings.append(show_dict)
-
-    return(saturday_ratings)
-
 
 def handle_table_clean(reddit_post_html, rating_call_counter,
     ratings_title):

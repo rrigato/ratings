@@ -7,7 +7,7 @@ from urllib.request import Request
 
 from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
                                        mock_secret_config)
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
+from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019, REDDIT_RATING_TABLE_2020
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -357,3 +357,41 @@ class TestRatingsRepoBackend(unittest.TestCase):
             )
 
 
+    def test_handle_table_body(self):
+        """Tests dict from html body handler"""
+        from bs4 import BeautifulSoup
+        from ratings.repo.ratings_repo_backend import handle_table_body
+
+        '''
+            Creating BeautifulSoup object from
+            a test reddit html table post
+            and validating the handle_table_body
+            function returns a list of ratings
+        '''
+        bs_obj = BeautifulSoup(
+            REDDIT_RATING_TABLE_2019, "html.parser"
+        )
+        '''
+            Stub of header columns to pass to
+            handle_table_body
+        '''
+        header_columns = [
+            "Time", "Show", "Viewers (000)",
+            "18-49 Rating", "18-49 Views (000)"
+        ]
+        saturday_ratings = handle_table_body(
+            bs_obj=bs_obj,
+            header_columns=header_columns)
+
+        self.assertEqual(
+            saturday_ratings[0]["Time"],
+            "11:00"
+        )
+        self.assertEqual(
+            saturday_ratings[7]["18-49 Rating"],
+            "0.12"
+        )
+        self.assertEqual(
+            saturday_ratings[9]["Viewers (000)"],
+            "282"
+        )

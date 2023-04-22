@@ -286,56 +286,6 @@ class RedditApi(unittest.TestCase):
             ]
         )
 
-    def test_handle_table_body(self,
-        mock_rating_table=REDDIT_RATING_TABLE_2019):
-        """Tests dict from html body handler
-
-            Parameters
-            ----------
-            mock_rating_table : str
-                Example of an html table returned by the
-                reddit api
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import handle_table_body
-
-        '''
-            Creating BeautifulSoup object from
-            a test reddit html table post
-            and validating the handle_table_body
-            function returns a list of ratings
-        '''
-        bs_obj = BeautifulSoup(mock_rating_table, "html.parser")
-        '''
-            Stub of header columns to pass to
-            handle_table_body
-        '''
-        header_columns = [
-            "Time", "Show", "Viewers (000)",
-            "18-49 Rating", "18-49 Views (000)"
-        ]
-        saturday_ratings = handle_table_body(
-            bs_obj=bs_obj,
-            header_columns=header_columns)
-
-        self.assertEqual(
-            saturday_ratings[0]["Time"],
-            "11:00"
-        )
-        self.assertEqual(
-            saturday_ratings[7]["18-49 Rating"],
-            "0.12"
-        )
-        self.assertEqual(
-            saturday_ratings[9]["Viewers (000)"],
-            "282"
-        )
-
 
     def test_iterate_handle_table_clean(self):
         """Tests iteration of ratings data with empty list
