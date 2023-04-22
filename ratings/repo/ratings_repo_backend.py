@@ -365,6 +365,12 @@ def _create_television_rating(
     """
     tv_rating = TelevisionRating()
 
+    parsed_table_ratings = handle_table_clean(
+        reddit_post_html=news_post["data"]["selftext_html"],
+        rating_call_counter=None,
+        ratings_title=news_post["data"]["title"]
+    )
+
     
     return(tv_rating)
 
