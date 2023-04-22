@@ -338,24 +338,11 @@ class RedditApi(unittest.TestCase):
 
 
 
-    def test_handle_table_clean(self,
-        mock_rating_table=REDDIT_RATING_TABLE_2020):
-        """Tests cleaning of ratings data
-
-            Parameters
-            ----------
-            mock_rating_table : str
-                Example of an html table returned by the
-                reddit api
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
+    def test_handle_table_clean(self):
+        """HTML table to parsed dict"""
         from scripts.reddit_ratings import handle_table_clean
-        clean_saturday_ratings = handle_table_clean(mock_rating_table,
+        clean_saturday_ratings = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
             rating_call_counter=0,
             ratings_title="Toonami Ratings for November 2nd, 2019"
         )
@@ -394,7 +381,8 @@ class RedditApi(unittest.TestCase):
 
             ex: 1st, 2nd, 3rd, 5th, etc.
         '''
-        clean_saturday_st = handle_table_clean(mock_rating_table,
+        clean_saturday_st = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
             rating_call_counter=0,
             ratings_title="Toonami Ratings for December 21st, 2019"
         )
@@ -420,7 +408,8 @@ class RedditApi(unittest.TestCase):
                 2019
             )
 
-        clean_saturday_th = handle_table_clean(mock_rating_table,
+        clean_saturday_th = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
             rating_call_counter=0,
             ratings_title="Toonami Ratings for January 18th, 2020"
         )
