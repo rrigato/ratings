@@ -190,6 +190,18 @@ def get_ratings_post(
 
 
 
+def _create_television_rating(
+    news_post: Dict
+    ) -> TelevisionRating:
+    """Creates new TelevisionRating
+    """
+    tv_rating = TelevisionRating()
+
+    
+    return(tv_rating)
+
+
+
 def _populate_television_ratings_entities(
     reddit_api_response: Dict   
     ) -> List[TelevisionRating]:
@@ -198,20 +210,26 @@ def _populate_television_ratings_entities(
     ----------
     https://www.reddit.com/dev/api/#GET_search
     """
-    logging.info(f"_populate_television_ratings_entities - invocation begin")
+    logging.info(
+        f"_populate_television_ratings_entities - invocation begin")
     
     ratings_posts: List[TelevisionRating] = []
-    
+
     for news_post in reddit_api_response["data"]["children"]:
         if evaluate_ratings_post_title(
             news_post["data"]["title"]
         ):
-            #TODO - append created entity to list
-            pass
+            
+            ratings_posts.append(
+                _create_television_rating(news_post)
+            )
     
-    logging.info(f"_populate_television_ratings_entities - invocation end")
+    logging.info(
+        f"_populate_television_ratings_entities - len(ratings_posts)"
+        + f" - {len(ratings_posts)}"
+    )
     
-    return(None)
+    return(ratings_posts)
 
 
 
@@ -259,11 +277,12 @@ def _orchestrate_http_request(
         )    
         
         
-        ratings_posts_news_flair = get_ratings_post(
-            json.loads(api_response.read())
+        return(
+            _populate_television_ratings_entities(
+                json.loads(api_response.read())
+            )
         )
-    logging.info(f"_orchestrate_http_request - invocation end")
-    return(None)
+    
 
 
 
@@ -292,7 +311,7 @@ def ratings_from_internet() -> Union[
         f"ratings_from_internet - obtained news_posts"
     )
 
-    return([], None)
+    return(news_posts, None)
 
 
 
