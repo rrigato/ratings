@@ -18,6 +18,7 @@ from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                get_oauth_token)
 from ratings.repo.ratings_repo_backend import get_ratings_post
 from ratings.repo.ratings_repo_backend import handle_table_body
+from ratings.repo.ratings_repo_backend import handle_table_header
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -239,41 +240,6 @@ def get_news_flair(access_token,
 
     return(news_flair_posts.json())
 
-
-def handle_table_header(bs_obj):
-    """Converts table header for the html table into list
-
-        Parameters
-        ----------
-        bs_obj : bs4.BeautifulSoup
-            BeautifulSoup Object to parse table header
-
-        Returns
-        -------
-        header_columns : list
-            list of header columns parsed from html table header
-
-        Raises
-        ------
-    """
-    '''
-        Gets all table header html tags
-        And putting the contents of each of those in a
-        list
-    '''
-    all_th_tags = bs_obj.find("thead").findAll("th")
-    logging.info("Found the following table headers: ")
-    logging.info(all_th_tags)
-
-    header_columns = []
-
-    for th_tag in all_th_tags:
-        header_columns.append(th_tag.text)
-
-    logging.info("handle_table_header - Original ratings post column names")
-    logging.info(header_columns)
-
-    return(header_columns)
 
 def handle_table_clean(reddit_post_html, rating_call_counter,
     ratings_title):
