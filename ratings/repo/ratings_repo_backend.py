@@ -13,6 +13,72 @@ from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
 
 
+def handle_table_body(
+        bs_obj, 
+        header_columns: List
+        ) -> List[Dict]:
+    """Converts table body for the html table into dict
+        Parameters
+        ----------
+        bs_obj : bs4.BeautifulSoup
+            BeautifulSoup Object to parse table header
+        header_columns
+            list of header columns parsed from html table header
+        Returns
+        -------
+        saturday_ratings 
+            list of dict of one saturday nights ratings where the key
+            is from the header_columns list and the value
+            is from the <tr> html tag
+        
+    """
+    '''
+        Gets all table header html tags
+        And putting the contents of each of those in a
+        list
+    '''
+    all_tr_tags = bs_obj.find("tbody").findAll("tr")
+
+    logging.info("Found this many shows: ")
+    logging.info(len(all_tr_tags))
+
+    saturday_ratings = []
+    '''
+        First iteration is over list of <tr>
+        table rows
+        individual_show = list of bs4.element.Tag
+    '''
+    for individual_show in all_tr_tags:
+        show_dict = {}
+        '''
+        Second iteration
+        is the columns that will be used for key values
+        of each dict in the list
+        Iterating over the column name and
+        the associated td which will be the value
+        of the dict
+        These two lists will always be the same length
+        becuase each <td> (table data) needs a corresponding
+        <tr> (table row)
+        dict_key : str
+        dict_value : bs4.element.Tag
+        '''
+        for dict_key, dict_value in zip(header_columns,
+            individual_show.findAll("td")):
+            '''
+                will be something like
+                show_dict["Time"] = "11:00"
+                Taking text from td tag
+            '''
+            show_dict[dict_key] = dict_value.text
+
+        ''' Append dict to list '''
+        saturday_ratings.append(show_dict)
+
+    return(saturday_ratings)
+
+
+
 def _populate_secret_config(sdk_response: Dict) -> SecretConfig:
     """https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/secretsmanager.html#SecretsManager.Client.get_secret_value
     """
@@ -188,6 +254,51 @@ def get_ratings_post(
     return(ratings_post_list)
 
 
+
+
+def _create_television_rating(
+    news_post: Dict
+    ) -> TelevisionRating:
+    """Creates new TelevisionRating
+    """
+    tv_rating = TelevisionRating()
+
+    
+    return(tv_rating)
+
+
+
+def _populate_television_ratings_entities(
+    reddit_api_response: Dict   
+    ) -> List[TelevisionRating]:
+    """
+    Parameters
+    ----------
+    https://www.reddit.com/dev/api/#GET_search
+    """
+    logging.info(
+        f"_populate_television_ratings_entities - invocation begin")
+    
+    ratings_posts: List[TelevisionRating] = []
+
+    for news_post in reddit_api_response["data"]["children"]:
+        if evaluate_ratings_post_title(
+            news_post["data"]["title"]
+        ):
+            
+            ratings_posts.append(
+                _create_television_rating(news_post)
+            )
+    
+    logging.info(
+        f"_populate_television_ratings_entities - len(ratings_posts)"
+        + f" - {len(ratings_posts)}"
+    )
+    
+    return(ratings_posts)
+
+
+
 def _orchestrate_http_request(
     secret_config: SecretConfig
     ) -> Dict:
@@ -231,12 +342,13 @@ def _orchestrate_http_request(
                      str(api_response.status)
         )    
         
-
-        ratings_posts_news_flair = get_ratings_post(
-            json.loads(api_response.read())
+        
+        return(
+            _populate_television_ratings_entities(
+                json.loads(api_response.read())
+            )
         )
-    logging.info(f"_orchestrate_http_request - invocation end")
-    return(None)
+    
 
 
 
@@ -265,7 +377,7 @@ def ratings_from_internet() -> Union[
         f"ratings_from_internet - obtained news_posts"
     )
 
-    return([], None)
+    return(news_posts, None)
 
 
 

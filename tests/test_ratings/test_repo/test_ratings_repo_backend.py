@@ -7,6 +7,7 @@ from urllib.request import Request
 
 from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
                                        mock_secret_config)
+from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019, REDDIT_RATING_TABLE_2020
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -23,10 +24,12 @@ class TestRatingsRepoBackend(unittest.TestCase):
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
+        from ratings.repo.ratings_repo_backend import get_ratings_post
         from ratings.repo.ratings_repo_backend import ratings_from_internet
 
         load_secret_config_mock.return_value = mock_secret_config()
         get_oauth_token_mock.return_value = mock_oauth_token_response()
+        
         mock_api_response = MagicMock()
         mock_api_response.status.return_value = 200
         mock_api_response.read.return_value = (
@@ -40,6 +43,15 @@ class TestRatingsRepoBackend(unittest.TestCase):
         television_ratings, unexpected_error = ratings_from_internet()
 
 
+
+        self.assertEqual(
+            len(get_ratings_post(mock_reddit_search_response())),
+            len(television_ratings),
+            msg=("\n\ncheck that one TelevisionRating " +
+                 "is returned for each ratings post in " +
+                 "mock_reddit_search_response return value"
+            )
+        )
         for television_rating in television_ratings:
             self.assertIsInstance(
                 television_rating, TelevisionRating
@@ -243,3 +255,143 @@ class TestRatingsRepoBackend(unittest.TestCase):
         self.assertEqual(ratings_post_list,
             [0, 4, 13, 17, 19, 20, 22, 23])
         
+
+
+
+    def test_handle_table_clean(self):
+        """HTML table to parsed dict"""
+        from scripts.reddit_ratings import handle_table_clean
+        clean_saturday_ratings = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for November 2nd, 2019"
+        )
+
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show in clean_saturday_ratings:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show["ratings_occurred_on"],
+                "2019-11-02"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show["YEAR"],
+                2019
+            )
+
+        self.assertEqual(clean_saturday_ratings[2]["Viewers (000)"],
+            "453"
+        )
+        self.assertEqual(
+            len(clean_saturday_ratings), 7
+        )
+        '''
+            Checking the value of the date parsed from the
+            title for different variations
+
+            ex: 1st, 2nd, 3rd, 5th, etc.
+        '''
+        clean_saturday_st = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for December 21st, 2019"
+        )
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show_st in clean_saturday_st:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["ratings_occurred_on"],
+                "2019-12-21"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_st["YEAR"],
+                2019
+            )
+
+        clean_saturday_th = handle_table_clean(
+            REDDIT_RATING_TABLE_2020,
+            rating_call_counter=0,
+            ratings_title="Toonami Ratings for January 18th, 2020"
+        )
+
+        '''
+            ratings_occurred_on and YEAR should be the 
+            same for each element of the dict
+        '''
+        for individual_saturday_show_th in clean_saturday_th:
+            '''
+                Using date format that aligns with
+                historical ratings
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["ratings_occurred_on"],
+                "2020-01-18"
+
+            )
+            '''
+                Validate year is added as key to dict
+            '''
+            self.assertEqual(
+                individual_saturday_show_th["YEAR"],
+                2020
+            )
+
+
+    def test_handle_table_body(self):
+        """Tests dict from html body handler"""
+        from bs4 import BeautifulSoup
+        from ratings.repo.ratings_repo_backend import handle_table_body
+
+        '''
+            Creating BeautifulSoup object from
+            a test reddit html table post
+            and validating the handle_table_body
+            function returns a list of ratings
+        '''
+        bs_obj = BeautifulSoup(
+            REDDIT_RATING_TABLE_2019, "html.parser"
+        )
+        '''
+            Stub of header columns to pass to
+            handle_table_body
+        '''
+        header_columns = [
+            "Time", "Show", "Viewers (000)",
+            "18-49 Rating", "18-49 Views (000)"
+        ]
+        saturday_ratings = handle_table_body(
+            bs_obj=bs_obj,
+            header_columns=header_columns)
+
+        self.assertEqual(
+            saturday_ratings[0]["Time"],
+            "11:00"
+        )
+        self.assertEqual(
+            saturday_ratings[7]["18-49 Rating"],
+            "0.12"
+        )
+        self.assertEqual(
+            saturday_ratings[9]["Viewers (000)"],
+            "282"
+        )
