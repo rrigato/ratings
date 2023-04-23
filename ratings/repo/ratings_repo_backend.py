@@ -13,6 +13,58 @@ import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
+from ratings.repo.name_mapper import get_table_column_name_mapping, keys_to_ignore
+
+
+def _standardize_key_name(
+        dict_to_clean: Dict[str, Union[str, int]]
+    ) -> None:
+    """Mutates key names for dict_to_clean 
+    to align with dict_key_mapping return value"""
+    '''
+            Iterates over all keys in each dict
+    '''
+    for user_input_key in list(dict_to_clean.keys()):
+        '''Do nothing if we match the correct column names'''
+        if user_input_key in get_table_column_name_mapping(
+        ).values():
+            return(None)
+
+
+        '''
+            lower caseing and removing trailing/leading 
+            spaces for comparison
+        '''
+        clean_ratings_key = user_input_key.lower().strip()
+
+        '''Do nothing if we if it is an excluded key'''
+        if clean_ratings_key in keys_to_ignore():
+            return(None)
+
+        '''
+            pops old key value from dict_to_clean
+            and adds the correct dynamo
+            column name mapping
+            user_input_key will be one of the keys in 
+            get_table_column_name_mapping
+        '''
+        if clean_ratings_key in get_table_column_name_mapping().keys():
+
+            dict_to_clean[
+                    get_table_column_name_mapping()[
+                        clean_ratings_key
+                    ]
+                ] =  dict_to_clean.pop(
+                    user_input_key
+                )
+
+
+
+        if clean_ratings_key not in get_table_column_name_mapping(
+        ).keys():
+            raise KeyError(f"_standardize_key_name - "+
+            f" No match for {clean_ratings_key}")
+
 
 
 
@@ -371,6 +423,7 @@ def _create_television_rating(
         ratings_title=news_post["data"]["title"]
     )
 
+    # get_table_column_mapping([parsed_table_ratings])
     
     return(tv_rating)
 

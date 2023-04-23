@@ -17,7 +17,7 @@ class TestNameMapper(unittest.TestCase):
             )
     
     def test_television_rating_from_table_column(self):
-        """television_rating_from_table_columnTelevisionRating entity"""
+        """TelevisionRating entity properties from dynamodb columns"""
         from ratings.repo.name_mapper import (
             get_table_column_name_mapping, television_rating_from_table_column)
         
