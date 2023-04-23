@@ -260,7 +260,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
     def test_handle_table_clean(self):
         """HTML table to parsed dict"""
-        from scripts.reddit_ratings import handle_table_clean
+        from ratings.repo.ratings_repo_backend import handle_table_clean
         clean_saturday_ratings = handle_table_clean(
             REDDIT_RATING_TABLE_2020,
             rating_call_counter=0,
@@ -395,3 +395,29 @@ class TestRatingsRepoBackend(unittest.TestCase):
             saturday_ratings[9]["Viewers (000)"],
             "282"
         )
+
+
+    def test_handle_table_header(self):
+        """Tests columns are retrieved from html table header
+        """
+        from bs4 import BeautifulSoup
+        from ratings.repo.ratings_repo_backend import handle_table_header
+
+        '''
+            Creating BeautifulSoup object from
+            a test reddit html table post
+            and validating the handle_table_header
+            function returns a list of column names
+        '''
+        bs_obj = BeautifulSoup(
+            REDDIT_RATING_TABLE_2019, "html.parser"
+        )
+        header_columns = handle_table_header(bs_obj)
+
+        self.assertEqual(header_columns,
+            [
+                "Time", "Show", "Viewers (000)",
+                "18-49 Rating", "18-49 Views (000)"
+            ]
+        )
+

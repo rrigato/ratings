@@ -7,10 +7,46 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import boto3
+from bs4 import BeautifulSoup
+from dateutil import parser
 import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
+
+
+
+def handle_table_header(
+        bs_obj)-> List[str]:
+    """Converts table header for the html table into list
+        Parameters
+        ----------
+        bs_obj : bs4.BeautifulSoup
+            BeautifulSoup Object to parse table header
+        Returns
+        -------
+        header_columns
+            list of header columns parsed from html table header
+    """
+    '''
+        Gets all table header html tags
+        And putting the contents of each of those in a
+        list
+    '''
+    all_th_tags = bs_obj.find("thead").findAll("th")
+    logging.info("Found the following table headers: ")
+    logging.info(all_th_tags)
+
+    header_columns = []
+
+    for th_tag in all_th_tags:
+        header_columns.append(th_tag.text)
+
+    logging.info("handle_table_header - Original ratings post column names")
+    logging.info(header_columns)
+
+    return(header_columns)
+
 
 
 def handle_table_body(
@@ -77,6 +113,72 @@ def handle_table_body(
 
     return(saturday_ratings)
 
+
+def handle_table_clean(
+        reddit_post_html: str, rating_call_counter: int,
+        ratings_title: str) -> Dict[str, str]:
+    """Cleans the html table reddit post returned
+        Parameters
+        ----------
+        reddit_post_html
+            HTML post for the table
+        rating_call_counter
+            Sequence starting at 0 that describes
+            how many ratings posts have been called
+        ratings_title
+            The title we are attempting to parse the
+            date from
+        Returns
+        -------
+        body_dict
+            Dict of individual show ratings
+            Ex:
+            {
+                "Time": "12:00a",
+                "Show": "My Hero Academia (r)", 
+                "Viewers (000)": "590", 
+                "18-49 Rating": "0.29", 
+                "18-49 Views (000)": "380", 
+                "ratings_occurred_on": "2020-05-09"
+            }
+    """
+    bs_obj = BeautifulSoup(reddit_post_html, "html.parser")
+    header_columns = handle_table_header(bs_obj)
+    body_dict = handle_table_body(
+        bs_obj=bs_obj,
+        header_columns=header_columns
+    )
+    logging.info("Cleaned the ratings post")
+
+    '''
+        Parses a datetime from the title of the
+        post which will originally be something like:
+        "Toonami Ratings for November 2nd, 2019"
+        Returns tuple where the first element is
+        the datetime and the second is the leftover
+        string
+        (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
+    '''
+    ratings_occurred_on = parser.parse(ratings_title,
+        fuzzy_with_tokens=True)
+
+    logging.info("Date Parse Fuzzy Logic: ")
+    logging.info(ratings_title)
+    logging.info(ratings_occurred_on)
+
+    '''
+        Iterating over every saturday night ratings
+        which is list of dict and adding a new element
+        for the datetime on which the ratings occurred
+        formatting date in ISO 8601 standard
+    '''
+    for show_element in body_dict:
+        show_element["ratings_occurred_on"] = ratings_occurred_on[0].strftime("%Y-%m-%d")
+        '''
+            Add the YEAR
+        '''
+        show_element["YEAR"] = ratings_occurred_on[0].year
+    return(body_dict)
 
 
 def _populate_secret_config(sdk_response: Dict) -> SecretConfig:

@@ -252,41 +252,6 @@ class RedditApi(unittest.TestCase):
         )
 
 
-    def test_handle_table_header(self,
-        mock_rating_table=REDDIT_RATING_TABLE_2019):
-        """Tests columns are retrieved from html table header
-
-            Parameters
-            ----------
-            mock_rating_table : str
-                Example of an html table returned by the
-                reddit api
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import handle_table_header
-
-        '''
-            Creating BeautifulSoup object from
-            a test reddit html table post
-            and validating the handle_table_header
-            function returns a list of column names
-        '''
-        bs_obj = BeautifulSoup(mock_rating_table, "html.parser")
-        header_columns = handle_table_header(bs_obj)
-
-        self.assertEqual(header_columns,
-            [
-                "Time", "Show", "Viewers (000)",
-                "18-49 Rating", "18-49 Views (000)"
-            ]
-        )
-
-
     def test_iterate_handle_table_clean(self):
         """Tests iteration of ratings data with empty list
 

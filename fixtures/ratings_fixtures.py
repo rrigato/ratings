@@ -89,7 +89,7 @@ def mock_oauth_token_response(
 
 
 def mock_reddit_search_response(
-    ) -> Dict[str, Union[str, int]]:
+    ) -> Dict:
     """Mock reddit search endpoint response"""
     with open(
             "util/reddit_search_response.json"
