@@ -45,7 +45,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
 
         self.assertEqual(
-            len(get_ratings_post(mock_reddit_search_response())),
+            110,
             len(television_ratings),
             msg=("\n\ncheck that one TelevisionRating " +
                  "is returned for each ratings post in " +

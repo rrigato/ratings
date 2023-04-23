@@ -20,7 +20,13 @@ def _standardize_key_name(
         dict_to_clean: Dict[str, Union[str, int]]
     ) -> None:
     """Mutates key names for dict_to_clean 
-    to align with dict_key_mapping return value"""
+    to align with values of get_table_column_name_mapping
+    
+    Raises
+    ------
+    KeyError if the key in dict_to_clean is not found
+
+    """
     '''
             Iterates over all keys in each dict
     '''
@@ -168,7 +174,7 @@ def handle_table_body(
 
 def handle_table_clean(
         reddit_post_html: str, rating_call_counter: int,
-        ratings_title: str) -> Dict[str, str]:
+        ratings_title: str) -> List[Dict[str, str]]:
     """Cleans the html table reddit post returned
         Parameters
         ----------
@@ -412,10 +418,11 @@ def get_ratings_post(
 
 def _create_television_rating(
     news_post: Dict
-    ) -> TelevisionRating:
+    ) -> List[TelevisionRating]:
     """Creates new TelevisionRating
     """
-    tv_rating = TelevisionRating()
+    ratings_for_news_post: List[TelevisionRating] = []
+    
 
     parsed_table_ratings = handle_table_clean(
         reddit_post_html=news_post["data"]["selftext_html"],
@@ -423,9 +430,18 @@ def _create_television_rating(
         ratings_title=news_post["data"]["title"]
     )
 
-    # get_table_column_mapping([parsed_table_ratings])
+    for rating_dict in parsed_table_ratings:
+        tv_rating = TelevisionRating()
+
+        _standardize_key_name(rating_dict)
+
+        ratings_for_news_post.append(tv_rating)
+
+    logging.info(
+        f"_create_television_rating - len(ratings_for_news_post)"
+        + f"{len(ratings_for_news_post)}")    
     
-    return(tv_rating)
+    return(ratings_for_news_post)
 
 
 
@@ -447,7 +463,7 @@ def _populate_television_ratings_entities(
             news_post["data"]["title"]
         ):
             
-            ratings_posts.append(
+            ratings_posts.extend(
                 _create_television_rating(news_post)
             )
     
