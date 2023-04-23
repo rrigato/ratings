@@ -1,6 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List
 
+
 def get_table_column_name_mapping() -> Dict[str, str]:
     """Ratings post column name to dynamodb mapping logic
 
@@ -37,9 +38,9 @@ def get_table_column_name_mapping() -> Dict[str, str]:
     ))
 
 
-def table_column_to_television_rating() -> Dict[str, str]:
-    """maps dynamodb table column names to TelevisionRating
-    entity properties
+def television_rating_from_table_column() -> Dict[str, str]:
+    """maps TelevisionRating entity properties
+    to dynamodb table column names 
 
         Returns
         -------
@@ -56,7 +57,7 @@ def table_column_to_television_rating() -> Dict[str, str]:
         "rating_year": "YEAR",
         "household": "PERCENTAGE_OF_HOUSEHOLDS",
         "household_18_49": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-        # "rating_18_49": "IS_RERUN",
+        #TODO - "is_rerun": "IS_RERUN",
         "show_name": "SHOW",
         "show_air_date": "RATINGS_OCCURRED_ON",
         "rating_18_49": "TOTAL_VIEWERS_AGE_18_49",

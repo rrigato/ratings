@@ -1,5 +1,6 @@
 import unittest
 
+
 class TestNameMapper(unittest.TestCase):
     def test_get_table_column_name_mapping(self):
         """Each column name mapping value for a ratings post is a str"""
@@ -15,15 +16,15 @@ class TestNameMapper(unittest.TestCase):
                 str
             )
     
-    def test_table_column_to_television_rating(self):
-        """map table column name to TelevisionRating entity"""
-        from ratings.repo.name_mapper import get_table_column_name_mapping
-        from ratings.repo.name_mapper import table_column_to_television_rating
+    def test_television_rating_from_table_column(self):
+        """television_rating_from_table_columnTelevisionRating entity"""
+        from ratings.repo.name_mapper import (
+            get_table_column_name_mapping, television_rating_from_table_column)
         
 
         self.assertEqual(
             len(set(get_table_column_name_mapping().values())) - 1,
-            len(table_column_to_television_rating().keys()),
+            len(television_rating_from_table_column().keys()),
             msg="\n\n TODO - map is_rerun"
         )
         
