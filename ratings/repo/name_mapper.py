@@ -1,12 +1,12 @@
 from copy import deepcopy
-from typing import List
+from typing import Dict, List
 
-def get_table_column_name_mapping():
+def get_table_column_name_mapping() -> Dict[str, str]:
     """Ratings post column name to dynamodb mapping logic
 
         Returns
         -------
-        key_to_dynamo_column_map: dict
+        key_to_dynamo_column_map
             key is the name of column in the television ratings
             post, value is the standard key used in dynamodb.
             Dict is returned by copy
@@ -34,6 +34,34 @@ def get_table_column_name_mapping():
             "program": "SHOW"
 
         }
+    ))
+
+
+def table_column_to_television_rating() -> Dict[str, str]:
+    """maps dynamodb table column names to TelevisionRating
+    entity properties
+
+        Returns
+        -------
+            key is the entity property name for the
+            TelevisionRating property
+            value corresponds to a value from 
+            get_table_column_name_mapping return dict
+
+    """
+
+    return(deepcopy(
+        {
+        "time_slot": "TIME",
+        "rating_year": "YEAR",
+        "household": "PERCENTAGE_OF_HOUSEHOLDS",
+        "household_18_49": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+        # "rating_18_49": "IS_RERUN",
+        "show_name": "SHOW",
+        "show_air_date": "RATINGS_OCCURRED_ON",
+        "rating_18_49": "TOTAL_VIEWERS_AGE_18_49",
+        "rating": "TOTAL_VIEWERS"
+        } 
     ))
 
 

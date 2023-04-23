@@ -14,7 +14,19 @@ class TestNameMapper(unittest.TestCase):
                 type(get_table_column_name_mapping()[column_name]),
                 str
             )
+    
+    def test_table_column_to_television_rating(self):
+        """map table column name to TelevisionRating entity"""
+        from ratings.repo.name_mapper import get_table_column_name_mapping
+        from ratings.repo.name_mapper import table_column_to_television_rating
+        
 
+        self.assertEqual(
+            len(set(get_table_column_name_mapping().values())) - 1,
+            len(table_column_to_television_rating().keys()),
+            msg="\n\n TODO - map is_rerun"
+        )
+        
 
     def test_get_table_column_name_mapping_viewers_e2e(self):
         """Bug where viewers key was not mapped"""

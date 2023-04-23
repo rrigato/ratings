@@ -18,7 +18,7 @@ from ratings.repo.excluded_ratings_titles import get_excluded_titles
 
 def handle_table_header(
         bs_obj)-> List[str]:
-    """Converts table header for the html table into list
+    """Converts th tags for the html table into list
         Parameters
         ----------
         bs_obj : bs4.BeautifulSoup
