@@ -660,6 +660,30 @@ def ratings_from_internet() -> Union[
 
 
 
+def persist_ratings(
+    ratings_to_save: List[TelevisionRating]
+    ) -> Optional[str]:
+    """Returns None if successful, str of error otherwise
+    """
+    dynamodb_resource = boto3.resource("dynamodb")
+
+    dynamodb_table = dynamodb_resource.table("prod_toonami_ratings")
+    
+    logging.info(f"persist_ratings - obtained table")
+    
+    
+    for rating_to_save in ratings_to_save:
+        dynamodb_table.put_item(
+            {
+                
+            }
+        )
+
+    logging.info(f"persist_ratings - invocation end")
+    return(None)
+
+
+
 if __name__ == "__main__":
     import logging
     import os

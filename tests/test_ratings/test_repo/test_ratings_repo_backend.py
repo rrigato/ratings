@@ -57,7 +57,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
                 television_rating, TelevisionRating
             )
         self.assertIsNone(unexpected_error)
-        '''TODO - remove coupled test'''
         load_secret_config_mock.assert_called()
         get_oauth_token_mock.assert_called()
         
@@ -74,6 +73,34 @@ class TestRatingsRepoBackend(unittest.TestCase):
             msg="\n\n Not passing Authorization header"
         )
         
+
+    @patch("ratings.repo.ratings_repo_backend.boto3")
+    def test_persist_ratings(
+            self,
+            boto3_mock: MagicMock
+        ):
+        """TelevisionRatings entity sucessfully saved"""
+        from fixtures.ratings_fixtures import get_mock_television_ratings
+        from ratings.repo.ratings_repo_backend import persist_ratings
+
+        table_mock = MagicMock()
+        '''
+        API response structure
+        https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/client/put_item.html
+        '''
+        table_mock.put_item.return_value = {
+            "Attributes": {}, "ConsumedCapacity": {}
+        }
+
+        boto3_mock.resource.return_value.table.return_value = (
+            table_mock
+        )
+        
+
+        storage_error = persist_ratings(get_mock_television_ratings(5))
+
+        self.assertEqual(table_mock.call_count, 5)
+        self.assertIsNone(storage_error)
 
 
     @patch("boto3.client")
