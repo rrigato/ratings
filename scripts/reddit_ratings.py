@@ -14,7 +14,7 @@ from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                _standardize_key_name,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean, ratings_from_internet)
+                                               handle_table_clean, persist_ratings, ratings_from_internet)
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -768,6 +768,11 @@ def deprecated_main():
 def main() -> None:
     """Orchestrates clean architecture invocations from
     external
+
+    Raises
+    ------
+    RuntimeError
+        if unexpected error from clean architecture
     """
     logging.info(f"--------------main - invocation begin--------------")
 
@@ -780,7 +785,13 @@ def main() -> None:
         f"main - len(tv_ratings) - {len(tv_ratings)}"
     )
 
+    persistence_error = persist_ratings(tv_ratings[0:2])
+
+    if persistence_error is not None:
+        raise RuntimeError(persistence_error)
+    
     logging.info(f"--------------main - invocation end--------------")
+
     return(None)
 
 

@@ -886,7 +886,32 @@ class RedditApi(unittest.TestCase):
         args, kwargs = requests_get_mock.call_args
         self.assertIn("user-agent", kwargs["headers"].keys())
         self.assertIn("Authorization", kwargs["headers"].keys())
-        
+
+
+    @patch("scripts.reddit_ratings.persist_ratings")
+    @patch("scripts.reddit_ratings.ratings_from_internet")
+    def test_main_orchestration(
+        self, 
+        ratings_from_internet_mock: MagicMock, 
+        persist_ratings_mock: MagicMock
+        ):
+        """orchestration for main function"""
+        from fixtures.ratings_fixtures import get_mock_television_ratings
+        from scripts.reddit_ratings import main
+
+        ratings_from_internet_mock.return_value = (
+           get_mock_television_ratings(5), None
+        )
+
+        persist_ratings_mock.return_value = None
+
+
+        main()
+
+
+        ratings_from_internet_mock.assert_called()
+        persist_ratings_mock.assert_called()
+
 
 
 class RatingsLambdaHandler(unittest.TestCase):
