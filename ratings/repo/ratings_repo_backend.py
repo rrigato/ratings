@@ -452,12 +452,33 @@ def _dict_key_to_entity(
 def _parse_int(
     potential_int: str
     ) -> int:
-    """ensures the _potential_int is valid
+    """ensures the potential_int is valid
+
+    Raises
+    ------
+    AssertionError
+        if potential_int is not numeric
     """
     assert potential_int.isnumeric(), (
         f"_parse_int - {potential_int}"
     )
     return(int(potential_int))
+
+
+def _parse_float(
+    potential_float: str
+    ) -> float:
+    """ensures the potential_float is valid
+
+    Raises
+    ------
+    AssertionError
+        if potential_float is not numeric
+    """
+    assert potential_float.replace(".", "").isnumeric(), (
+        f"_parse_float - {potential_float}"
+    )
+    return(float(potential_float))
 
 
 
@@ -483,6 +504,9 @@ def _create_television_rating(
         '''
         refer to get_table_column_name_mapping value
         '''
+        tv_rating.household = _parse_float(rating_dict[
+            "PERCENTAGE_OF_HOUSEHOLDS"
+        ])
         tv_rating.rating = _parse_int(
             rating_dict["TOTAL_VIEWERS"]
         )
