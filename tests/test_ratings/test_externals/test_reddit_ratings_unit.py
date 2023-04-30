@@ -61,7 +61,7 @@ class RedditApi(unittest.TestCase):
     @patch("scripts.reddit_ratings.put_show_names")
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
-    def test_deprecated_main(self, ratings_iteration_mock,
+    def test_main(self, ratings_iteration_mock,
         handle_ratings_iteration_mock, put_show_names_mock,
         data_override_factory_mock):
         """Test for deprecated_main function
