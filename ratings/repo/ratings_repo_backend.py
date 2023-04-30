@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import logging
 from copy import deepcopy
@@ -447,6 +448,19 @@ def _dict_key_to_entity(
          f" - {column_mapper_name}")
 
 
+
+def _parse_int(
+    potential_int: str
+    ) -> int:
+    """ensures the _potential_int is valid
+    """
+    assert potential_int.isnumeric(), (
+        f"_parse_int - {potential_int}"
+    )
+    return(int(potential_int))
+
+
+
 def _create_television_rating(
     news_post: Dict
     ) -> List[TelevisionRating]:
@@ -465,6 +479,19 @@ def _create_television_rating(
         tv_rating = TelevisionRating()
 
         _standardize_key_name(rating_dict)
+
+        '''
+        refer to get_table_column_name_mapping value
+        '''
+        tv_rating.rating = _parse_int(
+            rating_dict["TOTAL_VIEWERS"]
+        )
+        tv_rating.rating_year = rating_dict["YEAR"] 
+        tv_rating.show_air_date = datetime.strptime(
+            rating_dict["ratings_occurred_on"],
+            "%Y-%M-%d"
+        ).date()
+        tv_rating.show_name = rating_dict["SHOW"]
 
         ratings_for_news_post.append(tv_rating)
 
