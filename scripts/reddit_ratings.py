@@ -14,7 +14,7 @@ from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                _standardize_key_name,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean)
+                                               handle_table_clean, ratings_from_internet)
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -763,6 +763,28 @@ def deprecated_main():
         table_name=(environment_prefix + "_toonami_analytics") 
     )
 
+
+
+def main() -> None:
+    """Orchestrates clean architecture invocations from
+    external
+    """
+    logging.info(f"--------------main - invocation begin--------------")
+
+    tv_ratings, retreival_error = ratings_from_internet()
+
+    if retreival_error is not None:
+        raise RuntimeError(retreival_error)
+    
+    logging.info(
+        f"main - len(tv_ratings) - {len(tv_ratings)}"
+    )
+
+    logging.info(f"--------------main - invocation end--------------")
+    return(None)
+
+
+
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
     """
@@ -770,13 +792,5 @@ def lambda_handler(event, context):
         Logging required for cloudwatch logs
     '''
     logging.getLogger().setLevel(logging.INFO)
-    deprecated_main()
-
-
-if __name__ == "__main__":
-    get_logger()    
-    deprecated_main()
-
-
-
+    main()
 
