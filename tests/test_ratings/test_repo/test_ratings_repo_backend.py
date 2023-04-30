@@ -99,7 +99,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
         storage_error = persist_ratings(get_mock_television_ratings(5))
 
-        self.assertEqual(table_mock.call_count, 5)
+        self.assertEqual(table_mock.put_item.call_count, 5)
         self.assertIsNone(storage_error)
 
 

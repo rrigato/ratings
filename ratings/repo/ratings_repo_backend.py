@@ -673,11 +673,21 @@ def persist_ratings(
     
     
     for rating_to_save in ratings_to_save:
-        dynamodb_table.put_item(
-            {
-                
-            }
-        )
+        new_item = {
+            "RATINGS_OCCURRED_ON": (
+                rating_to_save.show_air_date.isoformat()
+            ),
+            "TIME": rating_to_save.time_slot,
+            "YEAR": rating_to_save.rating_year,
+            "SHOW": rating_to_save.show_name,
+            "TOTAL_VIEWERS": str(rating_to_save.rating)
+
+        }
+        if rating_to_save.household is not None:
+            new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
+                str(rating_to_save.household)
+            )
+        dynamodb_table.put_item(new_item)
 
     logging.info(f"persist_ratings - invocation end")
     return(None)
