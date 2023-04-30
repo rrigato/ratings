@@ -66,6 +66,8 @@ class RedditApi(unittest.TestCase):
         data_override_factory_mock):
         """Test for deprecated_main function
         """
+        '''TODO - change name of this test case and it fails for some
+        crazy reason'''
         from scripts.reddit_ratings import deprecated_main
 
         ratings_iteration_mock.return_value = MOCK_RATINGS_LIST

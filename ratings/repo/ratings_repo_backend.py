@@ -1,21 +1,21 @@
-from datetime import date
-from datetime import datetime
 import json
 import logging
 from copy import deepcopy
+from datetime import date, datetime
 from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import boto3
+import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
-import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
-from ratings.repo.name_mapper import get_table_column_name_mapping, keys_to_ignore
+from ratings.repo.name_mapper import (get_table_column_name_mapping,
+                                      keys_to_ignore)
 
 
 def _standardize_key_name(
@@ -299,7 +299,7 @@ def load_secret_config() -> Optional[SecretConfig]:
     api docs
     <platform>:<app ID>:<version string> (by /u/<reddit username>)
 '''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
+REDDIT_USER_AGENT = "Lambda:toonamiratings:v3.0.0 (by /u/toonamiratings)"
 
 
 def get_oauth_token(

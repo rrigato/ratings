@@ -5,9 +5,11 @@ from copy import deepcopy
 from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
+from fixtures.ratings_fixtures import (mock_oauth_token_response,
+                                       mock_reddit_search_response,
                                        mock_secret_config)
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019, REDDIT_RATING_TABLE_2020
+from util.test_reddit_rating_config import (REDDIT_RATING_TABLE_2019,
+                                            REDDIT_RATING_TABLE_2020)
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -24,8 +26,8 @@ class TestRatingsRepoBackend(unittest.TestCase):
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
-        from ratings.repo.ratings_repo_backend import get_ratings_post
-        from ratings.repo.ratings_repo_backend import ratings_from_internet
+        from ratings.repo.ratings_repo_backend import (get_ratings_post,
+                                                       ratings_from_internet)
 
         load_secret_config_mock.return_value = mock_secret_config()
         get_oauth_token_mock.return_value = mock_oauth_token_response()
@@ -211,7 +213,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             auth=(mock_client_id, mock_auth_value),
             data={"grant_type":"client_credentials"},
             headers={
-                "user-agent":"Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
+                "user-agent":"Lambda:toonamiratings:v3.0.0 (by /u/toonamiratings)"
             }
         )
 
@@ -387,6 +389,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
     def test_handle_table_body(self):
         """Tests dict from html body handler"""
         from bs4 import BeautifulSoup
+
         from ratings.repo.ratings_repo_backend import handle_table_body
 
         '''
@@ -428,6 +431,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
         """Tests columns are retrieved from html table header
         """
         from bs4 import BeautifulSoup
+
         from ratings.repo.ratings_repo_backend import handle_table_header
 
         '''
