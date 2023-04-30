@@ -785,7 +785,7 @@ def main() -> None:
         f"main - len(tv_ratings) - {len(tv_ratings)}"
     )
 
-    persistence_error = persist_ratings(tv_ratings[0:2])
+    persistence_error = persist_ratings(tv_ratings)
 
     if persistence_error is not None:
         raise RuntimeError(persistence_error)
