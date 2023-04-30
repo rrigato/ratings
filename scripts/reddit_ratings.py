@@ -11,10 +11,10 @@ from boto3.dynamodb import conditions
 
 from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               get_oauth_token)
-from ratings.repo.ratings_repo_backend import get_ratings_post
-from ratings.repo.ratings_repo_backend import handle_table_clean
-from ratings.repo.ratings_repo_backend import _standardize_key_name
+                                               _standardize_key_name,
+                                               get_oauth_token,
+                                               get_ratings_post,
+                                               handle_table_clean)
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -726,7 +726,7 @@ def put_show_names(all_ratings_list, table_name):
             )
     
 
-def main():
+def deprecated_main():
     """Entry point into the script
     """
     '''
@@ -779,12 +779,12 @@ def lambda_handler(event, context):
         Logging required for cloudwatch logs
     '''
     logging.getLogger().setLevel(logging.INFO)
-    main()
+    deprecated_main()
 
 
 if __name__ == "__main__":
     get_logger()    
-    main()
+    deprecated_main()
 
 
 

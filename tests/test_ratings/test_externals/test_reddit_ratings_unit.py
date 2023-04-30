@@ -1,15 +1,16 @@
-from bs4 import BeautifulSoup
-from copy import deepcopy
-from unittest.mock import MagicMock
-from unittest.mock import patch
-from util.test_reddit_rating_config import MOCK_CLEAN_RATINGS_LIST
-from util.test_reddit_rating_config import MOCK_RATINGS_LIST
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
-
 import json
 import os
 import unittest
+from copy import deepcopy
+from unittest.mock import MagicMock, patch
+
+from bs4 import BeautifulSoup
+
+from util.test_reddit_rating_config import (MOCK_CLEAN_RATINGS_LIST,
+                                            MOCK_RATINGS_LIST,
+                                            REDDIT_RATING_TABLE_2019,
+                                            REDDIT_RATING_TABLE_2020)
+
 
 class RedditApi(unittest.TestCase):
     """Testing the reddit api pull unit tests only
@@ -60,16 +61,16 @@ class RedditApi(unittest.TestCase):
     @patch("scripts.reddit_ratings.put_show_names")
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
-    def test_main(self, ratings_iteration_mock,
+    def test_deprecated_main(self, ratings_iteration_mock,
         handle_ratings_iteration_mock, put_show_names_mock,
         data_override_factory_mock):
-        """Test for main function
+        """Test for deprecated_main function
         """
-        from scripts.reddit_ratings import main
+        from scripts.reddit_ratings import deprecated_main
 
         ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
 
-        main()
+        deprecated_main()
 
         ratings_iteration_mock.assert_called_once_with(
             number_posts=self.MAIN_FUNCTION_POST_COUNT
