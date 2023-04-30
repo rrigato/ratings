@@ -765,15 +765,6 @@ def deprecated_main():
 
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
     """
     '''
         Logging required for cloudwatch logs

@@ -887,3 +887,39 @@ class RedditApi(unittest.TestCase):
         self.assertIn("user-agent", kwargs["headers"].keys())
         self.assertIn("Authorization", kwargs["headers"].keys())
         
+
+
+class RatingsLambdaHandler(unittest.TestCase):
+    """Tests specific to when the script is run from a lambda function
+    """
+    
+
+    @patch("logging.getLogger")
+    @patch("scripts.reddit_ratings.main")
+    def test_lambda_handler_event(
+        self, 
+        main_mock: MagicMock, 
+        getLogger_mock: MagicMock
+        ):
+        """Tests passing sample event to lambda_handler
+        """
+        from scripts.reddit_ratings import lambda_handler
+
+        lambda_handler(
+            event={"unused": "event"},
+            context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
+        )
+
+        '''
+            Testing call count and args passed
+        '''
+        self.assertEqual(
+            main_mock.call_count,
+            1
+        )
+
