@@ -665,9 +665,11 @@ def persist_ratings(
     ) -> Optional[str]:
     """Returns None if successful, str of error otherwise
     """
-    dynamodb_resource = boto3.resource("dynamodb")
+    dynamodb_resource = boto3.resource(
+        "dynamodb", "us-east-1"
+    )
 
-    dynamodb_table = dynamodb_resource.table("prod_toonami_ratings")
+    dynamodb_table = dynamodb_resource.Table("prod_toonami_ratings")
     
     logging.info(f"persist_ratings - obtained table")
     
@@ -687,7 +689,7 @@ def persist_ratings(
             new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
                 str(rating_to_save.household)
             )
-        dynamodb_table.put_item(new_item)
+        dynamodb_table.put_item(Item=new_item)
 
     logging.info(f"persist_ratings - invocation end")
     return(None)
@@ -707,4 +709,10 @@ if __name__ == "__main__":
         level=logging.INFO
     )
     tv_ratings, retreival_error = ratings_from_internet()
+
+    print(tv_ratings[0].show_air_date)
+    print(tv_ratings[1].show_air_date)
+
+    persist_ratings(tv_ratings[0:2])
+
 

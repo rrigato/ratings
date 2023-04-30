@@ -92,7 +92,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             "Attributes": {}, "ConsumedCapacity": {}
         }
 
-        boto3_mock.resource.return_value.table.return_value = (
+        boto3_mock.resource.return_value.Table.return_value = (
             table_mock
         )
         
