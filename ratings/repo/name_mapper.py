@@ -70,6 +70,8 @@ def keys_to_ignore() -> List[str]:
     """user input keys to ignore
     """
     return([
-        "rank (/150)"
+        "rank (/150)",
+        "vs last",
+        "change"
     ])
 

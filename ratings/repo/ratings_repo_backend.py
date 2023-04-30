@@ -69,7 +69,7 @@ def _standardize_key_name(
         if clean_ratings_key not in get_table_column_name_mapping(
         ).keys():
             raise KeyError(f"_standardize_key_name - "+
-            f" No match for {clean_ratings_key}")
+            f" No match for - {clean_ratings_key}")
 
 
 
@@ -414,6 +414,37 @@ def get_ratings_post(
     return(ratings_post_list)
 
 
+def _dict_key_to_entity(
+    ratings_dict: Dict,
+    column_mapper_name: str
+    ) -> str:
+    """Returns the key name for ratings_dict that 
+    corresponds to value of get_table_column_name_mapping
+    
+    Parameters
+    ----------
+    ratings_dict
+        output of _standardize_key_name
+
+    column_mapper_name 
+        one of the values
+        of the get_table_column_name_mapping return dict
+    """
+    potential_keys = []
+
+    for key, value in ratings_dict.items():
+        if value == column_mapper_name:
+            potential_keys.append(key)
+
+    
+    
+    for unclean_key in ratings_dict.keys():
+        if unclean_key in potential_keys:
+            return(unclean_key)
+    
+    raise ValueError(
+        f"_dict_key_to_entity - could not find" +
+         f" - {column_mapper_name}")
 
 
 def _create_television_rating(
