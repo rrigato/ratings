@@ -1,3 +1,4 @@
+from datetime import date
 from datetime import datetime
 import json
 import logging
@@ -467,7 +468,7 @@ def _parse_int(
 
 def _parse_float(
     potential_float: str
-    ) -> float:
+    ) -> Optional[float]:
     """ensures the potential_float is valid
 
     Raises
@@ -475,11 +476,31 @@ def _parse_float(
     AssertionError
         if potential_float is not numeric
     """
+    if potential_float is None:
+        return(None)
     assert potential_float.replace(".", "").isnumeric(), (
         f"_parse_float - {potential_float}"
     )
     return(float(potential_float))
 
+
+def _handle_show_air_date(rating_dict: Dict) -> date:
+    """parses show_air_date property from rating_dict
+
+    Raises
+    ------
+    KeyError
+        if show_air_date is not found in rating_dict
+    """
+    show_air_date = rating_dict.get("RATINGS_OCCURRED_ON")
+
+    if show_air_date is None:
+        show_air_date = rating_dict["ratings_occurred_on"]
+
+    return (datetime.strptime(
+            show_air_date,
+            "%Y-%M-%d"
+        ).date())
 
 
 def _create_television_rating(
@@ -504,18 +525,17 @@ def _create_television_rating(
         '''
         refer to get_table_column_name_mapping value
         '''
-        tv_rating.household = _parse_float(rating_dict[
+        tv_rating.household = _parse_float(rating_dict.get(
             "PERCENTAGE_OF_HOUSEHOLDS"
-        ])
+            )
+        )
         tv_rating.rating = _parse_int(
             rating_dict["TOTAL_VIEWERS"]
         )
         tv_rating.rating_year = rating_dict["YEAR"] 
-        tv_rating.show_air_date = datetime.strptime(
-            rating_dict["ratings_occurred_on"],
-            "%Y-%M-%d"
-        ).date()
+        tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
+        tv_rating.time_slot = rating_dict["TIME"]
 
         ratings_for_news_post.append(tv_rating)
 
@@ -524,7 +544,6 @@ def _create_television_rating(
         + f"{len(ratings_for_news_post)}")    
     
     return(ratings_for_news_post)
-
 
 
 def _populate_television_ratings_entities(
