@@ -890,12 +890,14 @@ class RedditApi(unittest.TestCase):
         self.assertIn("Authorization", kwargs["headers"].keys())
 
 
+    @patch("scripts.reddit_ratings.persist_show_names")
     @patch("scripts.reddit_ratings.persist_ratings")
     @patch("scripts.reddit_ratings.ratings_from_internet")
     def test_main_orchestration(
         self, 
         ratings_from_internet_mock: MagicMock, 
-        persist_ratings_mock: MagicMock
+        persist_ratings_mock: MagicMock,
+        persist_show_names_mock: MagicMock
         ):
         """orchestration for main function"""
         from fixtures.ratings_fixtures import get_mock_television_ratings
@@ -906,6 +908,7 @@ class RedditApi(unittest.TestCase):
         )
 
         persist_ratings_mock.return_value = None
+        persist_show_names_mock.return_value = None
 
 
         main()
@@ -913,6 +916,7 @@ class RedditApi(unittest.TestCase):
 
         ratings_from_internet_mock.assert_called()
         persist_ratings_mock.assert_called()
+        persist_show_names_mock.assert_called()
 
 
 

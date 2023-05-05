@@ -14,7 +14,7 @@ from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                _standardize_key_name,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean, persist_ratings, ratings_from_internet)
+                                               handle_table_clean, persist_ratings, persist_show_names, ratings_from_internet)
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -789,6 +789,13 @@ def main() -> None:
 
     if persistence_error is not None:
         raise RuntimeError(persistence_error)
+    
+    logging.info(f"main - persist_ratings successful")
+
+    analytics_error = persist_show_names(tv_ratings)
+
+    if analytics_error is not None:
+        raise RuntimeError(analytics_error)
     
     logging.info(f"--------------main - invocation end--------------")
 
