@@ -458,7 +458,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             self,
             boto3_mock: MagicMock
         ):
-        """TelevisionRatings show names saved"""
+        """TelevisionRatings unique show names saved"""
         from fixtures.ratings_fixtures import get_mock_television_ratings
         from ratings.repo.ratings_repo_backend import persist_show_names
 
