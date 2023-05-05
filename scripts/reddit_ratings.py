@@ -758,10 +758,6 @@ def deprecated_main():
         table_name=(environment_prefix + "_toonami_ratings") 
     )
 
-    put_show_names(
-        all_ratings_list=all_ratings_list,
-        table_name=(environment_prefix + "_toonami_analytics") 
-    )
 
 
 
