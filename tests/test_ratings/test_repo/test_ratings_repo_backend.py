@@ -452,3 +452,36 @@ class TestRatingsRepoBackend(unittest.TestCase):
             ]
         )
 
+
+    @patch("ratings.repo.ratings_repo_backend.boto3")
+    def test_persist_show_names(
+            self,
+            boto3_mock: MagicMock
+        ):
+        """TelevisionRatings show names saved"""
+        from fixtures.ratings_fixtures import get_mock_television_ratings
+        from ratings.repo.ratings_repo_backend import persist_show_names
+
+        table_mock = MagicMock()
+        '''
+        API response structure
+        https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/client/put_item.html
+        '''
+        table_mock.put_item.return_value = {
+            "Attributes": {}, "ConsumedCapacity": {}
+        }
+
+        boto3_mock.resource.return_value.Table.return_value = (
+            table_mock
+        )
+        
+
+        persist_show_names(get_mock_television_ratings(5))
+
+
+        self.assertEqual(table_mock.put_item.call_count, 5)
+        boto3_mock.resource.return_value.Table.assert_called_once_with(
+            "prod_toonami_analytics"
+        )
+        
+

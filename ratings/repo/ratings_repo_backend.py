@@ -662,6 +662,44 @@ def persist_ratings(
 
 
 
+
+def persist_show_names(
+        television_ratings_list: List[TelevisionRating]
+    ) -> None:
+    """Saves the unique show names to dynamodb
+    """
+    dynamodb_resource = boto3.resource(
+        "dynamodb", "us-east-1"
+    )
+
+    dynamodb_table = dynamodb_resource.Table("prod_toonami_analytics")
+    
+    logging.info(f"persist_ratings - obtained table")
+    
+    
+    
+    all_show_names = tuple([
+        rating.show_name for rating
+        in television_ratings_list
+        if rating.show_name is not None
+    ])
+    
+    for show_name in all_show_names:
+        show_name_item = {
+            "PK": "ratings#showName",
+            "SK": show_name
+        }
+        
+
+    logging.info(f"persist_show_names - invocation begin")
+    
+    logging.info(f"persist_show_names - invocation end")
+    return(None)
+
+
+
+
+
 if __name__ == "__main__":
     import logging
     import os
