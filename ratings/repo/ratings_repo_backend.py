@@ -661,8 +661,6 @@ def persist_ratings(
     return(None)
 
 
-
-
 def persist_show_names(
         television_ratings_list: List[TelevisionRating]
     ) -> None:
@@ -674,11 +672,11 @@ def persist_show_names(
 
     dynamodb_table = dynamodb_resource.Table("prod_toonami_analytics")
     
-    logging.info(f"persist_ratings - obtained table")
+    logging.info(f"persist_show_names - obtained table")
     
     
     
-    all_show_names = tuple([
+    all_show_names = set([
         rating.show_name for rating
         in television_ratings_list
         if rating.show_name is not None
@@ -689,15 +687,11 @@ def persist_show_names(
             "PK": "ratings#showName",
             "SK": show_name
         }
-        
+        dynamodb_table.put_item(Item=show_name_item)
 
-    logging.info(f"persist_show_names - invocation begin")
     
     logging.info(f"persist_show_names - invocation end")
     return(None)
-
-
-
 
 
 if __name__ == "__main__":

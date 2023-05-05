@@ -475,11 +475,14 @@ class TestRatingsRepoBackend(unittest.TestCase):
             table_mock
         )
         
+        mock_tv_ratings = get_mock_television_ratings(5)
+        mock_tv_ratings[1].show_name = "duplicate show"
+        mock_tv_ratings[3].show_name = "duplicate show"
 
-        persist_show_names(get_mock_television_ratings(5))
+        persist_show_names(mock_tv_ratings)
 
 
-        self.assertEqual(table_mock.put_item.call_count, 5)
+        self.assertEqual(table_mock.put_item.call_count, 4)
         boto3_mock.resource.return_value.Table.assert_called_once_with(
             "prod_toonami_analytics"
         )

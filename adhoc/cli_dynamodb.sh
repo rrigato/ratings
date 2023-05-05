@@ -6,3 +6,7 @@ aws dynamodb query \
  --key-condition-expression "RATINGS_OCCURRED_ON = :keyval"  \
  --expression-attribute-values '{":keyval" :{"S": "2023-01-22"}}' \
  --table-name $TABLE_NAME
+
+aws dynamodb scan \
+ --region us-east-1 \
+ --table-name $TABLE_NAME
