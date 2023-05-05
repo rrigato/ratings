@@ -465,7 +465,7 @@ def _handle_show_air_date(rating_dict: Dict) -> date:
 
     return (datetime.strptime(
             show_air_date,
-            "%Y-%M-%d"
+            "%Y-%m-%d"
         ).date())
 
 
