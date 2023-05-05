@@ -1,15 +1,16 @@
-from bs4 import BeautifulSoup
-from copy import deepcopy
-from unittest.mock import MagicMock
-from unittest.mock import patch
-from util.test_reddit_rating_config import MOCK_CLEAN_RATINGS_LIST
-from util.test_reddit_rating_config import MOCK_RATINGS_LIST
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
-
 import json
 import os
 import unittest
+from copy import deepcopy
+from unittest.mock import MagicMock, patch
+
+from bs4 import BeautifulSoup
+
+from util.test_reddit_rating_config import (MOCK_CLEAN_RATINGS_LIST,
+                                            MOCK_RATINGS_LIST,
+                                            REDDIT_RATING_TABLE_2019,
+                                            REDDIT_RATING_TABLE_2020)
+
 
 class RedditApi(unittest.TestCase):
     """Testing the reddit api pull unit tests only
@@ -63,13 +64,15 @@ class RedditApi(unittest.TestCase):
     def test_main(self, ratings_iteration_mock,
         handle_ratings_iteration_mock, put_show_names_mock,
         data_override_factory_mock):
-        """Test for main function
+        """Test for deprecated_main function
         """
-        from scripts.reddit_ratings import main
+        '''TODO - change name of this test case and it fails for some
+        crazy reason'''
+        from scripts.reddit_ratings import deprecated_main
 
         ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
 
-        main()
+        deprecated_main()
 
         ratings_iteration_mock.assert_called_once_with(
             number_posts=self.MAIN_FUNCTION_POST_COUNT
@@ -885,4 +888,65 @@ class RedditApi(unittest.TestCase):
         args, kwargs = requests_get_mock.call_args
         self.assertIn("user-agent", kwargs["headers"].keys())
         self.assertIn("Authorization", kwargs["headers"].keys())
-        
+
+
+    @patch("scripts.reddit_ratings.persist_ratings")
+    @patch("scripts.reddit_ratings.ratings_from_internet")
+    def test_main_orchestration(
+        self, 
+        ratings_from_internet_mock: MagicMock, 
+        persist_ratings_mock: MagicMock
+        ):
+        """orchestration for main function"""
+        from fixtures.ratings_fixtures import get_mock_television_ratings
+        from scripts.reddit_ratings import main
+
+        ratings_from_internet_mock.return_value = (
+           get_mock_television_ratings(5), None
+        )
+
+        persist_ratings_mock.return_value = None
+
+
+        main()
+
+
+        ratings_from_internet_mock.assert_called()
+        persist_ratings_mock.assert_called()
+
+
+
+class RatingsLambdaHandler(unittest.TestCase):
+    """Tests specific to when the script is run from a lambda function
+    """
+    
+
+    @patch("logging.getLogger")
+    @patch("scripts.reddit_ratings.main")
+    def test_lambda_handler_event(
+        self, 
+        main_mock: MagicMock, 
+        getLogger_mock: MagicMock
+        ):
+        """Tests passing sample event to lambda_handler
+        """
+        from scripts.reddit_ratings import lambda_handler
+
+        lambda_handler(
+            event={"unused": "event"},
+            context={}
+        )
+
+        self.assertEqual(
+            getLogger_mock.call_count,
+            1
+        )
+
+        '''
+            Testing call count and args passed
+        '''
+        self.assertEqual(
+            main_mock.call_count,
+            1
+        )
+

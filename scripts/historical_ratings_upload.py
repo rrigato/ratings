@@ -1,11 +1,12 @@
-from scripts.reddit_ratings import clean_dict_value
-from scripts.reddit_ratings import dict_key_mapping
-from scripts.reddit_ratings import get_boto_clients
-
-import boto3
 import json
 import logging
 import os
+
+import boto3
+
+from scripts.reddit_ratings import (clean_dict_value, dict_key_mapping,
+                                    get_boto_clients)
+
 
 def get_logger(working_directory=os.getcwd()):
     """Sets up logger
@@ -86,7 +87,7 @@ def batch_json_upload(json_file_location, table_name):
                 )
 
 
-def main():
+def deprecated_main():
     """Entry point into the script
         Parameters
         ----------
@@ -109,4 +110,4 @@ def main():
     )
 
 if __name__ == "__main__":
-    main()
+    deprecated_main()

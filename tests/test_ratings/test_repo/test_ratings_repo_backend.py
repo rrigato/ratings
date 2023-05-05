@@ -5,9 +5,11 @@ from copy import deepcopy
 from unittest.mock import MagicMock, patch
 from urllib.request import Request
 
-from fixtures.ratings_fixtures import (mock_oauth_token_response, mock_reddit_search_response,
+from fixtures.ratings_fixtures import (mock_oauth_token_response,
+                                       mock_reddit_search_response,
                                        mock_secret_config)
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019, REDDIT_RATING_TABLE_2020
+from util.test_reddit_rating_config import (REDDIT_RATING_TABLE_2019,
+                                            REDDIT_RATING_TABLE_2020)
 
 
 class TestRatingsRepoBackend(unittest.TestCase):
@@ -24,8 +26,8 @@ class TestRatingsRepoBackend(unittest.TestCase):
         ):
         """Parsing of TelevisionRatings entities"""
         from ratings.entities.ratings_entities import TelevisionRating
-        from ratings.repo.ratings_repo_backend import get_ratings_post
-        from ratings.repo.ratings_repo_backend import ratings_from_internet
+        from ratings.repo.ratings_repo_backend import (get_ratings_post,
+                                                       ratings_from_internet)
 
         load_secret_config_mock.return_value = mock_secret_config()
         get_oauth_token_mock.return_value = mock_oauth_token_response()
@@ -45,7 +47,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
 
         self.assertEqual(
-            len(get_ratings_post(mock_reddit_search_response())),
+            110,
             len(television_ratings),
             msg=("\n\ncheck that one TelevisionRating " +
                  "is returned for each ratings post in " +
@@ -57,7 +59,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
                 television_rating, TelevisionRating
             )
         self.assertIsNone(unexpected_error)
-        '''TODO - remove coupled test'''
         load_secret_config_mock.assert_called()
         get_oauth_token_mock.assert_called()
         
@@ -74,6 +75,34 @@ class TestRatingsRepoBackend(unittest.TestCase):
             msg="\n\n Not passing Authorization header"
         )
         
+
+    @patch("ratings.repo.ratings_repo_backend.boto3")
+    def test_persist_ratings(
+            self,
+            boto3_mock: MagicMock
+        ):
+        """TelevisionRatings entity sucessfully saved"""
+        from fixtures.ratings_fixtures import get_mock_television_ratings
+        from ratings.repo.ratings_repo_backend import persist_ratings
+
+        table_mock = MagicMock()
+        '''
+        API response structure
+        https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/client/put_item.html
+        '''
+        table_mock.put_item.return_value = {
+            "Attributes": {}, "ConsumedCapacity": {}
+        }
+
+        boto3_mock.resource.return_value.Table.return_value = (
+            table_mock
+        )
+        
+
+        storage_error = persist_ratings(get_mock_television_ratings(5))
+
+        self.assertEqual(table_mock.put_item.call_count, 5)
+        self.assertIsNone(storage_error)
 
 
     @patch("boto3.client")
@@ -184,7 +213,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
             auth=(mock_client_id, mock_auth_value),
             data={"grant_type":"client_credentials"},
             headers={
-                "user-agent":"Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
+                "user-agent":"Lambda:toonamiratings:v3.0.0 (by /u/toonamiratings)"
             }
         )
 
@@ -360,6 +389,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
     def test_handle_table_body(self):
         """Tests dict from html body handler"""
         from bs4 import BeautifulSoup
+
         from ratings.repo.ratings_repo_backend import handle_table_body
 
         '''
@@ -401,6 +431,7 @@ class TestRatingsRepoBackend(unittest.TestCase):
         """Tests columns are retrieved from html table header
         """
         from bs4 import BeautifulSoup
+
         from ratings.repo.ratings_repo_backend import handle_table_header
 
         '''

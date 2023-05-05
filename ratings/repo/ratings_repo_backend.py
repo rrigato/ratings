@@ -1,24 +1,84 @@
 import json
 import logging
 from copy import deepcopy
+from datetime import date, datetime
 from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import boto3
+import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
-import requests
 
 from ratings.entities.ratings_entities import SecretConfig, TelevisionRating
 from ratings.repo.excluded_ratings_titles import get_excluded_titles
+from ratings.repo.name_mapper import (get_table_column_name_mapping,
+                                      keys_to_ignore)
+
+
+def _standardize_key_name(
+        dict_to_clean: Dict[str, Union[str, int]]
+    ) -> None:
+    """Mutates key names for dict_to_clean 
+    to align with values of get_table_column_name_mapping
+    
+    Raises
+    ------
+    KeyError if the key in dict_to_clean is not found
+
+    """
+    '''
+            Iterates over all keys in each dict
+    '''
+    for user_input_key in list(dict_to_clean.keys()):
+        '''Do nothing if we match the correct column names'''
+        if user_input_key in get_table_column_name_mapping(
+        ).values():
+            return(None)
+
+
+        '''
+            lower caseing and removing trailing/leading 
+            spaces for comparison
+        '''
+        clean_ratings_key = user_input_key.lower().strip()
+
+        '''Do nothing if we if it is an excluded key'''
+        if clean_ratings_key in keys_to_ignore():
+            return(None)
+
+        '''
+            pops old key value from dict_to_clean
+            and adds the correct dynamo
+            column name mapping
+            user_input_key will be one of the keys in 
+            get_table_column_name_mapping
+        '''
+        if clean_ratings_key in get_table_column_name_mapping().keys():
+
+            dict_to_clean[
+                    get_table_column_name_mapping()[
+                        clean_ratings_key
+                    ]
+                ] =  dict_to_clean.pop(
+                    user_input_key
+                )
+
+
+
+        if clean_ratings_key not in get_table_column_name_mapping(
+        ).keys():
+            raise KeyError(f"_standardize_key_name - "+
+            f" No match for - {clean_ratings_key}")
+
 
 
 
 def handle_table_header(
         bs_obj)-> List[str]:
-    """Converts table header for the html table into list
+    """Converts th tags for the html table into list
         Parameters
         ----------
         bs_obj : bs4.BeautifulSoup
@@ -116,7 +176,7 @@ def handle_table_body(
 
 def handle_table_clean(
         reddit_post_html: str, rating_call_counter: int,
-        ratings_title: str) -> Dict[str, str]:
+        ratings_title: str) -> List[Dict[str, str]]:
     """Cleans the html table reddit post returned
         Parameters
         ----------
@@ -239,7 +299,7 @@ def load_secret_config() -> Optional[SecretConfig]:
     api docs
     <platform>:<app ID>:<version string> (by /u/<reddit username>)
 '''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v2.7.0 (by /u/toonamiratings)"
+REDDIT_USER_AGENT = "Lambda:toonamiratings:v3.0.0 (by /u/toonamiratings)"
 
 
 def get_oauth_token(
@@ -356,18 +416,100 @@ def get_ratings_post(
     return(ratings_post_list)
 
 
+def _parse_int(
+    potential_int: str
+    ) -> int:
+    """ensures the potential_int is valid
+
+    Raises
+    ------
+    AssertionError
+        if potential_int is not numeric
+    """
+    assert potential_int.isnumeric(), (
+        f"_parse_int - {potential_int}"
+    )
+    return(int(potential_int))
+
+
+def _parse_float(
+    potential_float: str
+    ) -> Optional[float]:
+    """ensures the potential_float is valid
+
+    Raises
+    ------
+    AssertionError
+        if potential_float is not numeric
+    """
+    if potential_float is None:
+        return(None)
+    assert potential_float.replace(".", "").isnumeric(), (
+        f"_parse_float - {potential_float}"
+    )
+    return(float(potential_float))
+
+
+def _handle_show_air_date(rating_dict: Dict) -> date:
+    """parses show_air_date property from rating_dict
+
+    Raises
+    ------
+    KeyError
+        if show_air_date is not found in rating_dict
+    """
+    show_air_date = rating_dict.get("RATINGS_OCCURRED_ON")
+
+    if show_air_date is None:
+        show_air_date = rating_dict["ratings_occurred_on"]
+
+    return (datetime.strptime(
+            show_air_date,
+            "%Y-%M-%d"
+        ).date())
 
 
 def _create_television_rating(
     news_post: Dict
-    ) -> TelevisionRating:
+    ) -> List[TelevisionRating]:
     """Creates new TelevisionRating
     """
-    tv_rating = TelevisionRating()
-
+    ratings_for_news_post: List[TelevisionRating] = []
     
-    return(tv_rating)
 
+    parsed_table_ratings = handle_table_clean(
+        reddit_post_html=news_post["data"]["selftext_html"],
+        rating_call_counter=None,
+        ratings_title=news_post["data"]["title"]
+    )
+
+    for rating_dict in parsed_table_ratings:
+        tv_rating = TelevisionRating()
+
+        _standardize_key_name(rating_dict)
+
+        '''
+        refer to get_table_column_name_mapping value
+        '''
+        tv_rating.household = _parse_float(rating_dict.get(
+            "PERCENTAGE_OF_HOUSEHOLDS"
+            )
+        )
+        tv_rating.rating = _parse_int(
+            rating_dict["TOTAL_VIEWERS"]
+        )
+        tv_rating.rating_year = rating_dict["YEAR"] 
+        tv_rating.show_air_date = _handle_show_air_date(rating_dict)
+        tv_rating.show_name = rating_dict["SHOW"]
+        tv_rating.time_slot = rating_dict["TIME"]
+        '''TODO - demo 18-49 ratings and is_rerun'''
+        ratings_for_news_post.append(tv_rating)
+
+    logging.info(
+        f"_create_television_rating - len(ratings_for_news_post)"
+        + f"{len(ratings_for_news_post)}")    
+    
+    return(ratings_for_news_post)
 
 
 def _populate_television_ratings_entities(
@@ -388,7 +530,7 @@ def _populate_television_ratings_entities(
             news_post["data"]["title"]
         ):
             
-            ratings_posts.append(
+            ratings_posts.extend(
                 _create_television_rating(news_post)
             )
     
@@ -484,6 +626,42 @@ def ratings_from_internet() -> Union[
 
 
 
+def persist_ratings(
+    ratings_to_save: List[TelevisionRating]
+    ) -> Optional[str]:
+    """Returns None if successful, str of error otherwise
+    """
+    dynamodb_resource = boto3.resource(
+        "dynamodb", "us-east-1"
+    )
+
+    dynamodb_table = dynamodb_resource.Table("prod_toonami_ratings")
+    
+    logging.info(f"persist_ratings - obtained table")
+    
+    
+    for rating_to_save in ratings_to_save:
+        new_item = {
+            "RATINGS_OCCURRED_ON": (
+                rating_to_save.show_air_date.isoformat()
+            ),
+            "TIME": rating_to_save.time_slot,
+            "YEAR": rating_to_save.rating_year,
+            "SHOW": rating_to_save.show_name,
+            "TOTAL_VIEWERS": str(rating_to_save.rating)
+
+        }
+        if rating_to_save.household is not None:
+            new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
+                str(rating_to_save.household)
+            )
+        dynamodb_table.put_item(Item=new_item)
+
+    logging.info(f"persist_ratings - invocation end")
+    return(None)
+
+
+
 if __name__ == "__main__":
     import logging
     import os
@@ -497,4 +675,10 @@ if __name__ == "__main__":
         level=logging.INFO
     )
     tv_ratings, retreival_error = ratings_from_internet()
+
+    print(tv_ratings[0].show_air_date)
+    print(tv_ratings[1].show_air_date)
+
+    persist_ratings(tv_ratings[0:2])
+
 

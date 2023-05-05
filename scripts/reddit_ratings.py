@@ -10,12 +10,11 @@ import requests
 from boto3.dynamodb import conditions
 
 from ratings.repo.data_scrubber import data_override_factory
-from ratings.repo.name_mapper import (get_table_column_name_mapping,
-                                      keys_to_ignore)
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               get_oauth_token)
-from ratings.repo.ratings_repo_backend import get_ratings_post
-from ratings.repo.ratings_repo_backend import handle_table_clean
+                                               _standardize_key_name,
+                                               get_oauth_token,
+                                               get_ratings_post,
+                                               handle_table_clean, persist_ratings, ratings_from_internet)
 
 
 def get_logger(working_directory=os.getcwd()):
@@ -398,57 +397,6 @@ def ratings_iteration(number_posts=10):
                 ]["data"]["name"]
 
 
-def _standardize_key_name(
-        dict_to_clean: Dict[str, Union[str, int]]
-    ) -> None:
-    """Mutates key names for dict_to_clean 
-    to align with dict_key_mapping return value"""
-    '''
-            Iterates over all keys in each dict
-    '''
-    for user_input_key in list(dict_to_clean.keys()):
-        '''Do nothing if we match the correct column names'''
-        if user_input_key in get_table_column_name_mapping(
-        ).values():
-            return(None)
-
-
-        '''
-            lower caseing and removing trailing/leading 
-            spaces for comparison
-        '''
-        clean_ratings_key = user_input_key.lower().strip()
-        
-        '''Do nothing if we if it is an excluded key'''
-        if clean_ratings_key in keys_to_ignore():
-            return(None)
-
-        '''
-            pops old key value from dict_to_clean
-            and adds the correct dynamo
-            column name mapping
-            user_input_key will be one of the keys in 
-            get_table_column_name_mapping
-        '''            
-        if clean_ratings_key in get_table_column_name_mapping().keys():
-            
-            dict_to_clean[
-                    get_table_column_name_mapping()[
-                        clean_ratings_key
-                    ]
-                ] =  dict_to_clean.pop(
-                    user_input_key
-                )
-                
-        
-        
-        if clean_ratings_key not in get_table_column_name_mapping(
-        ).keys():
-            raise KeyError(f"_standardize_key_name - "+
-            f" No match for {clean_ratings_key}")
-            
-
-
 def dict_key_mapping(
         pre_clean_ratings_keys: List[Dict]
         ) -> List[Dict[str, Union[str, int]]]:
@@ -778,7 +726,7 @@ def put_show_names(all_ratings_list, table_name):
             )
     
 
-def main():
+def deprecated_main():
     """Entry point into the script
     """
     '''
@@ -815,17 +763,41 @@ def main():
         table_name=(environment_prefix + "_toonami_analytics") 
     )
 
+
+
+def main() -> None:
+    """Orchestrates clean architecture invocations from
+    external
+
+    Raises
+    ------
+    RuntimeError
+        if unexpected error from clean architecture
+    """
+    logging.info(f"--------------main - invocation begin--------------")
+
+    tv_ratings, retreival_error = ratings_from_internet()
+
+    if retreival_error is not None:
+        raise RuntimeError(retreival_error)
+    
+    logging.info(
+        f"main - len(tv_ratings) - {len(tv_ratings)}"
+    )
+
+    persistence_error = persist_ratings(tv_ratings)
+
+    if persistence_error is not None:
+        raise RuntimeError(persistence_error)
+    
+    logging.info(f"--------------main - invocation end--------------")
+
+    return(None)
+
+
+
 def lambda_handler(event, context):
     """Handles lambda invocation from cloudwatch events rule
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
     """
     '''
         Logging required for cloudwatch logs
@@ -834,9 +806,19 @@ def lambda_handler(event, context):
     main()
 
 
+
+
 if __name__ == "__main__":
-    get_logger()    
-    main()
-
-
+    import logging
+    import os
+    from time import strftime
+    os.environ["AWS_REGION"] = "us-east-1"
+    logging.basicConfig(
+        format=("%(levelname)s | %(asctime)s.%(msecs)03d" +
+            strftime("%z") + " | %(message)s"
+        ),
+        datefmt="%Y-%m-%dT%H:%M:%S", 
+        level=logging.INFO
+    )
+    lambda_handler({}, None)
 

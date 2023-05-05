@@ -1,5 +1,6 @@
 import unittest
 
+
 class TestNameMapper(unittest.TestCase):
     def test_get_table_column_name_mapping(self):
         """Each column name mapping value for a ratings post is a str"""
@@ -14,7 +15,19 @@ class TestNameMapper(unittest.TestCase):
                 type(get_table_column_name_mapping()[column_name]),
                 str
             )
+    
+    def test_television_rating_from_table_column(self):
+        """TelevisionRating entity properties from dynamodb columns"""
+        from ratings.repo.name_mapper import (
+            get_table_column_name_mapping, television_rating_from_table_column)
+        
 
+        self.assertEqual(
+            len(set(get_table_column_name_mapping().values())) - 1,
+            len(television_rating_from_table_column().keys()),
+            msg="\n\n TODO - map is_rerun"
+        )
+        
 
     def test_get_table_column_name_mapping_viewers_e2e(self):
         """Bug where viewers key was not mapped"""
