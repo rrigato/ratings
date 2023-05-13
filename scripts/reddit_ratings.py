@@ -676,55 +676,6 @@ def handle_ratings_insertion(all_ratings_list, table_name):
             return(None)
     return(None)
 
-def put_show_names(all_ratings_list, table_name):
-    """puts unique show_names into dynamodb table
-
-        Parameters
-        ----------
-        all_ratings_list : list
-            List of dict where each element is
-            one saturday night ratings
-
-        table_name : str
-            name of the dynamodb table
-
-        Returns
-        -------
- 
-
-        Raises
-        ------
-    """
-    dynamo_client, dynamo_table = get_boto_clients(
-        resource_name="dynamodb",
-        region_name="us-east-1",
-        table_name=table_name
-    )    
-
-    show_name_list = []
-
-    logging.info("put_show_names - getting unique shows")
-
-    for individual_show in all_ratings_list:
-        if individual_show["SHOW"] not in show_name_list:
-            show_name_list.append(individual_show["SHOW"])
-
-    logging.info("put_show_names - number of unique shows " + str(len(show_name_list)))
-    
-    with dynamo_table.batch_writer() as batch_insert:
-        '''
-            Inserting each unique show in the ratings list
-        '''
-        for show_name in show_name_list:
-            logging.info("put_show_names - putting show_name " + show_name)
-            
-            batch_insert.put_item(
-                Item={
-                    "PK": "ratings#showName",
-                    "SK": show_name
-                }
-            )
-    
 
 def deprecated_main():
     """Entry point into the script
@@ -758,10 +709,6 @@ def deprecated_main():
         table_name=(environment_prefix + "_toonami_ratings") 
     )
 
-    put_show_names(
-        all_ratings_list=all_ratings_list,
-        table_name=(environment_prefix + "_toonami_analytics") 
-    )
 
 
 

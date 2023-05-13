@@ -58,11 +58,10 @@ class RedditApi(unittest.TestCase):
 
 
     @patch("scripts.reddit_ratings.data_override_factory")
-    @patch("scripts.reddit_ratings.put_show_names")
     @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        handle_ratings_iteration_mock, put_show_names_mock,
+        handle_ratings_iteration_mock, 
         data_override_factory_mock):
         """Test for deprecated_main function
         """
@@ -88,11 +87,7 @@ class RedditApi(unittest.TestCase):
             table_name="dev_toonami_ratings"
         )
 
-        put_show_names_args, put_show_names_kwargs = put_show_names_mock.call_args
-        self.assertEqual(put_show_names_mock.call_count, 1)
-        self.assertEqual(put_show_names_kwargs["table_name"], "dev_toonami_analytics")
-        self.assertEqual(type(put_show_names_kwargs["all_ratings_list"]), list)
-        self.assertEqual(type(put_show_names_kwargs["all_ratings_list"][0]), dict)
+        
         self.assertEqual(data_override_factory_mock.call_count, 1)
 
     @patch("boto3.client")
@@ -817,56 +812,6 @@ class RedditApi(unittest.TestCase):
                 '''
                 for show_ratings in ratings_time_list:
                     self.assertEqual(show_ratings["TIME"], time_to_check["clean_time"])
-                
-    @patch("scripts.reddit_ratings.get_boto_clients")
-    def test_put_show_names(self, get_boto_clients_mock):
-        """Tests the put_item call for show names
-        """
-        from scripts.reddit_ratings import put_show_names
-
-        '''
-            Mocking the clients
-        '''
-        dynamo_client_mock = MagicMock()
-
-        dynamo_table_mock = MagicMock()
-
-        batch_insert_mock = MagicMock()
-
-        put_item_mock = MagicMock()
-        
-        '''
-            dynamo_table.batch_writer().__enter__().put_item() mock
-            simulating using a with block
-        '''
-        dynamo_table_mock.batch_writer.return_value.__enter__.return_value = batch_insert_mock
-        
-        '''
-            dynamo_table.batch_writer().__enter__().put_item() mock
-            simulating using a with block
-        '''
-        batch_insert_mock.put_item = put_item_mock
-
-        get_boto_clients_mock.return_value = [dynamo_client_mock, dynamo_table_mock]
-
-
-        put_show_names(
-            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
-            table_name="mock_table_name"
-        )
-        all_show_names = [show["SHOW"] for show in MOCK_CLEAN_RATINGS_LIST]
-        
-        unique_show_names = set(all_show_names)
-        self.assertEqual(put_item_mock.call_count, len(unique_show_names))
-
-        '''
-            validate outgoing put_item call has a show_name from
-            the list of unique_show_names
-        '''
-        for put_item_call in put_item_mock.call_args_list:
-            put_item_args, put_item_kwargs = put_item_call
-            self.assertEqual(put_item_kwargs["Item"]["PK"], "ratings#showName")
-            self.assertIn(put_item_kwargs["Item"]["SK"], unique_show_names)
 
     
     @patch("requests.get")
