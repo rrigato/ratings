@@ -488,3 +488,26 @@ class TestRatingsRepoBackend(unittest.TestCase):
         )
         
 
+    def test_standardize_time(
+            self
+        ):
+        """Not perfect but consistent times"""
+        from ratings.repo.ratings_repo_backend import standardize_time
+
+
+        self.assertEqual(
+            standardize_time("9:00 PM"),
+            "9:00"
+        )
+        self.assertEqual(
+            standardize_time("9:00 pm"),
+            "9:00"
+        )
+        self.assertEqual(
+            standardize_time("12:00 am"),
+            "12:00a"
+        )
+        self.assertEqual(
+            standardize_time("12:00 AM"),
+            "12:00a"
+        )
