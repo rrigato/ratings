@@ -511,3 +511,33 @@ class TestRatingsRepoBackend(unittest.TestCase):
             standardize_time("12:00 AM"),
             "12:00a"
         )
+        self.assertEqual(
+            standardize_time("12am"),
+            "12a"
+        )
+        self.assertEqual(
+            standardize_time("3 a"),
+            "3a"
+        )
+        self.assertEqual(
+            standardize_time("10:00 pm"),
+            "10:00"
+        )
+        self.assertEqual(
+            standardize_time("1:30 a"),
+            "1:30a"
+        )
+        self.assertEqual(
+            standardize_time("12 Am"),
+            "12a"
+        )
+        self.assertEqual(
+            standardize_time("11:30pM"),
+            "11:30"
+        )
+        self.assertEqual(
+            standardize_time("9pm"),
+            "9"
+        )
+
+        
