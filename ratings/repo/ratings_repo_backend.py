@@ -521,7 +521,7 @@ def _create_television_rating(
         tv_rating.rating_year = rating_dict["YEAR"] 
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
-        tv_rating.time_slot = rating_dict["TIME"]
+        tv_rating.time_slot = standardize_time(rating_dict["TIME"])
         '''TODO - demo 18-49 ratings and is_rerun'''
         ratings_for_news_post.append(tv_rating)
 
