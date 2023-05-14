@@ -665,16 +665,7 @@ def persist_ratings(
     
     
     for rating_to_save in ratings_to_save:
-        new_item = {
-            "RATINGS_OCCURRED_ON": (
-                rating_to_save.show_air_date.isoformat()
-            ),
-            "TIME": rating_to_save.time_slot,
-            "YEAR": rating_to_save.rating_year,
-            "SHOW": rating_to_save.show_name,
-            "TOTAL_VIEWERS": str(rating_to_save.rating)
-
-        }
+        new_item = {}
         if rating_to_save.household is not None:
             new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
                 str(rating_to_save.household)
@@ -683,10 +674,20 @@ def persist_ratings(
             new_item["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] = (
                 str(rating_to_save.household_18_49)
             )
+        
+        new_item["RATINGS_OCCURRED_ON"] = (
+                rating_to_save.show_air_date.isoformat()
+            )
+        new_item["TIME"] = rating_to_save.time_slot
+        new_item["TOTAL_VIEWERS"] = str(rating_to_save.rating)
         if rating_to_save.rating_18_49 is not None:
             new_item["TOTAL_VIEWERS_AGE_18_49"] = (
                 str(rating_to_save.rating_18_49)
             )
+        new_item["SHOW"] = rating_to_save.show_name
+        new_item["YEAR"] = rating_to_save.rating_year
+
+        
         dynamodb_table.put_item(Item=new_item)
 
     logging.info(f"persist_ratings - invocation end")
