@@ -511,12 +511,17 @@ def _create_television_rating(
         '''
         refer to get_table_column_name_mapping value
         '''
-        tv_rating.household = _parse_float(rating_dict.get(
-            "PERCENTAGE_OF_HOUSEHOLDS"
-            )
+        tv_rating.household = _parse_float(
+            rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS")
+        )
+        tv_rating.household_18_49 = _parse_float(
+            rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
         )
         tv_rating.rating = _parse_int(
             rating_dict["TOTAL_VIEWERS"]
+        )
+        tv_rating.rating_18_49 = _parse_int(
+            rating_dict.get("TOTAL_VIEWERS_AGE_18_49")
         )
         tv_rating.rating_year = rating_dict["YEAR"] 
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
