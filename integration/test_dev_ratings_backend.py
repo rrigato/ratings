@@ -1,12 +1,7 @@
-from datetime import datetime
-from datetime import timedelta
+import unittest
+from datetime import datetime, timedelta
 
 import boto3
-import json
-import os
-import requests
-import subprocess
-import unittest
 
 ENVIRON_DEF = "dev"
 
