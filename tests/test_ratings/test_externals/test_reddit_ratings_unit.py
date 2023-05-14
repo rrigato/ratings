@@ -58,10 +58,8 @@ class RedditApi(unittest.TestCase):
 
 
     @patch("scripts.reddit_ratings.data_override_factory")
-    @patch("scripts.reddit_ratings.handle_ratings_insertion")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        handle_ratings_iteration_mock, 
         data_override_factory_mock):
         """Test for deprecated_main function
         """
@@ -76,17 +74,6 @@ class RedditApi(unittest.TestCase):
         ratings_iteration_mock.assert_called_once_with(
             number_posts=self.MAIN_FUNCTION_POST_COUNT
         )
-
-        self.assertEqual(
-            handle_ratings_iteration_mock.call_count,
-            1
-        )
-
-        handle_ratings_iteration_mock.assert_called_once_with(
-            all_ratings_list=MOCK_RATINGS_LIST,
-            table_name="dev_toonami_ratings"
-        )
-
         
         self.assertEqual(data_override_factory_mock.call_count, 1)
 
@@ -347,162 +334,6 @@ class RedditApi(unittest.TestCase):
             14,
             len(set(primary_key_list))
         )
-
-    @patch("scripts.reddit_ratings.get_boto_clients")
-    def test_handle_ratings_insertion_no_match(self, get_boto_clients_patch):
-        """Tests outbound arguements for ratings put item in dynamodb
-            mocks if the ratings in MOCK_CLEAN_RATINS_LIST 
-            are not already in table
-
-            Parameters
-            ----------
-            get_ratings_post_mock : unittest.mock.MagicMock
-                Patch to return boto3 dynamodb resource
-
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import handle_ratings_insertion
-
-        '''
-            Mocking the clients
-        '''
-        dynamo_client_mock = MagicMock()
-
-        dynamo_table_mock = MagicMock()
-
-        '''
-            Mocking not having the given week night in the 
-            ratings
-        '''
-        dynamo_table_mock.query.return_value = {
-            "Items":[]
-        }
-
-
-        '''
-            mocking a function that has two return values
-        '''
-        get_boto_clients_patch.return_value = [
-            dynamo_client_mock, dynamo_table_mock
-        ]
-
-        handle_ratings_insertion(
-            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
-            table_name="dev_toonami_ratings"
-        )
-
-
-        '''
-            the query function should be called 
-            4 times, once for each unique ratings_occurred_on
-            in MOCK_CLEAN_RATINGS_LIST
-        '''
-        self.assertEqual(
-            dynamo_table_mock.query.call_count,
-            4
-        )
-        
-        self.assertEqual(
-            dynamo_table_mock.batch_writer.call_count,
-            4
-        )
-
-
-        '''
-            with context manager calls the __enter__()
-            function of the mock
-
-            One call for each item
-        '''
-        self.assertEqual(
-            dynamo_table_mock.batch_writer().__enter__().put_item.call_count,
-            24
-        )
-
-
-    @patch("scripts.reddit_ratings.get_boto_clients")
-    def test_handle_ratings_insertion_with_match(self, get_boto_clients_patch):
-        """Tests outbound arguements for ratings put item in dynamodb
-            mocks if the ratings in MOCK_CLEAN_RATINS_LIST 
-            are already in table
-
-            Parameters
-            ----------
-            get_ratings_post_mock : unittest.mock.MagicMock
-                Patch to return boto3 dynamodb resource
-
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import handle_ratings_insertion
-
-        '''
-            Mocking the clients
-        '''
-        dynamo_client_mock = MagicMock()
-
-        dynamo_table_mock = MagicMock()
-
-        '''
-            Mocking not having the given week night in the 
-            ratings
-        '''
-        dynamo_table_mock.query.return_value = {
-            "Items":[
-                {
-                    "TIME": "2:30a", 
-                    "SHOW": "Naruto: Shippuden", 
-                    "TOTAL_VIEWERS": "336", 
-                    "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49": "0.19",
-                    "TOTAL_VIEWERS_AGE_18_49": "241",
-                    "RATINGS_OCCURRED_ON": "2020-05-09",
-                    "IS_RERUN": None
-                }
-            ]
-        }
-
-
-        '''
-            mocking a function that has two return values
-        '''
-        get_boto_clients_patch.return_value = [
-            dynamo_client_mock, dynamo_table_mock
-        ]
-
-        handle_ratings_insertion(
-            all_ratings_list=MOCK_CLEAN_RATINGS_LIST,
-            table_name="dev_toonami_ratings"
-        )
-
-
-        '''
-            the query function is only called once 
-            because it returns after checking the most recent rating
-        '''
-        self.assertEqual(
-            dynamo_table_mock.query.call_count,
-            1
-        )
-
-
-        '''
-            everything else should be skipped
-        '''
-        self.assertEqual(
-            dynamo_table_mock.batch_writer.call_count,
-            0
-        )
-
-
 
 
 
