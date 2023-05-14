@@ -511,23 +511,29 @@ def _create_television_rating(
         '''
         refer to get_table_column_name_mapping value
         '''
-        tv_rating.household = _parse_float(rating_dict.get(
-            "PERCENTAGE_OF_HOUSEHOLDS"
-            )
+        tv_rating.household = _parse_float(
+            rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS")
+        )
+        tv_rating.household_18_49 = _parse_float(
+            rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
         )
         tv_rating.rating = _parse_int(
             rating_dict["TOTAL_VIEWERS"]
         )
+        if rating_dict.get("TOTAL_VIEWERS_AGE_18_49") is not None:
+            tv_rating.rating_18_49 = _parse_int(
+                rating_dict.get("TOTAL_VIEWERS_AGE_18_49")
+            )
         tv_rating.rating_year = rating_dict["YEAR"] 
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
         tv_rating.time_slot = standardize_time(rating_dict["TIME"])
-        '''TODO - demo 18-49 ratings and is_rerun'''
+
         ratings_for_news_post.append(tv_rating)
 
     logging.info(
         f"_create_television_rating - len(ratings_for_news_post)"
-        + f"{len(ratings_for_news_post)}")    
+        + f" - {len(ratings_for_news_post)}")    
     
     return(ratings_for_news_post)
 
@@ -644,8 +650,6 @@ def ratings_from_internet() -> Union[
     return(news_posts, None)
 
 
-
-
 def persist_ratings(
     ratings_to_save: List[TelevisionRating]
     ) -> Optional[str]:
@@ -661,20 +665,29 @@ def persist_ratings(
     
     
     for rating_to_save in ratings_to_save:
-        new_item = {
-            "RATINGS_OCCURRED_ON": (
-                rating_to_save.show_air_date.isoformat()
-            ),
-            "TIME": rating_to_save.time_slot,
-            "YEAR": rating_to_save.rating_year,
-            "SHOW": rating_to_save.show_name,
-            "TOTAL_VIEWERS": str(rating_to_save.rating)
-
-        }
+        new_item = {}
         if rating_to_save.household is not None:
             new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
                 str(rating_to_save.household)
             )
+        if rating_to_save.household_18_49 is not None:
+            new_item["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] = (
+                str(rating_to_save.household_18_49)
+            )
+        
+        new_item["RATINGS_OCCURRED_ON"] = (
+                rating_to_save.show_air_date.isoformat()
+            )
+        new_item["TIME"] = rating_to_save.time_slot
+        new_item["TOTAL_VIEWERS"] = str(rating_to_save.rating)
+        if rating_to_save.rating_18_49 is not None:
+            new_item["TOTAL_VIEWERS_AGE_18_49"] = (
+                str(rating_to_save.rating_18_49)
+            )
+        new_item["SHOW"] = rating_to_save.show_name
+        new_item["YEAR"] = rating_to_save.rating_year
+
+        
         dynamodb_table.put_item(Item=new_item)
 
     logging.info(f"persist_ratings - invocation end")
