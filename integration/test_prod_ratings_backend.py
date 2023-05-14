@@ -1,11 +1,7 @@
-from datetime import datetime
-from datetime import timedelta
+import unittest
+from datetime import datetime, timedelta
 
 import boto3
-import os
-import requests
-import unittest
-
 
 ENVIRON_DEF = "prod"
 

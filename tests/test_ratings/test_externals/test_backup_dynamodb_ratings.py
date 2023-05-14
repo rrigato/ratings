@@ -1,24 +1,8 @@
-from bs4 import BeautifulSoup
-from datetime import datetime
-from datetime import timedelta
-from unittest.mock import MagicMock
-from unittest.mock import patch
-
 import json
-import logging
 import os
-import requests
 import unittest
-
-
-from util.test_reddit_rating_config import MOCK_CLEAN_RATINGS_LIST
-from util.test_reddit_rating_config import MOCK_RATINGS_LIST
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2019
-from util.test_reddit_rating_config import REDDIT_RATING_TABLE_2020
-
-
-
-
+from datetime import datetime, timedelta
+from unittest.mock import MagicMock, patch
 
 
 class BackupDynamoDbUnit(unittest.TestCase):
