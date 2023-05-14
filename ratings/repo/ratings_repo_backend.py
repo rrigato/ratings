@@ -520,9 +520,10 @@ def _create_television_rating(
         tv_rating.rating = _parse_int(
             rating_dict["TOTAL_VIEWERS"]
         )
-        tv_rating.rating_18_49 = _parse_int(
-            rating_dict.get("TOTAL_VIEWERS_AGE_18_49")
-        )
+        if rating_dict.get("TOTAL_VIEWERS_AGE_18_49") is not None:
+            tv_rating.rating_18_49 = _parse_int(
+                rating_dict.get("TOTAL_VIEWERS_AGE_18_49")
+            )
         tv_rating.rating_year = rating_dict["YEAR"] 
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
@@ -532,7 +533,7 @@ def _create_television_rating(
 
     logging.info(
         f"_create_television_rating - len(ratings_for_news_post)"
-        + f"{len(ratings_for_news_post)}")    
+        + f" - {len(ratings_for_news_post)}")    
     
     return(ratings_for_news_post)
 
