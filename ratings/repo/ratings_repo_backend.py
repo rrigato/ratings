@@ -18,6 +18,26 @@ from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
 
 
+
+
+def standardize_time(
+    show_time: str
+    ) -> str:
+    """A foolish consistency is the hobgoblin of little minds
+    """
+    clean_string = show_time.strip().replace(" ", "").lower().replace(".", "")
+    
+    if "pm" in clean_string:
+        return(clean_string.replace("pm", ""))
+    if "p" in clean_string:
+        return(clean_string.replace("p", ""))
+    if "am" in clean_string:
+        return(clean_string.replace("am", "a"))
+    
+    return(clean_string)
+
+
+
 def _standardize_key_name(
         dict_to_clean: Dict[str, Union[str, int]]
     ) -> None:
@@ -501,7 +521,7 @@ def _create_television_rating(
         tv_rating.rating_year = rating_dict["YEAR"] 
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
-        tv_rating.time_slot = rating_dict["TIME"]
+        tv_rating.time_slot = standardize_time(rating_dict["TIME"])
         '''TODO - demo 18-49 ratings and is_rerun'''
         ratings_for_news_post.append(tv_rating)
 

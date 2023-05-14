@@ -757,62 +757,6 @@ class RedditApi(unittest.TestCase):
         with self.assertRaises(KeyError, msg="IS_RERUN"):        
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
-
-    def test_clean_dict_value_time(self):
-        """Validates time cleaning logic
-        """
-        from scripts.reddit_ratings import clean_dict_value
-        ratings_time_list = deepcopy(MOCK_CLEAN_RATINGS_LIST)
-        correct_time_mapping = [
-            {
-                "original_time": "12am",
-                "clean_time": "12a"
-            },
-            {
-                "original_time": "3 a",
-                "clean_time": "3a"
-            },
-            {
-                "original_time": "10:00 pm",
-                "clean_time": "10:00"
-            },
-            {
-                "original_time": "1:30 a",
-                "clean_time": "1:30a"
-            },
-            {
-                "original_time": "12 Am",
-                "clean_time": "12a"
-            },
-            {
-                "original_time": "11:30pM",
-                "clean_time": "11:30"
-            },
-            {
-                "original_time": "9pm",
-                "clean_time": "9"
-            }
-
-
-        ]
-
-        for time_to_check in correct_time_mapping:
-
-            with self.subTest(time_to_check=time_to_check):
-                '''
-                    assign original TIME
-                '''
-                for show_ratings in ratings_time_list:
-                    show_ratings["TIME"] = time_to_check["original_time"]
-                
-                clean_dict_value(ratings_values_to_clean=ratings_time_list)
-
-                '''
-                    validate clean output time
-                '''
-                for show_ratings in ratings_time_list:
-                    self.assertEqual(show_ratings["TIME"], time_to_check["clean_time"])
-
     
     @patch("requests.get")
     def test_get_news_flair(self, requests_get_mock):
