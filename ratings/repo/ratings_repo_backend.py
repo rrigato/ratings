@@ -527,7 +527,7 @@ def _create_television_rating(
         tv_rating.show_air_date = _handle_show_air_date(rating_dict)
         tv_rating.show_name = rating_dict["SHOW"]
         tv_rating.time_slot = standardize_time(rating_dict["TIME"])
-        '''TODO - demo 18-49 ratings and is_rerun'''
+
         ratings_for_news_post.append(tv_rating)
 
     logging.info(
@@ -649,8 +649,6 @@ def ratings_from_internet() -> Union[
     return(news_posts, None)
 
 
-
-
 def persist_ratings(
     ratings_to_save: List[TelevisionRating]
     ) -> Optional[str]:
@@ -679,6 +677,14 @@ def persist_ratings(
         if rating_to_save.household is not None:
             new_item["PERCENTAGE_OF_HOUSEHOLDS"] = (
                 str(rating_to_save.household)
+            )
+        if rating_to_save.household_18_49 is not None:
+            new_item["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] = (
+                str(rating_to_save.household_18_49)
+            )
+        if rating_to_save.rating_18_49 is not None:
+            new_item["TOTAL_VIEWERS_AGE_18_49"] = (
+                str(rating_to_save.rating_18_49)
             )
         dynamodb_table.put_item(Item=new_item)
 
