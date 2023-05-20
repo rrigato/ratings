@@ -574,81 +574,6 @@ def sort_ratings_occurred_on(ratings_list):
     return(ratings_occurred_on)
 
 
-def handle_ratings_insertion(all_ratings_list, table_name):
-    """Handles inserting ratings into dynamodb
-
-        Parameters
-        ----------
-        all_ratings_list : list
-            List of dict where each element is
-            one saturday night ratings
-
-        table_name : str
-            name of the dynamodb table
-
-        Returns
-        -------
-        None :
-            Returns None if the operation is successful
-
-        Raises
-        ------
-
-    """
-    dynamo_client, dynamo_table = get_boto_clients(
-            resource_name="dynamodb",
-            region_name="us-east-1",
-            table_name=table_name
-    )
-
-    ratings_occurred_on = sort_ratings_occurred_on(
-        ratings_list=all_ratings_list
-    )
-    '''
-        Iterates over every existing weekend quering to 
-        check if that date already has values in the table
-    '''
-    for week_night in ratings_occurred_on:
-        existing_items = dynamo_table.query(
-            KeyConditionExpression=(
-                conditions.Key("RATINGS_OCCURRED_ON").eq(week_night)
-            ),
-            ProjectionExpression="RATINGS_OCCURRED_ON"
-        )
-        '''
-            If there is no partition key with the value 
-            of week_night we insert all dicts that have a 
-            RATINGS_OCCURRED_ON of week_night
-
-            Ex: week_night of "05-23-2020"
-        '''
-        if len(existing_items["Items"]) == 0:
-            '''
-                batch writer
-            '''
-            with dynamo_table.batch_writer() as batch_insert:
-                '''
-                    For each show in the ratings list, 
-                    only insert those with RATINGS_OCCURRED_ON 
-                    of week_night
-                '''
-                for individual_show in all_ratings_list:
-                    if individual_show["RATINGS_OCCURRED_ON"] == week_night:
-                        '''
-                            Insert the dict
-                        '''
-                        batch_insert.put_item(
-                            Item=individual_show
-                        )
-
-        else:
-            '''
-                Return since the list is sorted
-            '''
-            return(None)
-    return(None)
-
-
 def deprecated_main():
     """Entry point into the script
     """
@@ -676,10 +601,6 @@ def deprecated_main():
     logging.info("main - data_override_factory - " + str(len(all_ratings_list)))
 
 
-    handle_ratings_insertion(
-        all_ratings_list=all_ratings_list,
-        table_name=(environment_prefix + "_toonami_ratings") 
-    )
 
 
 
