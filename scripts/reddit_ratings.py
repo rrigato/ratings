@@ -17,33 +17,6 @@ from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                handle_table_clean, persist_ratings, persist_show_names, ratings_from_internet)
 
 
-def get_logger(working_directory=os.getcwd()):
-    """Sets up logger
-
-        Parameters
-        ----------
-        working_directory: str
-            Where to put logger, defaults to cwd
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-   
-    '''
-        Adds the file name to the logs/ directory without
-        the extension
-    '''
-    logging.basicConfig(
-        filename=os.path.join(working_directory, "logs/",
-        os.path.basename(__file__).split(".")[0]),
-        format="%(asctime)s %(message)s",
-         datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.DEBUG
-         )
-    logging.info("\n")
-
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):
     '''Returns the boto client for various aws resources
