@@ -176,53 +176,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
         )
 
 
-    @patch("requests.post")
-    def test_get_oauth_token_unit(
-        self, 
-        requests_post_mock: MagicMock
-        ):
-        """oauth_token returned"""
-        from ratings.repo.ratings_repo_backend import get_oauth_token
-
-        '''
-            json returned by http post
-            will be the class oauth_token fixture
-        '''
-        json_mock = MagicMock()
-
-        requests_post_mock.return_value = json_mock
-
-        json_mock.json.return_value = mock_oauth_token_response()
-
-
-
-        mock_client_id="fakeid"
-        mock_auth_value="mock_secret"
-
-        oauth_token = get_oauth_token(
-            client_key=mock_client_id, 
-            client_secret=mock_auth_value
-        )
-
-        '''
-            Testing the outbound HTTP POST arguements
-            to the reddit token endpoint
-        '''
-        requests_post_mock.assert_called_once_with(
-            url="https://www.reddit.com/api/v1/access_token",
-            auth=(mock_client_id, mock_auth_value),
-            data={"grant_type":"client_credentials"},
-            headers={
-                "user-agent":"Lambda:toonamiratings:v3.0.0 (by /u/toonamiratings)"
-            }
-        )
-
-        self.assertEqual(
-            oauth_token,
-            mock_oauth_token_response()
-        )
-
-
     def test_evaluate_ratings_post_title(self):
         """Happy path ratings in the title"""
         from ratings.repo.ratings_repo_backend import \
@@ -541,3 +494,38 @@ class TestRatingsRepoBackend(unittest.TestCase):
         )
 
         
+    @patch("ratings.repo.ratings_repo_backend.urlopen")
+    def test_get_oauth_token_builtins(
+            self, 
+            urlopen_mock: MagicMock
+        ):
+        """using only built in python libraries to load oauth token"""
+        from ratings.repo.ratings_repo_backend import get_oauth_token
+
+        
+        read_mock = MagicMock(return_value=json.dumps(
+                    mock_oauth_token_response()
+                ).encode("utf-8")
+        )
+        (
+            urlopen_mock.return_value.__enter__.
+            return_value.getcode.return_value
+        ) = 200
+
+        (
+            urlopen_mock.return_value.__enter__.
+            return_value.read
+        ) = read_mock 
+        
+        
+
+
+        oauth_dict_response = get_oauth_token(
+            "mockval0",
+            "mockval1"
+        )
+
+
+        self.assertIsNotNone(
+            oauth_dict_response["access_token"]
+        )
