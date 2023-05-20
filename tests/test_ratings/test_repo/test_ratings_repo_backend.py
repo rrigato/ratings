@@ -503,10 +503,6 @@ class TestRatingsRepoBackend(unittest.TestCase):
         from ratings.repo.ratings_repo_backend import get_oauth_token
 
         
-        read_mock = MagicMock(return_value=json.dumps(
-                    mock_oauth_token_response()
-                ).encode("utf-8")
-        )
         (
             urlopen_mock.return_value.__enter__.
             return_value.getcode.return_value
@@ -514,11 +510,12 @@ class TestRatingsRepoBackend(unittest.TestCase):
 
         (
             urlopen_mock.return_value.__enter__.
-            return_value.read
-        ) = read_mock 
+            return_value.read.return_value
+        ) = json.dumps(
+            mock_oauth_token_response()
+        ).encode("utf-8")
         
         
-
 
         oauth_dict_response = get_oauth_token(
             "mockval0",
@@ -529,3 +526,4 @@ class TestRatingsRepoBackend(unittest.TestCase):
         self.assertIsNotNone(
             oauth_dict_response["access_token"]
         )
+
