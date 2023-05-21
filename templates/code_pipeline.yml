@@ -13,30 +13,6 @@ Parameters:
     Default: Personal Website hosted using S3
 
 Resources:
-  #################################
-  #Everything from the InputArtifact
-  #and OutputArtifact for all CodeBuild stages
-  #will be stored in this s3 bucket
-  #################################
-  ArtifactStoreBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: BucketOwnerFullControl
-      BucketName:
-          !Join ['', ['artifacts-bucket-', !Ref ProjectName]]
-      Tags:
-        -
-          Key: stage
-          Value: dev
-        -
-          Key: retain
-          Value: "false"
-        -
-          Key: project
-          Value: !Ref ProjectName
-        -
-          Key: usedby
-          Value: CodePipelineBuildStages
 
   GitRepo:
     Type: AWS::CodeCommit::Repository
@@ -67,54 +43,6 @@ Resources:
         -
           Key: project
           Value: !Ref ProjectName
-
-
- #################################
- #Production Code Build that runs python
- #tests and deploys code to prod
- #
- ###################################
-  ProdCodeBuildDeploy:
-   #Need the ProdArtifactsBucket Created first before This
-   #CodeBuild Project can start
-   DependsOn: ProdArtifactsBucket
-   Type: AWS::CodeBuild::Project
-   Properties:
-     #Output location for the CodeBuild Project
-     Artifacts:
-       Type: S3
-       Location:
-        !Join ['', ['prod-build-', !Ref ProjectName]]
-       Packaging: NONE
-     #Allows for git badge at top of git repo
-     BadgeEnabled: true
-     #Where logs are written to from code build
-     LogsConfig:
-         CloudWatchLogs:
-             Status: ENABLED
-             GroupName:
-                !Join ['', ['prod-build-', !Ref ProjectName]]
-         S3Logs:
-             Status: ENABLED
-             Location:
-                 !Join ['', ['prod-build-', !Ref ProjectName,
-                  '/buildlogs']]
-     #Standard Linux Image environment
-     Environment:
-       ComputeType: BUILD_GENERAL1_SMALL
-       Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
-       Type: LINUX_CONTAINER
-
-     Name:
-        !Join ['', ['prod-build-', !Ref ProjectName]]
-     ServiceRole: !Ref ProdCodeBuildRole
-     #CodeCommit Git repo used for CodeBuild
-     Source:
-       #Buildspec file to use for the prod build
-       BuildSpec: builds/buildspec_prod.yml
-       Location: !GetAtt GitRepo.CloneUrlHttp
-       Type: CODECOMMIT
-     TimeoutInMinutes: 5
 
 
 ####################################
