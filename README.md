@@ -14,7 +14,6 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [detect\_secrets](#detect_secrets)
       - [git\_secrets](#git_secrets)
     - [project\_directory\_overview](#project_directory_overview)
-      - [builds](#builds)
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
@@ -107,12 +106,6 @@ git secrets --scan
 ### project_directory_overview
 Provides information on each directory/ source file
 
-#### builds
-
-
-- buildspec_prod.yml = updates and invokes prod lambda functions for polling reddit api and backing up dynamodb
-
-
 
 #### devops
 
@@ -138,10 +131,6 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 
 #### integration-tests
-
-
-- test_prod_ratings_backend.py = end-to-end prod validation used by
-  - builds/buildspec_prod.yml
 
 - test_reddit_ratings.py = local integration tests
 
