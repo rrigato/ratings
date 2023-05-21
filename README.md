@@ -110,9 +110,6 @@ Provides information on each directory/ source file
 #### builds
 
 
-- buildspec_dev_backend.yml = Creates templates/ratings_backend.yml
-and Tests backend ratings logic
-
 - buildspec_prod.yml = updates and invokes prod lambda functions for polling reddit api and backing up dynamodb
 
 
@@ -142,9 +139,6 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 #### integration-tests
 
-
-- test_dev_ratings_backend.py = end-to-end dev tests used by 
-  - builds/buildspec_dev_backend.yml
 
 - test_prod_ratings_backend.py = end-to-end prod validation used by
   - builds/buildspec_prod.yml
