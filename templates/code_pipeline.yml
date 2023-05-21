@@ -8,16 +8,6 @@ Parameters:
     Type: String
     Default: ratings
 
-  #Name of the stack that imported
-  #existing aws resources
-  ProdStackName:
-    Type: String
-    Default: prod-ratings
-
-  RepositoryBranch:
-    Type: String
-    Default: dev
-
   RepositoryDescription:
     Type: String
     Default: Personal Website hosted using S3
