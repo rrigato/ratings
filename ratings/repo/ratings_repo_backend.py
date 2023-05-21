@@ -326,12 +326,14 @@ def get_oauth_token(
         client_key: str, client_secret: str
     )-> Dict[str, Union[str, int]]:
     """Gets an Oath token from the reddit API
+
         Parameters
         ----------
         client_key
             Key for the reddit api
         client_secret
             Secret for the reddit api
+
         Returns
         -------
         oauth_token : dict
@@ -343,6 +345,10 @@ def get_oauth_token(
                 "expires_in": 3600,
                 "scope": "*"
             }
+        
+        Raises
+        ------
+        Any exceptions are propagated
     """
     reddit_headers = {
         "user-agent": REDDIT_USER_AGENT
@@ -353,23 +359,7 @@ def get_oauth_token(
     oauth_token_request = Request(
         "https://www.reddit.com/api/v1/access_token"
     )
-    '''
-        grant_type=client_credentials is
-        x-www-form-urlencoded which is what indicates
-        this is a application only with no
-        user sign in
-        auth basic auth where key is reddit client key
-        and password is reddit client secret
-    '''
-    # oauth_token = requests.post(
-    #     url="https://www.reddit.com/api/v1/access_token",
-    #     auth=(client_key, client_secret),
-    #     data=urlencode(
-    #         {"grant_type":"client_credentials"}
-    #     ).encode("utf-8"),
-    #     headers=reddit_headers
-    # )
-
+    
     oauth_token_request.add_header(
         "user-agent", REDDIT_USER_AGENT
     )
