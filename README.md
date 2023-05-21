@@ -20,6 +20,7 @@ This application creates a lambda function that polls the reddit api to retrieve
         - [util](#util)
   - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
+    - [integration-tests](#integration-tests)
   - [known-issues](#known-issues)
 
 
@@ -156,6 +157,13 @@ python -m scripts.reddit_ratings
 ```bash
 python -m unittest
 ```
+
+### integration-tests
+
+```bash
+python -m unittest discover integration
+```
+
 
 ## known-issues
 - no data from 2022-10-29 through 2023-03-18 inclusive
