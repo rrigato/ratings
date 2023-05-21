@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 from copy import deepcopy
@@ -8,7 +9,6 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import boto3
-import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
 
@@ -348,7 +348,11 @@ def get_oauth_token(
         "user-agent": REDDIT_USER_AGENT
     }
     logging.info("Custom Headers: ")
-    logging.info(reddit_headers)
+    
+
+    oauth_token_request = Request(
+        "https://www.reddit.com/api/v1/access_token"
+    )
     '''
         grant_type=client_credentials is
         x-www-form-urlencoded which is what indicates
@@ -357,14 +361,40 @@ def get_oauth_token(
         auth basic auth where key is reddit client key
         and password is reddit client secret
     '''
-    oauth_token = requests.post(
-        url="https://www.reddit.com/api/v1/access_token",
-        auth=(client_key, client_secret),
-        data={"grant_type":"client_credentials"},
-        headers=reddit_headers
-    )
+    # oauth_token = requests.post(
+    #     url="https://www.reddit.com/api/v1/access_token",
+    #     auth=(client_key, client_secret),
+    #     data=urlencode(
+    #         {"grant_type":"client_credentials"}
+    #     ).encode("utf-8"),
+    #     headers=reddit_headers
+    # )
 
-    return(oauth_token.json())
+    oauth_token_request.add_header(
+        "user-agent", REDDIT_USER_AGENT
+    )
+    oauth_token_request.add_header("Authorization", 
+    "Basic " + base64.b64encode(
+        (f"{client_key}:"+ 
+        f"{client_secret}").encode(
+            "utf-8"
+        )
+    ).decode("utf-8"))
+
+    logging.info(f"get_oauth_token - invocation end")
+    with urlopen(
+            url=oauth_token_request, 
+            data=urlencode(
+                {"grant_type":"client_credentials"}
+            ).encode("utf-8"), 
+            timeout=4
+        ) as api_response:
+        response_body = json.loads(api_response.read())
+
+
+        logging.info(f"get_oauth_token - invocation end")
+        
+        return(response_body)
 
 
 def evaluate_ratings_post_title(
