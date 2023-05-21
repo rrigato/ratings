@@ -17,7 +17,6 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
-      - [integration-tests](#integration-tests)
         - [util](#util)
   - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
@@ -128,12 +127,6 @@ ci.sh = miscellaneous awscli commands to configure environment
 - reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
 
 - backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
-
-
-#### integration-tests
-
-- test_reddit_ratings.py = local integration tests
-
 
 
 ##### util
