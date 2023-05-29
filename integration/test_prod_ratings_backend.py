@@ -258,7 +258,7 @@ class BackendTests(unittest.TestCase):
         '''
         self.assertEqual(
             lambda_configuration["Configuration"]["Runtime"],
-            "python3.7"
+            "python3.9"
         )
 
         self.assertEqual(
@@ -368,59 +368,6 @@ class BackendTests(unittest.TestCase):
                 show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric()
             )
             
-        
-    def test_dynamodb_backup_time(self):
-        """Validates a backup was created
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        dynamo_client = get_boto_clients(
-                resource_name="dynamodb",
-                region_name="us-east-1"
-        )
-
-
-        dynamo_backups = dynamo_client.list_backups(
-            TableName=self.DYNAMO_TABLE_NAME
-        )
-
-        '''
-            Assert we have a dyamodb backup
-        '''
-        self.assertGreater(len(dynamo_backups["BackupSummaries"]), 0) 
-
-        '''
-            Initialize a random backup time for comparison
-        '''
-        most_recent_backup = dynamo_backups["BackupSummaries"][0]["BackupCreationDateTime"]
-
-        '''
-            Iterating over every backup to get the most recent backup 
-            time
-        '''
-        for dynamo_backup in dynamo_backups["BackupSummaries"]:
-            
-            if dynamo_backup["BackupCreationDateTime"] > most_recent_backup:
-                most_recent_backup = dynamo_backup["BackupCreationDateTime"]
-        
-        '''
-            Validating that the most recent backup has occurred in the 
-            last 10 minutes
-        '''
-        self.assertGreater(
-            most_recent_backup.replace(tzinfo=None),
-            datetime.now() - timedelta(minutes=10)
-        )
-
-
-
 
     def test_dynamodb_show_access(self):
         """Query using the SHOW_ACCESS GSI

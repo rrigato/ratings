@@ -14,14 +14,13 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [detect\_secrets](#detect_secrets)
       - [git\_secrets](#git_secrets)
     - [project\_directory\_overview](#project_directory_overview)
-      - [builds](#builds)
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
-      - [integration-tests](#integration-tests)
         - [util](#util)
   - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
+    - [integration-tests](#integration-tests)
   - [known-issues](#known-issues)
 
 
@@ -107,12 +106,6 @@ git secrets --scan
 ### project_directory_overview
 Provides information on each directory/ source file
 
-#### builds
-
-
-- buildspec_prod.yml = updates and invokes prod lambda functions for polling reddit api and backing up dynamodb
-
-
 
 #### devops
 
@@ -135,16 +128,6 @@ ci.sh = miscellaneous awscli commands to configure environment
 - reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
 
 - backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
-
-
-#### integration-tests
-
-
-- test_prod_ratings_backend.py = end-to-end prod validation used by
-  - builds/buildspec_prod.yml
-
-- test_reddit_ratings.py = local integration tests
-
 
 
 ##### util
@@ -174,6 +157,13 @@ python -m scripts.reddit_ratings
 ```bash
 python -m unittest
 ```
+
+### integration-tests
+
+```bash
+python -m unittest discover integration
+```
+
 
 ## known-issues
 - no data from 2022-10-29 through 2023-03-18 inclusive
