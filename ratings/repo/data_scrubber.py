@@ -33,37 +33,6 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
     logging.info("_override_ratings_occurred_on - override_count " + str(override_count))
 
 
-def _manual_override_by_date(date_to_override: str, 
-    all_ratings_list: list[dict[str, Union[str, int]]]) -> None:
-    """Applies manual ovverrides based on 
-
-        Parameters
-        ----------
-
-        date_to_override
-            YYYY-MM-DD format
-            
-
-        all_ratings_list : list
-            safe source of element structure is scripts.reddit_ratings.clean_dict_value
-    """
-    override_count = 0
-    
-
-    for tv_rating in all_ratings_list:
-        if tv_rating["RATINGS_OCCURRED_ON"] == date_to_override:
-            if tv_rating["TOTAL_VIEWERS"] == "234":
-                if tv_rating["TIME"] == "12:00a":
-                    logging.info(f"""
-                    _manual_override_by_date - override {tv_rating["TIME"]}
-                    to 11:30
-                    """)
-                    tv_rating["TIME"] = "11:30"
-
-    logging.info("_manual_override_by_date - override_count " + str(override_count))
-
-
-
 def _remove_missing_time(all_ratings_list):
     """Removes all elements of all_ratings_list with a dict key 
     TIME element of empty string ''
@@ -117,13 +86,4 @@ def data_override_factory(all_ratings_list):
     _remove_missing_time(all_ratings_list=all_ratings_list)
 
     logging.info("data_override_factory - _remove_missing_time - " + str(len(all_ratings_list)))
-
-    _manual_override_by_date(
-        date_to_override="2022-07-23",
-        all_ratings_list=all_ratings_list
-    )
-
-    logging.info("data_override_factory - _manual_override_by_date - " + 
-        str(len(all_ratings_list))
-    )
 
