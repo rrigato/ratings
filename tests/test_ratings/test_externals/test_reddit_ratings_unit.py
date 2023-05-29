@@ -75,7 +75,7 @@ class RedditApi(unittest.TestCase):
             number_posts=self.MAIN_FUNCTION_POST_COUNT
         )
         
-        self.assertEqual(data_override_factory_mock.call_count, 1)
+        self.assertEqual(data_override_factory_mock.call_count, 0)
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):

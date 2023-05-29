@@ -3,11 +3,10 @@ import logging
 import math
 import os
 from datetime import datetime
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 import boto3
 import requests
-from boto3.dynamodb import conditions
 
 from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
@@ -569,9 +568,7 @@ def deprecated_main():
 
     logging.info("main - clean_dict_value - " + str(len(all_ratings_list)))
     
-    data_override_factory(all_ratings_list=all_ratings_list)
-
-    logging.info("main - data_override_factory - " + str(len(all_ratings_list)))
+    
 
 
 

@@ -9,8 +9,7 @@ class TestDataScrubber(unittest.TestCase):
     @patch("ratings.repo.data_scrubber._manual_override_by_date")
     @patch("ratings.repo.data_scrubber._remove_missing_time")
     @patch("ratings.repo.data_scrubber._override_ratings_occurred_on")
-    @patch("ratings.repo.data_scrubber._manual_skip_date")
-    def test_data_override_factory(self, manual_skip_date_mock: MagicMock, 
+    def test_data_override_factory(self,  
         override_ratings_occurred_on_mock: MagicMock, 
         remove_missing_time_mock: MagicMock,
         manual_override_by_date_mock: MagicMock):
@@ -21,11 +20,6 @@ class TestDataScrubber(unittest.TestCase):
 
         data_override_factory(all_ratings_list=ratings_fixture_bad_data()[0:2])
 
-
-        manual_skip_date_mock.assert_called_once_with(
-            ratings_date_to_skip="2022-01-29",
-            all_ratings_list=ratings_fixture_bad_data()[0:2]
-        )
 
         override_ratings_occurred_on_mock.assert_called_once_with(
             date_to_override="2022-02-15",
@@ -38,46 +32,6 @@ class TestDataScrubber(unittest.TestCase):
         )
 
         manual_override_by_date_mock.assert_called()
-
-
-    def test_manual_skip_date(self):
-        """17 matching ratings elements removed"""
-        from fixtures.get_all_ratings_list import ratings_fixture_bad_data
-        from ratings.repo.data_scrubber import _manual_skip_date
-
-        mock_ratings_list = ratings_fixture_bad_data()
-
-
-        _manual_skip_date(
-            ratings_date_to_skip="2022-01-29",
-            all_ratings_list=mock_ratings_list
-        )
-
-
-        self.assertEqual(
-            len(mock_ratings_list), 
-            len(ratings_fixture_bad_data()) - 17
-        )
-
-
-    def test_manual_skip_date_out_of_index(self):
-        """Drop elements from end of list to avoid IndexError"""
-        from fixtures.get_all_ratings_list import ratings_fixture_bad_data
-        from ratings.repo.data_scrubber import _manual_skip_date
-
-        mock_ratings_list = ratings_fixture_bad_data()
-
-
-        _manual_skip_date(
-            ratings_date_to_skip="2022-01-15",
-            all_ratings_list=mock_ratings_list
-        )
-
-
-        self.assertEqual(
-            len(mock_ratings_list), 
-            len(ratings_fixture_bad_data()) - 8
-        )
 
 
     def test_override_ratings_occurred_on(self):

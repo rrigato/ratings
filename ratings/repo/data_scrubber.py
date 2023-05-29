@@ -1,40 +1,6 @@
 from typing import Union
 import logging
 
-def _manual_skip_date(ratings_date_to_skip, all_ratings_list):
-    """Manually excludes elements based on ratings_date_to_skip
-
-        Parameters
-        ----------
-        ratings_date_to_skip: str
-            pass str in YYYY-MM-DD format
-            elements of all_ratings_list with RATINGS_OCCURRED_ON
-            equal to ratings_date_to_skip will be removed from the list
-        
-
-        all_ratings_list : list
-            safe source of element structure is scripts.reddit_ratings.clean_dict_value
-    """
-
-    logging.info("_manual_skip_date - dropping - " + str(ratings_date_to_skip))
-    elements_to_drop = []
-
-    for rating_element in range(len(all_ratings_list)):
-        if all_ratings_list[rating_element]["RATINGS_OCCURRED_ON"] == ratings_date_to_skip:
-            elements_to_drop.append(rating_element)
-
-    elements_to_drop.sort(reverse=True)
-    
-    logging.info(elements_to_drop)
-
-    for element_to_drop in elements_to_drop:
-        removed_rating = all_ratings_list.pop(element_to_drop)
-        
-
-    logging.info("_manual_skip_date - complete")
-    
-
-
 def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ratings_list):
     """Overrides incorrect RATINGS_OCCURRED_ON values
 
@@ -137,14 +103,6 @@ def data_override_factory(all_ratings_list):
    
     """
     logging.info("data_override_factory - abstraction layer - " + str(len(all_ratings_list)))
-
-    _manual_skip_date(
-        ratings_date_to_skip="2022-01-29",
-        all_ratings_list=all_ratings_list
-    )
-
-
-    logging.info("data_override_factory - _manual_skip_date - " + str(len(all_ratings_list)))
 
     _override_ratings_occurred_on(
         date_to_override="2022-02-15",
