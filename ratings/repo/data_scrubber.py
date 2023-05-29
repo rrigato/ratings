@@ -33,33 +33,6 @@ def _override_ratings_occurred_on(date_to_override, correct_ratings_date, all_ra
     logging.info("_override_ratings_occurred_on - override_count " + str(override_count))
 
 
-def _remove_missing_time(all_ratings_list):
-    """Removes all elements of all_ratings_list with a dict key 
-    TIME element of empty string ''
-
-        Parameters
-        ----------
-        all_ratings_list : list
-            safe source of element structure is scripts.reddit_ratings.clean_dict_value
-    """
-
-    logging.info("_remove_missing_time - initialized - " + str(all_ratings_list))
-    elements_to_drop = []
-
-    for rating_element in range(len(all_ratings_list)):
-        if all_ratings_list[rating_element]["TIME"] == "":
-            elements_to_drop.append(rating_element)
-
-    logging.info(elements_to_drop)
-
-    for element_to_drop in elements_to_drop:
-        removed_rating = all_ratings_list.pop(element_to_drop)
-        
-    logging.info("_remove_missing_time - complete")
-    
-
-
-
 def data_override_factory(all_ratings_list):
     """Factory function for mutation based data scrubbing activities from production data
     Extend this public interface with new private functionality whenever applying
@@ -82,8 +55,3 @@ def data_override_factory(all_ratings_list):
     logging.info("data_override_factory - _override_ratings_occurred_on - " + 
         str(len(all_ratings_list))
     )
-
-    _remove_missing_time(all_ratings_list=all_ratings_list)
-
-    logging.info("data_override_factory - _remove_missing_time - " + str(len(all_ratings_list)))
-
