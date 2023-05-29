@@ -8,7 +8,6 @@ from typing import Dict, List, Union
 import boto3
 import requests
 
-from ratings.repo.data_scrubber import data_override_factory
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                _standardize_key_name,
                                                get_oauth_token,
