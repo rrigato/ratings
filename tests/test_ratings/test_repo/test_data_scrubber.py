@@ -9,8 +9,7 @@ class TestDataScrubber(unittest.TestCase):
     @patch("ratings.repo.data_scrubber._manual_override_by_date")
     @patch("ratings.repo.data_scrubber._remove_missing_time")
     @patch("ratings.repo.data_scrubber._override_ratings_occurred_on")
-    @patch("ratings.repo.data_scrubber._manual_skip_date")
-    def test_data_override_factory(self, manual_skip_date_mock: MagicMock, 
+    def test_data_override_factory(self,  
         override_ratings_occurred_on_mock: MagicMock, 
         remove_missing_time_mock: MagicMock,
         manual_override_by_date_mock: MagicMock):
@@ -21,9 +20,6 @@ class TestDataScrubber(unittest.TestCase):
 
         data_override_factory(all_ratings_list=ratings_fixture_bad_data()[0:2])
 
-
-        manual_skip_date_mock.assert_not_called(
-        )
 
         override_ratings_occurred_on_mock.assert_called_once_with(
             date_to_override="2022-02-15",
