@@ -9,10 +9,12 @@ import boto3
 import requests
 
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               _standardize_key_name,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean, persist_ratings, persist_show_names, ratings_from_internet)
+                                               handle_table_clean,
+                                               persist_ratings,
+                                               persist_show_names,
+                                               ratings_from_internet)
 
 
 def get_boto_clients(resource_name, region_name="us-east-1",
@@ -368,59 +370,6 @@ def ratings_iteration(number_posts=10):
                 ]["data"]["name"]
 
 
-def dict_key_mapping(
-        pre_clean_ratings_keys: List[Dict]
-        ) -> List[Dict[str, Union[str, int]]]:
-    """Maps inconsistent source data to column names for dynamodb
-
-        Parameters
-        ----------
-        pre_clean_ratings_keys
-            refer to keys of get_table_column_name_mapping return
-            value for potential key names since this is user input data
-            that can be highly inconsistent
-
-        Returns
-        -------
-        clean_ratings_columns
-            list of dict with standardized column names
-            matching one of the following:
-            [
-                "PERCENTAGE_OF_HOUSEHOLDS",
-                "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
-                "RATINGS_OCCURRED_ON",
-                "SHOW",
-                "TIME", 
-                "TOTAL_VIEWERS", 
-                "TOTAL_VIEWERS_AGE_18_49",
-                "YEAR",
-                "IS_RERUN"
-
-            ]
-
-
-        Raises
-        ------
-        KeyError :
-            KeyError is raised if the keys for a dict
-            in pre_clean_ratings_keys cannot be mapped 
-            back to a dynamodb column listed in get_table_column_name_mapping
-    """
-
-    clean_ratings_columns = []
-    for dict_to_clean in pre_clean_ratings_keys:
-        _standardize_key_name(dict_to_clean)
-        '''
-            Append each cleaned dict
-        '''
-        clean_ratings_columns.append(dict_to_clean)
-
-    logging.info("dict_key_mapping - Mapped ratings post column names")
-    logging.info(clean_ratings_columns)
-    
-    return(clean_ratings_columns)
-
-
 def sort_ratings_occurred_on(ratings_list):
     """Sorts ratings in descending order by date
 
@@ -485,9 +434,6 @@ def deprecated_main():
 
     all_ratings_list = ratings_iteration(number_posts=25)
 
-    clean_rating_keys = dict_key_mapping(
-        pre_clean_ratings_keys=all_ratings_list
-    )
 
     logging.info("main - clean_dict_value - " + str(len(all_ratings_list)))
     
