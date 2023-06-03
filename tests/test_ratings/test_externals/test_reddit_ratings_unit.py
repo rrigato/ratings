@@ -57,10 +57,9 @@ class RedditApi(unittest.TestCase):
         ]
 
 
-    @patch("scripts.reddit_ratings.data_override_factory")
     @patch("scripts.reddit_ratings.ratings_iteration")
     def test_main(self, ratings_iteration_mock,
-        data_override_factory_mock):
+        ):
         """Test for deprecated_main function
         """
         '''TODO - change name of this test case and it fails for some
@@ -75,7 +74,6 @@ class RedditApi(unittest.TestCase):
             number_posts=self.MAIN_FUNCTION_POST_COUNT
         )
         
-        self.assertEqual(data_override_factory_mock.call_count, 0)
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
