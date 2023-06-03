@@ -57,22 +57,17 @@ class RedditApi(unittest.TestCase):
         ]
 
 
-    @patch("scripts.reddit_ratings.ratings_iteration")
-    def test_main(self, ratings_iteration_mock,
-        ):
+    
+    def test_main(self):
         """Test for deprecated_main function
         """
         '''TODO - change name of this test case and it fails for some
         crazy reason'''
         from scripts.reddit_ratings import deprecated_main
 
-        ratings_iteration_mock.return_value = MOCK_RATINGS_LIST
-
         deprecated_main()
 
-        ratings_iteration_mock.assert_called_once_with(
-            number_posts=self.MAIN_FUNCTION_POST_COUNT
-        )
+
         
 
     @patch("boto3.client")

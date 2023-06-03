@@ -10,7 +10,6 @@ import requests
 
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                get_oauth_token,
-                                               get_ratings_post,
                                                persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
@@ -209,103 +208,6 @@ def get_news_flair(access_token,
     return(news_flair_posts.json())
 
 
-def ratings_iteration(number_posts=10):
-    """Handles rating iteration
-
-        Parameters
-        ----------
-        number_posts : int
-            Defaults to 10, the number of news posts to 
-            search over for ratings.
-
-        Returns
-        -------
-        all_ratings_list : list
-            List of dict where each element is
-            one saturday night ratings
-
-
-        Raises
-        ------
-
-    """
-    reddit_client_key, reddit_client_secret = get_client_secrets()
-
-
-    oauth_token = get_oauth_token(
-        client_key=reddit_client_key,
-        client_secret=reddit_client_secret
-        )
-
-    '''
-        Initializing ratings post name tracker
-        and list
-    '''
-    fullname_after = None
-    all_ratings_list = []
-
-    logging.info("Oauth token for ratings_iteration")
-    '''
-        If number_posts is None we are only looking
-        for the most recent ratings post
-    '''
-    if (number_posts <= 25):
-        news_flair_posts = get_news_flair(
-            access_token=oauth_token["access_token"],
-            posts_to_return=number_posts)
-
-        ratings_post_list = get_ratings_post(news_flair_posts)
-
-        
-
-        return(all_ratings_list)
-
-    else:
-        '''
-            Iterate in batches of 25 if we want to 
-            iterate all posts
-        '''
-        assert type(number_posts) is int, (
-            "news_flair_posts must be passed an int for posts_to_return"
-        )
-
-
-        '''
-            Logic for breaking apart the historical api calls
-        '''
-        for api_call_count in range(math.ceil(number_posts/25)):
-            news_flair_posts = get_news_flair(
-                access_token=oauth_token["access_token"],
-                posts_to_return=number_posts,
-                fullname_after=fullname_after)
-
-            '''
-                No more historical posts to search over
-            '''
-            if news_flair_posts["data"]["dist"] == 0:
-                logging.info("No more posts to iterate")
-                return(all_ratings_list)
-
-            ratings_post_list = get_ratings_post(news_flair_posts)
-
-            '''
-                Small number of news posts does not
-                have any ratings posts to return
-            '''
-            if len(ratings_post_list) == 0:
-                logging.info("No more posts to iterate")
-                return(all_ratings_list)
-
-            
-            '''
-                Gets the fullname of the last post
-                in the ratings_post_list
-                ratings_post_list[len(ratings_post_list) - 1] =
-                last element in list
-            '''
-            fullname_after = news_flair_posts["data"]["children"][
-                ratings_post_list[len(ratings_post_list) - 1]
-                ]["data"]["name"]
 
 
 def sort_ratings_occurred_on(ratings_list):
@@ -369,11 +271,6 @@ def deprecated_main():
     environment_prefix = os.environ.get(
         "AWS_LAMBDA_FUNCTION_NAME").split("-")[0]
     logging.info("main - running in " + environment_prefix)
-
-    all_ratings_list = ratings_iteration(number_posts=25)
-
-
-    logging.info("main - clean_dict_value - " + str(len(all_ratings_list)))
     
     
 
