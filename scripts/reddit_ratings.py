@@ -11,7 +11,6 @@ import requests
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean,
                                                persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
@@ -210,59 +209,6 @@ def get_news_flair(access_token,
     return(news_flair_posts.json())
 
 
-def iterate_handle_table_clean(news_flair_posts, ratings_post_list,
-    ratings_list_to_append):
-    """Tests cleaning of ratings data
-
-        Parameters
-        ----------
-        news_flair_posts : dict
-            Dict of all posts with a news reddit flair
-            after fullname_after
-
-        ratings_post_list : list
-            list providing the elements of the reddit
-            search api response that are ratings posts
-            Ex: [0, 3, 8]
-
-        ratings_list_to_append : list
-            Existing list of dict where each element is
-            one saturday night ratings that will be appended to
-
-        Returns
-        -------
-        all_ratings_list : list
-            List of dict where each element is
-            one saturday night ratings populated from
-            news_flair_list
-
-        Raises
-        ------
-    """
-
-    '''
-        Iterating over just news flair posts
-        that are ratings posts
-    '''
-    for ratings_post in ratings_post_list:
-        
-        clean_ratings_post = handle_table_clean(
-            reddit_post_html=news_flair_posts["data"]["children"][ratings_post]["data"]["selftext_html"],
-            rating_call_counter=0,
-            ratings_title=news_flair_posts["data"]["children"][ratings_post]["data"]["title"]
-        )
-        '''
-            extend takes all dicts from
-            clean_ratings_post and puts them in
-            all_ratings_list
-        '''
-        ratings_list_to_append.extend(clean_ratings_post)
-
-
-    return(ratings_list_to_append)
-
-
-
 def ratings_iteration(number_posts=10):
     """Handles rating iteration
 
@@ -310,11 +256,7 @@ def ratings_iteration(number_posts=10):
 
         ratings_post_list = get_ratings_post(news_flair_posts)
 
-        all_ratings_list = iterate_handle_table_clean(
-            news_flair_posts=news_flair_posts,
-            ratings_post_list=ratings_post_list,
-            ratings_list_to_append=all_ratings_list
-        )
+        
 
         return(all_ratings_list)
 
@@ -354,11 +296,7 @@ def ratings_iteration(number_posts=10):
                 logging.info("No more posts to iterate")
                 return(all_ratings_list)
 
-            all_ratings_list = iterate_handle_table_clean(
-                news_flair_posts=news_flair_posts,
-                ratings_post_list=ratings_post_list,
-                ratings_list_to_append=all_ratings_list
-            )
+            
             '''
                 Gets the fullname of the last post
                 in the ratings_post_list
