@@ -511,7 +511,7 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         """
-        from scripts.reddit_ratings import clean_dict_value
+        from scripts.historical_ratings_upload import clean_dict_value
 
         list_with_rerun_and_bad_household = [
             {

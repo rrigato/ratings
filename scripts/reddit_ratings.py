@@ -420,78 +420,6 @@ def dict_key_mapping(
     
     return(clean_ratings_columns)
 
-def clean_adult_household(dict_to_clean):
-    """Cleans the PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49 field
-
-        Parameters
-        ----------
-        dict_to_clean : dict
-            Individual rating that is pass by reference
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-    '''
-        Try catch handles if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
-        is not included in the list of keys
-    '''
-    try:
-        if dict_to_clean["PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49"] == "9.99":
-            dict_to_clean.pop("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
-    except KeyError:
-        '''
-            do nothing if PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49
-            is not present
-        '''
-        pass
-
-
-def clean_dict_value(ratings_values_to_clean):
-    """Calls cleaning helper functions to clean elements of
-        each rating show
-
-        Parameters
-        ----------
-        ratings_values_to_clean : list
-            list of dict where each dict has already been
-            passed through dict_key_mapping
-
-        Returns
-        -------
-        clean_ratings_values : list
-            list of dict with the following keys:
-            RATINGS_OCCURRED_ON - YYYY-MM-DD date
-            TIME - str of timeslot Example 12:00a
-            SHOW - str of show  
-            TOTAL_VIEWERS - int of viewers in thousands 
-            PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49 - float  
-            YEAR - int of year Example - 2022
-            
-
-        Raises
-        ------
-    """
-    clean_ratings_values = []
-    for dict_to_clean in ratings_values_to_clean:
-        '''
-            If we are able to find " (r)" in the 
-            SHOW string that indicates a rerun
-            removing everthing before the space and
-            marking IS_RERUN as True
-        '''
-        if dict_to_clean["SHOW"].find(" (r)") > 0:
-            dict_to_clean["SHOW"] = dict_to_clean["SHOW"].split(" (r)")[0]
-            dict_to_clean["IS_RERUN"] = True
-        
-        clean_adult_household(dict_to_clean=dict_to_clean)
-        
-
-        clean_ratings_values.append(dict_to_clean)
-
-    return(clean_ratings_values)
 
 def sort_ratings_occurred_on(ratings_list):
     """Sorts ratings in descending order by date
@@ -559,10 +487,6 @@ def deprecated_main():
 
     clean_rating_keys = dict_key_mapping(
         pre_clean_ratings_keys=all_ratings_list
-    )
-
-    clean_rating_values = clean_dict_value(
-        ratings_values_to_clean=all_ratings_list
     )
 
     logging.info("main - clean_dict_value - " + str(len(all_ratings_list)))
