@@ -1,10 +1,64 @@
 import json
 import logging
 import os
+from typing import Dict, List, Union
+
+from ratings.repo.ratings_repo_backend import standardize_key_name
+from scripts.reddit_ratings import get_boto_clients
 
 
-from scripts.reddit_ratings import (dict_key_mapping,
-                                    get_boto_clients)
+def dict_key_mapping(
+        pre_clean_ratings_keys: List[Dict]
+        ) -> List[Dict[str, Union[str, int]]]:
+    """Maps inconsistent source data to column names for dynamodb
+
+        Parameters
+        ----------
+        pre_clean_ratings_keys
+            refer to keys of get_table_column_name_mapping return
+            value for potential key names since this is user input data
+            that can be highly inconsistent
+
+        Returns
+        -------
+        clean_ratings_columns
+            list of dict with standardized column names
+            matching one of the following:
+            [
+                "PERCENTAGE_OF_HOUSEHOLDS",
+                "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
+                "RATINGS_OCCURRED_ON",
+                "SHOW",
+                "TIME", 
+                "TOTAL_VIEWERS", 
+                "TOTAL_VIEWERS_AGE_18_49",
+                "YEAR",
+                "IS_RERUN"
+
+            ]
+
+
+        Raises
+        ------
+        KeyError :
+            KeyError is raised if the keys for a dict
+            in pre_clean_ratings_keys cannot be mapped 
+            back to a dynamodb column listed in get_table_column_name_mapping
+    """
+
+    clean_ratings_columns = []
+    for dict_to_clean in pre_clean_ratings_keys:
+        standardize_key_name(dict_to_clean)
+        '''
+            Append each cleaned dict
+        '''
+        clean_ratings_columns.append(dict_to_clean)
+
+    logging.info("dict_key_mapping - Mapped ratings post column names")
+    logging.info(clean_ratings_columns)
+    
+    return(clean_ratings_columns)
+
 
 
 def clean_adult_household(dict_to_clean):

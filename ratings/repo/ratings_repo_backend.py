@@ -18,8 +18,6 @@ from ratings.repo.name_mapper import (get_table_column_name_mapping,
                                       keys_to_ignore)
 
 
-
-
 def standardize_time(
     show_time: str
     ) -> str:
@@ -38,7 +36,7 @@ def standardize_time(
 
 
 
-def _standardize_key_name(
+def standardize_key_name(
         dict_to_clean: Dict[str, Union[str, int]]
     ) -> None:
     """Mutates key names for dict_to_clean 
@@ -526,7 +524,7 @@ def _create_television_rating(
     for rating_dict in parsed_table_ratings:
         tv_rating = TelevisionRating()
 
-        _standardize_key_name(rating_dict)
+        standardize_key_name(rating_dict)
 
         '''
         refer to get_table_column_name_mapping value

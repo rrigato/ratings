@@ -339,7 +339,7 @@ class RedditApi(unittest.TestCase):
         """Validating mapping of rating keys to dynamodb columns
 
         """
-        from scripts.reddit_ratings import dict_key_mapping
+        from scripts.historical_ratings_upload import dict_key_mapping
         original_json_list_example = [
             [
                 {
@@ -394,7 +394,7 @@ class RedditApi(unittest.TestCase):
     def test_dict_key_mapping_unmapped_column(self):
         """KeyError raised when a column name is not mapped
         """
-        from scripts.reddit_ratings import dict_key_mapping
+        from scripts.historical_ratings_upload import dict_key_mapping
         '''
             list of dicts passed to dict_key_mapping
         '''
@@ -469,7 +469,7 @@ class RedditApi(unittest.TestCase):
             Raises
             ------
         """
-        from scripts.reddit_ratings import dict_key_mapping
+        from scripts.historical_ratings_upload import dict_key_mapping
 
 
         clean_original_values = dict_key_mapping(
