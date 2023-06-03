@@ -11,7 +11,6 @@ import requests
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
                                                get_oauth_token,
                                                get_ratings_post,
-                                               handle_table_clean,
                                                persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
