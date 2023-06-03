@@ -1,11 +1,6 @@
 from datetime import datetime
-from scripts.reddit_ratings import clean_dict_value
-from scripts.reddit_ratings import dict_key_mapping
-from scripts.reddit_ratings import get_boto_clients
 
-import boto3
-import json
-import os
+from scripts.reddit_ratings import get_boto_clients
 
 
 def batch_item_scan(table_name):
