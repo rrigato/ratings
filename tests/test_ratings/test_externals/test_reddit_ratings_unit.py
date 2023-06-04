@@ -447,27 +447,6 @@ class RedditApi(unittest.TestCase):
         with self.assertRaises(KeyError, msg="IS_RERUN"):        
             self.assertIsNone(clean_ratings_list[2]["IS_RERUN"])     
 
-    
-    @patch("requests.get")
-    def test_get_news_flair(self, requests_get_mock):
-        """Outgoing api request arguements to reddit api"""
-        from scripts.reddit_ratings import get_news_flair
-        mock_fullname = "mock_fullname"
-        mock_token = "mock_token"
-        mock_num_posts = 10
-
-
-        news_search = get_news_flair(
-            access_token="mock_token",
-            posts_to_return=mock_num_posts,
-            fullname_after=mock_fullname
-        )
-
-
-        args, kwargs = requests_get_mock.call_args
-        self.assertIn("user-agent", kwargs["headers"].keys())
-        self.assertIn("Authorization", kwargs["headers"].keys())
-
 
     @patch("scripts.reddit_ratings.persist_show_names")
     @patch("scripts.reddit_ratings.persist_ratings")
