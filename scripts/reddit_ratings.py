@@ -1,15 +1,12 @@
 import json
 import logging
-import math
 import os
 from datetime import datetime
-from typing import Dict, List, Union
 
 import boto3
 import requests
 
 from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               get_oauth_token,
                                                persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
@@ -208,60 +205,6 @@ def get_news_flair(access_token,
     return(news_flair_posts.json())
 
 
-
-
-def sort_ratings_occurred_on(ratings_list):
-    """Sorts ratings in descending order by date
-
-        Parameters
-        ----------
-        ratings_list : list
-            List of dict where each element is
-            one saturday night ratings
-
-        Returns
-        -------
-        ratings_occurred_on : list
-            List of str sorted by date
-
-        Raises
-        ------
-    """
-    
-    ratings_as_dates = [] 
-    '''
-        For each dict of ratings get the 
-        RATINGS_OCCURRED_ON string and convert that to 
-        a datetime object
-    '''
-    for individual_rating in ratings_list:
-        ratings_as_dates.append(
-            datetime.strptime(
-                individual_rating["RATINGS_OCCURRED_ON"], "%Y-%m-%d"
-            )
-        )
-
-
-    '''
-        Unique ratings
-    '''
-    ratings_as_dates = set(ratings_as_dates)
-
-    '''
-        sorted = Turns set into a list of datetime objects that are
-        in descending order
-
-        List comprehension iterates through each of those datetime objects
-        formats as a string in "YYYY-MM-DD" that is added to the list
-    '''
-    ratings_occurred_on = [ 
-        datetime.strftime(original_datetime, "%Y-%m-%d") for original_datetime in 
-        sorted(ratings_as_dates, reverse=True)
-    ]
-
-    return(ratings_occurred_on)
-
-
 def deprecated_main():
     """Entry point into the script
     """
@@ -272,10 +215,6 @@ def deprecated_main():
         "AWS_LAMBDA_FUNCTION_NAME").split("-")[0]
     logging.info("main - running in " + environment_prefix)
     
-    
-
-
-
 
 
 

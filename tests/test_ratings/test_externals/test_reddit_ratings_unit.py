@@ -102,40 +102,6 @@ class RedditApi(unittest.TestCase):
             region_name="us-east-1"
         )
 
-    def test_sort_ratings_occurred_on(self):
-        """Tests that we are able to sort when the ratings occurred
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.reddit_ratings import sort_ratings_occurred_on
-
-        ratings_occurred_on = sort_ratings_occurred_on(
-            ratings_list=MOCK_RATINGS_LIST
-        )
-
-        '''
-            The ratings_occurred_on should be a descending
-            list based on date
-        '''
-        self.assertEqual(
-            ratings_occurred_on,
-            [
-                "2020-05-23",
-                "2020-05-16",
-                "2020-05-09",
-                "2020-05-02"
-            ]
-        )
-
-
-
 
     def test_get_boto_clients_table_resource(self):
         """Tests getting a dynamodb table resource from get_boto_clients
