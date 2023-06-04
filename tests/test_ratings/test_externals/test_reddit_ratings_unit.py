@@ -57,19 +57,6 @@ class RedditApi(unittest.TestCase):
         ]
 
 
-    
-    def test_main(self):
-        """Test for deprecated_main function
-        """
-        '''TODO - change name of this test case and it fails for some
-        crazy reason'''
-        from scripts.reddit_ratings import deprecated_main
-
-        deprecated_main()
-
-
-        
-
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
         '''Tests outgoing boto3 client generation when no region is passed
@@ -451,7 +438,7 @@ class RedditApi(unittest.TestCase):
     @patch("scripts.reddit_ratings.persist_show_names")
     @patch("scripts.reddit_ratings.persist_ratings")
     @patch("scripts.reddit_ratings.ratings_from_internet")
-    def test_main_orchestration(
+    def test_main(
         self, 
         ratings_from_internet_mock: MagicMock, 
         persist_ratings_mock: MagicMock,

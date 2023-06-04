@@ -112,19 +112,6 @@ def get_client_secrets(region_name="us-east-1"):
     )
 
 
-def deprecated_main():
-    """Entry point into the script
-    """
-    '''
-        get dev or prod from the function name
-    '''
-    environment_prefix = os.environ.get(
-        "AWS_LAMBDA_FUNCTION_NAME").split("-")[0]
-    logging.info("main - running in " + environment_prefix)
-    
-
-
-
 def main() -> None:
     """Orchestrates clean architecture invocations from
     external
