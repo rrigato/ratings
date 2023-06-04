@@ -4,7 +4,7 @@ import os
 from typing import Dict, List, Union
 
 from ratings.repo.ratings_repo_backend import standardize_key_name
-from scripts.reddit_ratings import get_boto_clients
+from scripts.backup_dynamodb_ratings import get_boto_clients
 
 
 def dict_key_mapping(
