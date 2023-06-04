@@ -1,13 +1,10 @@
 import json
 import logging
 import os
-from datetime import datetime
 
 import boto3
-import requests
 
-from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               persist_ratings,
+from ratings.repo.ratings_repo_backend import (persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
 
@@ -110,19 +107,6 @@ def get_client_secrets(region_name="us-east-1"):
         client_secrets_dict["reddit_api_key"],
         client_secrets_dict["reddit_api_secret"]
     )
-
-
-def deprecated_main():
-    """Entry point into the script
-    """
-    '''
-        get dev or prod from the function name
-    '''
-    environment_prefix = os.environ.get(
-        "AWS_LAMBDA_FUNCTION_NAME").split("-")[0]
-    logging.info("main - running in " + environment_prefix)
-    
-
 
 
 def main() -> None:
