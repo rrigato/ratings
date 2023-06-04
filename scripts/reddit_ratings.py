@@ -1,13 +1,10 @@
 import json
 import logging
 import os
-from datetime import datetime
 
 import boto3
-import requests
 
-from ratings.repo.ratings_repo_backend import (REDDIT_USER_AGENT,
-                                               persist_ratings,
+from ratings.repo.ratings_repo_backend import (persist_ratings,
                                                persist_show_names,
                                                ratings_from_internet)
 
