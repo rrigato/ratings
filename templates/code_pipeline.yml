@@ -154,45 +154,6 @@ Resources:
                   Resource:
                     - "*"
 
-  CFNRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Action: ['sts:AssumeRole']
-          Effect: Allow
-          Principal:
-            Service: [cloudformation.amazonaws.com]
-        Version: '2012-10-17'
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        #lambda full access managed policy also provides
-        #access to all dynamodb apis
-        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
-        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
-        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
-      Path: /
-      Policies:
-          - PolicyName: PassIamRole
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Sid: IAMallow
-                  Effect: Allow
-                  #######################################
-                  #Allowing iam role manipulation
-                  #
-                  #######################################
-                  Action:
-                    - iam:PassRole
-                    - iam:CreateRole
-                    - iam:GetRole
-                    - iam:UpdateAssumeRolePolicy
-                    - iam:DetachRolePolicy
-                    - iam:DeleteRolePolicy
-                    - iam:PutRolePolicy
-                  Resource:
-                    - "*"
 
   CodePipelineRole:
     Type: AWS::IAM::Role

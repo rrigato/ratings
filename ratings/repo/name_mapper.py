@@ -72,6 +72,7 @@ def keys_to_ignore() -> List[str]:
     return([
         "rank (/150)",
         "vs last",
+        "vs last*",
         "change"
     ])
 
