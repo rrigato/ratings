@@ -110,8 +110,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
 
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
-    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
-    def test_main(self, delete_dynamodb_backups_mock,
+    def test_main(self,
         create_dynamodb_backup_mock):
         '''Test for main function
 
@@ -260,75 +259,6 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
 
 
-    @patch("scripts.backup_dynamodb_ratings.get_boto_clients")
-    def test_delete_dynamodb_backups(self, get_boto_clients_mock):
-        '''Tests that we delete the old/recent dynamodb backups
-
-            Parameters
-            ----------
-            get_boto_clients_mock : unittest.mock.MagicMock
-                Mock object used to patch
-                AWS Python SDK dynamodb clients
-
-            Returns
-            -------
-
-
-            Raises
-            ------
-        '''
-        from scripts.backup_dynamodb_ratings import delete_dynamodb_backups
-
-        mock_dynamodb_client = MagicMock()
-
-
-        mock_dynamodb_client.list_backups.return_value = self.dynamodb_backups_fixture
-
-        get_boto_clients_mock.return_value = mock_dynamodb_client
-
-        delete_dynamodb_backups(table_name=self.DYNAMODB_TABLE_NAME)
-
-
-        '''
-            validate call args for list_backups
-        '''
-        mock_dynamodb_client.list_backups.assert_called_once_with(
-            TableName=self.DYNAMODB_TABLE_NAME,
-            BackupType="USER"
-        )
-
-        self.assertEqual(
-            mock_dynamodb_client.delete_backup.call_count,
-            4
-        )
-
-        
-
-        for backup_delete_call in mock_dynamodb_client.delete_backup.call_args_list:
-
-            
-            '''
-                unittest.mock._Call object, returns arguements
-                and keyword arguements as a dict
-            '''
-            args, kwargs = backup_delete_call
-            
-            '''
-                Validate that everything but the 3rd elemnt in the 
-                mock Backup list are deleted since that is the only function outside 
-                the deletion range
-            '''
-            self.assertIn(
-                kwargs["BackupArn"],
-                [
-                    self.dynamodb_backups_fixture["BackupSummaries"][0]["BackupArn"],
-                    self.dynamodb_backups_fixture["BackupSummaries"][1]["BackupArn"],
-                    self.dynamodb_backups_fixture["BackupSummaries"][2]["BackupArn"],
-                    self.dynamodb_backups_fixture["BackupSummaries"][4]["BackupArn"]
-                ]
-            )
-
-
 
     @patch("scripts.backup_dynamodb_ratings.get_boto_clients")
     def test_create_dynamodb_backup(self, get_boto_clients_mock):
@@ -367,8 +297,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
     @patch("logging.getLogger")
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
-    @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
-    def test_lambda_handler_event(self,delete_dynamodb_backups_mock,
+    def test_lambda_handler_event(self,
         create_dynamodb_backup_mock, getLogger_mock):
         """Tests passing sample event to lambda_handler
 
@@ -404,11 +333,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
             1
         )
 
-        
-        
-        delete_dynamodb_backups_mock.assert_called_once_with(
-            table_name=self.DYNAMODB_TABLE_NAME
-        )
+    
 
         create_dynamodb_backup_mock.assert_called_once_with(
             table_name=self.DYNAMODB_TABLE_NAME,
