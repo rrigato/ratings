@@ -1,17 +1,5 @@
-from boto3.dynamodb import conditions
-from datetime import datetime
-from datetime import timedelta
-
 import boto3
-import logging
-import os
 
-'''
-    Special user agent that is recommended according to the
-    api docs
-    <platform>:<app ID>:<version string> (by /u/<reddit username>)
-'''
-REDDIT_USER_AGENT = "Lambda:toonamiratings:v1.0 (by /u/toonamiratings)"
 
 def get_boto_clients(resource_name, region_name="us-east-1",
     table_name=None):

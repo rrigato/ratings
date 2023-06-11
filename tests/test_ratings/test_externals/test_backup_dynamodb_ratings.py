@@ -1,113 +1,12 @@
 import json
-import os
 import unittest
 from datetime import datetime, timedelta
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 
 class BackupDynamoDbUnit(unittest.TestCase):
     """Unit tests for BackupDynamoDB
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
     """
-    @classmethod
-    def setUpClass(cls):
-        """Unitest function that is run once for the class
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        '''
-            How many news posts the client main function is using
-        '''
-        cls.DYNAMODB_TABLE_NAME = "dev_toonami_ratings"
-        os.environ["DYNAMODB_TABLE_NAME"] = cls.DYNAMODB_TABLE_NAME
-
-        '''
-            Assigns a class attribute which is 
-            a dict that represents news posts
-        '''
-        with open("util/lambda_cw_event.json", "r") as cw_event:
-            cls.lambda_event_fixture = json.load(cw_event)
-
-        cls.dynamodb_backups_fixture = {
-            "BackupSummaries": [
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12460",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012340"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now(),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12461",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012341"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now() - timedelta(days=3),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },  
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12462",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012342"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now() - timedelta(days=10),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },                                
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12463",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012343"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now() - timedelta(days=100),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                },                
-                {
-                    "TableName": "dev_toonami_ratings",
-                    "TableId": "f1234567-12464",
-                    "TableArn": "arn:aws:dynamodb:us-east-1:1234:table/dev_toonami_ratings",
-                    "BackupArn": ("arn:aws:dynamodb:us-east-1:1234:table/" +
-                            "dev_toonami_ratings/backup/012344"),
-                    "BackupName": "manual_backup_test",
-                    "BackupCreationDateTime": datetime.now()- timedelta(days=367),
-                    "BackupStatus": "AVAILABLE",
-                    "BackupType": "USER",
-                    "BackupSizeBytes": 575731
-                }                
-            ]
-        }
-
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
@@ -233,41 +132,4 @@ class BackupDynamoDbUnit(unittest.TestCase):
             service_name=test_service_name,
             region_name=test_region_name
         )
-
-
-class LambdaHandler(unittest.TestCase):
-    """Tests specific to when the script is run from a lambda
-        function
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-
-        Raises
-        ------
-    """
-    @classmethod
-    def setUpClass(cls):
-        """Unitest function that is run once for the class
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        '''
-            Assigns a class attribute which is 
-            a dict that represents news posts
-        '''
-        with open("util/lambda_cw_event.json", "r") as news_flair:
-            cls.lambda_event_fixture = json.load(news_flair)
-
-
-
 
