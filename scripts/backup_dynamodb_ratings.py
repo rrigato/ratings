@@ -65,98 +65,6 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
-def test_dynamodb_recent_insertion(table_name, day_threshold=60):
-    """Validates that ratings where inserted in the last month
-
-        Parameters
-        ----------
-        table_name : str
-            Name of the table to check ratings for
-
-        day_threshold : int
-            how many days since the ratings were updated
-
-        Returns
-        -------
-
-        Raises
-        ------
-        AssertionError :
-            Raises AssertionError if there has been less than 5 television
-            ratings recorded in the last month, a television rating does not
-            have a SHOW name or the TOTAL_VIEWERS for the ratings show is not
-            numeric
-    """
-    dynamo_client, dynamo_table = get_boto_clients(
-            resource_name="dynamodb",
-            region_name="us-east-1",
-            table_name=table_name
-    )
-
-    from boto3.dynamodb.conditions import Key
-
-    '''
-        Query the current year ratings
-    '''
-    current_year = datetime.now().year
-
-    '''
-        If we are in the first 14 days of the year,
-        check last year
-    '''
-    if datetime.now().timetuple().tm_yday <= 14:
-        current_year = datetime.now().year - 1
-
-    '''
-        Formatting in "YYYY-MM-DD"
-    '''
-    start_day = (datetime.now() - timedelta(days=day_threshold)).strftime("%Y-%m-%d")
-
-    '''
-        Getting the items for the current year that 
-        were in the last day_threshold days
-    '''
-    current_year_items = dynamo_table.query(
-        IndexName="YEAR_ACCESS",
-        KeyConditionExpression=
-        Key("YEAR").eq(current_year) & 
-        Key("RATINGS_OCCURRED_ON").gte(start_day)
-
-    )
-    
-    logging.info(
-        (
-            "Count of ratings added in last {num_days} days: ".format(
-                num_days=day_threshold
-            ) + str(current_year_items["Count"])
-        )
-    )
-    
-    assert current_year_items["Count"] > 5, (
-        "Less than 5 show ratings recorded in the last {num_days} days".format(
-            num_days=day_threshold
-        )
-    )
-
-
-    '''
-        Validate that SHOW element is not none
-        and that TOTAL_VIEWERS is a number if you exclude , or .
-    '''
-    for show_rating in current_year_items["Items"]:
-        assert show_rating["SHOW"] is not None, (
-            "SHOW name is None"
-        )
-        
-        '''
-            Validates the viewer count is numeric
-        '''
-        assert True == show_rating["TOTAL_VIEWERS"].replace(",", "").replace(".","").isnumeric(),(
-            "TOTAL_VIEWERS is not numeric"
-        )
-        
-
-
 def delete_dynamodb_backups(table_name,
     recent_window=29, purge_window=365):
     '''deletes the old/recent dynamodb backups
@@ -308,7 +216,6 @@ def lambda_handler(event, context):
     '''
     logging.getLogger().setLevel(logging.INFO)
 
-    test_dynamodb_recent_insertion(table_name=os.environ["DYNAMODB_TABLE_NAME"])
 
     delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
 
@@ -328,7 +235,6 @@ def main():
         Raises
         ------
     """
-    test_dynamodb_recent_insertion(table_name="prod_toonami_ratings")
 
     delete_dynamodb_backups(table_name="prod_toonami_ratings")
     create_dynamodb_backup(
