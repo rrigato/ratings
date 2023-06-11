@@ -2,9 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 
-class BackupDynamoDbUnit(unittest.TestCase):
-    """Unit tests for BackupDynamoDB
-    """
+class TestHistoricalRatingsUpload(unittest.TestCase):
 
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock: MagicMock):
