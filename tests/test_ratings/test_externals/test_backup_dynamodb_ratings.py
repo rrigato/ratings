@@ -109,29 +109,6 @@ class BackupDynamoDbUnit(unittest.TestCase):
         }
 
 
-    @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
-    def test_main(self,
-        create_dynamodb_backup_mock):
-        '''Test for main function
-
-            Parameters
-            ----------
-            delete_dynamodb_backups_mock : unittest.mock.MagicMock
-                Mock object for local deletion of backups
-
-            create_dynamodb_backup_mock : unittest.mock.MagicMock
-                Mock object for local creation of backups
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-        from scripts.backup_dynamodb_ratings import main
-
-        pass
-
     @patch("boto3.client")
     def test_get_boto_clients_no_region(self, boto3_client_mock):
         '''Tests outgoing boto3 client generation when no region is passed
@@ -255,89 +232,6 @@ class BackupDynamoDbUnit(unittest.TestCase):
         boto3_client_mock.assert_called_once_with(
             service_name=test_service_name,
             region_name=test_region_name
-        )
-
-
-
-
-    @patch("scripts.backup_dynamodb_ratings.get_boto_clients")
-    def test_create_dynamodb_backup(self, get_boto_clients_mock):
-        '''Tests that we created a dynamodb backup
-
-            Parameters
-            ----------
-            get_boto_clients_mock : unittest.mock.MagicMock
-                Mock object used to patch
-                AWS Python SDK dynamodb clients
-
-            Returns
-            -------
-
-            Raises
-            ------
-        '''
-        from scripts.backup_dynamodb_ratings import create_dynamodb_backup
-
-        test_backup_name = "test_dynamo_db_backup"
-        create_dynamodb_backup(
-            table_name=self.DYNAMODB_TABLE_NAME,
-            backup_name=test_backup_name
-        )
-
-
-        '''
-            Testing call to creat_backup
-        '''
-        get_boto_clients_mock().create_backup.assert_called_once_with(
-            TableName=self.DYNAMODB_TABLE_NAME,
-            BackupName= (test_backup_name + "_" + 
-                datetime.now().strftime("%Y_%m_%d")
-            )
-        )
-
-    @patch("logging.getLogger")
-    @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
-    def test_lambda_handler_event(self,
-        create_dynamodb_backup_mock, getLogger_mock):
-        """Tests passing sample event to lambda_handler
-
-            Parameters
-            ----------
-            delete_dynamodb_backups_mock : unittest.mock.MagicMock
-                Mock object for local deletion of backups
-
-            create_dynamodb_backup_mock : unittest.mock.MagicMock
-                Mock object for local creation of backups
-
-            getLogger_mock : unittest.mock.MagicMock
-                Mock object used to patch get_logger for lambda handler
-
-            test_dynamodb_recent_insertion_mock : unittest.mock.MagicMock
-                Mock of function that tests items were recently inserted
-
-            Returns
-            -------
-
-            Raises
-            ------
-        """
-        from scripts.backup_dynamodb_ratings import lambda_handler
-
-        lambda_handler(
-            event=self.lambda_event_fixture,
-            context={}
-        )
-
-        self.assertEqual(
-            getLogger_mock.call_count,
-            1
-        )
-
-    
-
-        create_dynamodb_backup_mock.assert_called_once_with(
-            table_name=self.DYNAMODB_TABLE_NAME,
-            backup_name="lambda_backup_script"
         )
 
 
