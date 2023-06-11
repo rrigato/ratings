@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from scripts.backup_dynamodb_ratings import get_boto_clients
+from scripts.historical_ratings_upload import get_boto_clients
 
 
 def batch_item_scan(table_name):
