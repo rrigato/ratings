@@ -1,7 +1,5 @@
-import json
 import unittest
-from datetime import datetime, timedelta
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
 class BackupDynamoDbUnit(unittest.TestCase):
@@ -9,23 +7,10 @@ class BackupDynamoDbUnit(unittest.TestCase):
     """
 
     @patch("boto3.client")
-    def test_get_boto_clients_no_region(self, boto3_client_mock):
+    def test_get_boto_clients_no_region(self, boto3_client_mock: MagicMock):
         '''Tests outgoing boto3 client generation when no region is passed
-
-            Parameters
-            ----------
-            boto3_client_mock : unittest.mock.MagicMock
-                Mock object used to patch
-                AWS Python SDK
-
-            Returns
-            -------
-
-
-            Raises
-            ------
         '''
-        from scripts.backup_dynamodb_ratings import get_boto_clients
+        from scripts.historical_ratings_upload import get_boto_clients
 
         test_service_name="lambda"
         get_boto_clients(resource_name=test_service_name)
@@ -42,19 +27,8 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
 
     def test_get_boto_clients_table_resource(self):
-        """Tests getting a dynamodb table resource from get_boto_clients
-
-            Parameters
-            ----------
-
-            Returns
-            -------
-
-
-            Raises
-            ------
-        """
-        from scripts.backup_dynamodb_ratings import get_boto_clients
+        """Tests getting a dynamodb table resource from get_boto_clients"""
+        from scripts.historical_ratings_upload import get_boto_clients
 
         dynamodb_functions_to_test = [
             "put_item",
@@ -97,23 +71,10 @@ class BackupDynamoDbUnit(unittest.TestCase):
 
 
     @patch("boto3.client")
-    def test_get_boto_clients_with_region(self, boto3_client_mock):
+    def test_get_boto_clients_with_region(self, boto3_client_mock: MagicMock):
         '''Tests outgoing boto3 client generation when a region is passed
-
-            Parameters
-            ----------
-            boto3_client_mock : unittest.mock.MagicMock
-                Mock object used to patch
-                AWS Python SDK
-
-            Returns
-            -------
-
-
-            Raises
-            ------
         '''
-        from scripts.backup_dynamodb_ratings import get_boto_clients
+        from scripts.historical_ratings_upload import get_boto_clients
 
         test_service_name = "s3"
         test_region_name = "us-west-1"
