@@ -1,15 +1,10 @@
 import json
 import os
 import unittest
-from copy import deepcopy
 from unittest.mock import MagicMock, patch
 
-from bs4 import BeautifulSoup
 
-from util.test_reddit_rating_config import (MOCK_CLEAN_RATINGS_LIST,
-                                            MOCK_RATINGS_LIST,
-                                            REDDIT_RATING_TABLE_2019,
-                                            REDDIT_RATING_TABLE_2020)
+from util.test_reddit_rating_config import (MOCK_RATINGS_LIST)
 
 
 class RedditApi(unittest.TestCase):

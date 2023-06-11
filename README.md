@@ -88,11 +88,6 @@ Configuring git secrets as a web hook will ensure that git secrets runs on every
 ```
 
 
-Allow the sample lambda cloudwatch event since it uses a fake 
-account
-```bash
-    git config --add secrets.allowed "util/lambda_cw_event.json"
-```
 
 - Run a git secrets check recursively on all files in directory
 
@@ -127,7 +122,6 @@ ci.sh = miscellaneous awscli commands to configure environment
 
 - reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
 
-- backup_dynamodb_ratings.py = Runs monthly to backup dynamodb table and validate that new ratings were inserted in the last month
 
 
 ##### util
@@ -138,7 +132,7 @@ ci.sh = miscellaneous awscli commands to configure environment
 following api query:
 https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&restrict_sr=on&t=all&raw_json=1&after=t3_a19qyq
 
-- test_reddit_rating_config.py = fixtures for use in tests/test_reddit_rating.py
+- test_reddit_rating_config.py = legacy location for test fixtures
 
 
 ## run_locally
