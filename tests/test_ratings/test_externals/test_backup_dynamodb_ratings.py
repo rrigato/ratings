@@ -365,13 +365,11 @@ class BackupDynamoDbUnit(unittest.TestCase):
             )
         )
 
-    @patch("scripts.backup_dynamodb_ratings.test_dynamodb_recent_insertion")
     @patch("logging.getLogger")
     @patch("scripts.backup_dynamodb_ratings.create_dynamodb_backup")
     @patch("scripts.backup_dynamodb_ratings.delete_dynamodb_backups")
     def test_lambda_handler_event(self,delete_dynamodb_backups_mock,
-        create_dynamodb_backup_mock, getLogger_mock,
-        test_dynamodb_recent_insertion_mock):
+        create_dynamodb_backup_mock, getLogger_mock):
         """Tests passing sample event to lambda_handler
 
             Parameters
@@ -406,9 +404,7 @@ class BackupDynamoDbUnit(unittest.TestCase):
             1
         )
 
-        test_dynamodb_recent_insertion_mock.assert_called_once_with(
-            table_name=self.DYNAMODB_TABLE_NAME
-        )
+        
         
         delete_dynamodb_backups_mock.assert_called_once_with(
             table_name=self.DYNAMODB_TABLE_NAME
