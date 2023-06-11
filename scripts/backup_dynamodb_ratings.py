@@ -65,98 +65,6 @@ def get_boto_clients(resource_name, region_name="us-east-1",
     return(service_client)
 
 
-def delete_dynamodb_backups(table_name,
-    recent_window=29, purge_window=365):
-    '''deletes the old/recent dynamodb backups
-
-        Parameters
-        ----------
-        table_name : str
-            Name of the table to remove the backups 
-            from
-
-        recent_window : int
-            Rolling number of days of old backups we 
-            want to delete. Defaults to 29 days. 
-            Ex: We want to delete all USER on demand backups 
-            that occurred in the last 29 days
-
-        purge_window : int
-            How old an on demand backup is before we want to purge it.
-            Defaults to 365 days. 
-            Ex: We want to delete all USER on demand backups 
-            that are older than 365 days
-
-        Returns
-        -------
-
-
-        Raises
-        ------
-    '''
-    dynamodb_client = get_boto_clients(
-        resource_name="dynamodb", 
-        region_name="us-east-1"
-    )
-
-    
-
-
-    '''
-        BackupSummaries = list of all user backups
-    '''
-    table_backup_list = dynamodb_client.list_backups(
-        TableName=table_name,
-        BackupType="USER"
-    )["BackupSummaries"]
-
-
-    '''
-        return None if there is no backups
-    '''
-    if len(table_backup_list) == 0:
-        return(None)
-
-    '''
-        Calulating datetime object based on provided purge_window and
-        recent_window
-    '''
-    oldest_allowed_backup = datetime.now() - timedelta(days=purge_window)
-
-    most_recent_backup = datetime.now() - timedelta(days=recent_window)
-    '''
-        iterate over every user backup
-    '''
-    for dynamodb_backup in table_backup_list:
-
-        '''
-            datetime.now is local time, but making sure
-            both objects are not timezone aware
-        '''
-        local_dynamo_backup_time = dynamodb_backup["BackupCreationDateTime"].replace(
-            tzinfo=None
-        )
-        '''
-            Purging backups older than now minus the purge window
-            or newer than now minus the most_recent_backup time
-
-            Ex:
-            If today is 2025-05-31 and recent_window= 10 and purge_window=365
-            Deleteing all backups created between 2024-05-31
-            and 2025-05-21
-
-        '''
-        if ( 
-            (local_dynamo_backup_time > most_recent_backup) or
-            (local_dynamo_backup_time < oldest_allowed_backup)
-        ):
-            logging.info("Deleting backup: ")
-            logging.info(dynamodb_backup["BackupArn"])
-
-            dynamodb_client.delete_backup(
-                BackupArn=dynamodb_backup["BackupArn"]
-            )
-        
 
 
 def create_dynamodb_backup(table_name,
@@ -217,8 +125,6 @@ def lambda_handler(event, context):
     logging.getLogger().setLevel(logging.INFO)
 
 
-    delete_dynamodb_backups(table_name=os.environ["DYNAMODB_TABLE_NAME"])
-
     create_dynamodb_backup(
         table_name=os.environ["DYNAMODB_TABLE_NAME"],
         backup_name="lambda_backup_script"
@@ -236,7 +142,6 @@ def main():
         ------
     """
 
-    delete_dynamodb_backups(table_name="prod_toonami_ratings")
     create_dynamodb_backup(
         table_name="prod_toonami_ratings",
         backup_name="adhoc_manual_backup"
