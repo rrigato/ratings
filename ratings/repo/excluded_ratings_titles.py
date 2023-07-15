@@ -11,6 +11,8 @@ def get_excluded_titles():
     """
     return(deepcopy(
         [
-            "The Future Of Ratings | Toonami Faithful"
+            "The Future Of Ratings | Toonami Faithful",
+            "June 24, July 1 and July 8 Toonami Ratings",
+            "Toonami Ratings for June 10 + 17th"
         ]
     ))
