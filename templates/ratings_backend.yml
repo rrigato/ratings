@@ -137,6 +137,9 @@ Resources:
         Variables:
           DYNAMODB_TABLE_NAME: !Ref DynamoDbTableName
           ENVIRONMENT_PREFIX: !Ref environPrefix
+
+      EventInvokeConfig:
+        MaximumRetryAttempts: 0
       Events:
         #cloudwatch event rule that runs 
         #every 12 hours        
