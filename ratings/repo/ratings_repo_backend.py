@@ -1,7 +1,6 @@
 import base64
 import json
 import logging
-from copy import deepcopy
 from datetime import date, datetime
 from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
