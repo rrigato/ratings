@@ -27,6 +27,7 @@ def get_table_column_name_mapping() -> Dict[str, str]:
             "total": "TOTAL_VIEWERS", 
             "viewers": "TOTAL_VIEWERS",
             "viewers (000)": "TOTAL_VIEWERS",
+            "viewers (000s)": "TOTAL_VIEWERS",
             "18-49": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "18-49 rating": "PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49",
             "18-49 views (000)": "TOTAL_VIEWERS_AGE_18_49",
@@ -73,6 +74,7 @@ def keys_to_ignore() -> List[str]:
         "rank (/150)",
         "vs last",
         "vs last*",
+        "vs. last wk",
         "change"
     ])
 

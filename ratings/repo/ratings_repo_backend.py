@@ -1,7 +1,6 @@
 import base64
 import json
 import logging
-from copy import deepcopy
 from datetime import date, datetime
 from http.client import HTTPResponse
 from typing import Dict, List, Optional, Union
@@ -464,13 +463,16 @@ def _parse_int(
     AssertionError
         if potential_int is not numeric
     """
+    if potential_int.strip() == "":
+        return(None)
+    
     assert potential_int.isnumeric(), (
         f"_parse_int - {potential_int}"
     )
     return(int(potential_int))
 
 
-def _parse_float(
+def parse_float(
     potential_float: str
     ) -> Optional[float]:
     """ensures the potential_float is valid
@@ -482,10 +484,12 @@ def _parse_float(
     """
     if potential_float is None:
         return(None)
-    assert potential_float.replace(".", "").isnumeric(), (
-        f"_parse_float - {potential_float}"
+    assert (
+        potential_float.replace("<", "").replace(".", "").isnumeric()
+        ), (
+        f"parse_float - {potential_float}"
     )
-    return(float(potential_float))
+    return(float(potential_float.replace("<", "")))
 
 
 def _handle_show_air_date(rating_dict: Dict) -> date:
@@ -529,10 +533,10 @@ def _create_television_rating(
         '''
         refer to get_table_column_name_mapping value
         '''
-        tv_rating.household = _parse_float(
+        tv_rating.household = parse_float(
             rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS")
         )
-        tv_rating.household_18_49 = _parse_float(
+        tv_rating.household_18_49 = parse_float(
             rating_dict.get("PERCENTAGE_OF_HOUSEHOLDS_AGE_18_49")
         )
         tv_rating.rating = _parse_int(

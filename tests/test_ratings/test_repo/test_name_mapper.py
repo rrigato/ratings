@@ -67,6 +67,15 @@ class TestNameMapper(unittest.TestCase):
             type(get_table_column_name_mapping()["rating"]),
             str
         )    
+    
+    def test_get_table_column_name_mapping_e2e_viewer(self):
+        """Viewers (000s) added"""
+        from ratings.repo.name_mapper import get_table_column_name_mapping
+
+        self.assertEqual(
+            type(get_table_column_name_mapping()["viewers (000s)"]),
+            str
+        )    
 
 
     def test_keys_to_ignore(self):
