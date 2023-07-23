@@ -527,3 +527,14 @@ class TestRatingsRepoBackend(unittest.TestCase):
             oauth_dict_response["access_token"]
         )
 
+
+    def test_parse_float(self):
+        """float parsing logic that handles random characters"""
+        from ratings.repo.ratings_repo_backend import parse_float
+
+
+        self.assertEqual(
+            parse_float("<0.17"),
+            .17
+        )
+
