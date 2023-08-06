@@ -1,4 +1,5 @@
 
+from datetime import datetime
 import json
 import unittest
 from copy import deepcopy
@@ -536,5 +537,18 @@ class TestRatingsRepoBackend(unittest.TestCase):
         self.assertEqual(
             parse_float("<0.17"),
             .17
+        )
+
+
+    def test_ratings_title_override_manaual_override(self):
+        """Manual override of ratings title"""
+        from ratings.repo.ratings_repo_backend import ratings_title_override
+
+        
+        self.assertIsInstance(
+            ratings_title_override(
+                "July 22 Toonami Ratings (no numbers available for July 29)"
+            ),
+            datetime
         )
 

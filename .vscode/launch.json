@@ -3,12 +3,12 @@
     "configurations": [
     
         {
+            "envFile": "${workspaceFolder}/.vscode/.env",
             "name": "Run ratings as module",
             "python": "${workspaceFolder}/avenv/bin/python",
-            "type": "python",
             "request": "launch",
+            "type": "python",
             "module": "scripts.reddit_ratings",
-            "envFile": "${workspaceFolder}/.vscode/.env"
             // "module": "unittest"
         }
     ]

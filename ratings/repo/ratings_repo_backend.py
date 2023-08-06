@@ -191,6 +191,20 @@ def handle_table_body(
     return(saturday_ratings)
 
 
+
+
+def ratings_title_override(
+    ratings_title: str
+    ) -> datetime:
+    """Applies datetutil.parser 
+    or hardcoded manual overrides to 
+    obtain date television rating occurred on
+    """
+    return(datetime(3005, 1, 1))
+
+
+
+
 def handle_table_clean(
         reddit_post_html: str, rating_call_counter: int,
         ratings_title: str) -> List[Dict[str, str]]:
@@ -243,6 +257,7 @@ def handle_table_clean(
     logging.info(ratings_title)
     logging.info(ratings_occurred_on)
 
+    ratings_occurred_on = ratings_occurred_on[0]
     '''
         Iterating over every saturday night ratings
         which is list of dict and adding a new element
@@ -250,11 +265,11 @@ def handle_table_clean(
         formatting date in ISO 8601 standard
     '''
     for show_element in body_dict:
-        show_element["ratings_occurred_on"] = ratings_occurred_on[0].strftime("%Y-%m-%d")
+        show_element["ratings_occurred_on"] = ratings_occurred_on.strftime("%Y-%m-%d")
         '''
             Add the YEAR
         '''
-        show_element["YEAR"] = ratings_occurred_on[0].year
+        show_element["YEAR"] = ratings_occurred_on.year
     return(body_dict)
 
 
