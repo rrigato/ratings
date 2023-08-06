@@ -191,6 +191,42 @@ def handle_table_body(
     return(saturday_ratings)
 
 
+
+
+def ratings_title_override(
+    ratings_title: str
+    ) -> datetime:
+    """Applies datetutil.parser 
+    or hardcoded manual overrides to 
+    obtain date television rating occurred on
+    """
+
+    if (
+        ratings_title == 
+        "July 22 Toonami Ratings (no numbers available for July 29)"
+    ):
+        return(datetime(2023, 7, 22))
+    '''
+        Parses a datetime from the title:
+        "Toonami Ratings for November 2nd, 2019"
+        Returns tuple where the first element is
+        the datetime and the second is the leftover
+        string
+        (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
+    '''
+    ratings_date_from_title = parser.parse(ratings_title,
+        fuzzy_with_tokens=True)
+
+    logging.info("ratings_title_override - ratings_title -"+
+                 ratings_title)
+    logging.info("ratings_title_override - ratings_date_from_title -"+
+                 f"{ratings_date_from_title}")
+
+    return(ratings_date_from_title[0])
+
+
+
+
 def handle_table_clean(
         reddit_post_html: str, rating_call_counter: int,
         ratings_title: str) -> List[Dict[str, str]]:
@@ -227,22 +263,7 @@ def handle_table_clean(
     )
     logging.info("Cleaned the ratings post")
 
-    '''
-        Parses a datetime from the title of the
-        post which will originally be something like:
-        "Toonami Ratings for November 2nd, 2019"
-        Returns tuple where the first element is
-        the datetime and the second is the leftover
-        string
-        (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
-    '''
-    ratings_occurred_on = parser.parse(ratings_title,
-        fuzzy_with_tokens=True)
-
-    logging.info("Date Parse Fuzzy Logic: ")
-    logging.info(ratings_title)
-    logging.info(ratings_occurred_on)
-
+    ratings_occurred_on = ratings_title_override(ratings_title)
     '''
         Iterating over every saturday night ratings
         which is list of dict and adding a new element
@@ -250,11 +271,11 @@ def handle_table_clean(
         formatting date in ISO 8601 standard
     '''
     for show_element in body_dict:
-        show_element["ratings_occurred_on"] = ratings_occurred_on[0].strftime("%Y-%m-%d")
+        show_element["ratings_occurred_on"] = ratings_occurred_on.strftime("%Y-%m-%d")
         '''
             Add the YEAR
         '''
-        show_element["YEAR"] = ratings_occurred_on[0].year
+        show_element["YEAR"] = ratings_occurred_on.year
     return(body_dict)
 
 
