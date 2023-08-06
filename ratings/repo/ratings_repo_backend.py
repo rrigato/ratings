@@ -200,23 +200,29 @@ def ratings_title_override(
     or hardcoded manual overrides to 
     obtain date television rating occurred on
     """
+
+    if (
+        ratings_title == 
+        "July 22 Toonami Ratings (no numbers available for July 29)"
+    ):
+        return(datetime(2023, 7, 22))
     '''
-        Parses a datetime from the title of the
-        post which will originally be something like:
+        Parses a datetime from the title:
         "Toonami Ratings for November 2nd, 2019"
         Returns tuple where the first element is
         the datetime and the second is the leftover
         string
         (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
     '''
-    ratings_occurred_on = parser.parse(ratings_title,
+    ratings_date_from_title = parser.parse(ratings_title,
         fuzzy_with_tokens=True)
 
-    logging.info("Date Parse Fuzzy Logic: ")
-    logging.info(ratings_title)
-    logging.info(ratings_occurred_on)
+    logging.info("ratings_title_override - ratings_title -"+
+                 ratings_title)
+    logging.info("ratings_title_override - ratings_date_from_title -"+
+                 f"{ratings_date_from_title}")
 
-    return(ratings_occurred_on[0])
+    return(ratings_date_from_title[0])
 
 
 
