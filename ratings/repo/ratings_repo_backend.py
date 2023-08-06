@@ -200,7 +200,23 @@ def ratings_title_override(
     or hardcoded manual overrides to 
     obtain date television rating occurred on
     """
-    return(datetime(3005, 1, 1))
+    '''
+        Parses a datetime from the title of the
+        post which will originally be something like:
+        "Toonami Ratings for November 2nd, 2019"
+        Returns tuple where the first element is
+        the datetime and the second is the leftover
+        string
+        (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
+    '''
+    ratings_occurred_on = parser.parse(ratings_title,
+        fuzzy_with_tokens=True)
+
+    logging.info("Date Parse Fuzzy Logic: ")
+    logging.info(ratings_title)
+    logging.info(ratings_occurred_on)
+
+    return(ratings_occurred_on[0])
 
 
 
@@ -241,23 +257,7 @@ def handle_table_clean(
     )
     logging.info("Cleaned the ratings post")
 
-    '''
-        Parses a datetime from the title of the
-        post which will originally be something like:
-        "Toonami Ratings for November 2nd, 2019"
-        Returns tuple where the first element is
-        the datetime and the second is the leftover
-        string
-        (datetime.datetime(2019, 11, 2, 0, 0), ('Toonami Ratings for ', ' ', ', '))
-    '''
-    ratings_occurred_on = parser.parse(ratings_title,
-        fuzzy_with_tokens=True)
-
-    logging.info("Date Parse Fuzzy Logic: ")
-    logging.info(ratings_title)
-    logging.info(ratings_occurred_on)
-
-    ratings_occurred_on = ratings_occurred_on[0]
+    ratings_occurred_on = ratings_title_override(ratings_title)
     '''
         Iterating over every saturday night ratings
         which is list of dict and adding a new element
