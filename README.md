@@ -162,3 +162,4 @@ python -m unittest discover integration
 ## known-issues
 - no data from 2022-10-29 through 2023-03-18 inclusive
 - 2023-06-10 through 2023-07-08 inclusive
+- 2023-08-05 through 2023-08-12 inclusive

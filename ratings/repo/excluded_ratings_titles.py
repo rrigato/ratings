@@ -13,6 +13,7 @@ def get_excluded_titles():
         [
             "The Future Of Ratings | Toonami Faithful",
             "June 24, July 1 and July 8 Toonami Ratings",
-            "Toonami Ratings for June 10 + 17th"
+            "Toonami Ratings for June 10 + 17th",
+            "August 5 & 12 Toonami Ratings"
         ]
     ))
