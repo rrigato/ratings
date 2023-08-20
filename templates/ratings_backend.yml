@@ -70,38 +70,9 @@ Resources:
       Namespace: 'AWS/Lambda'
       MetricName: 'Errors'      
       Statistic: 'Sum'
-      Period: 7200
+      Period: 172800
       #dont want any greater than 0 errors
       Threshold: 0
-
-  #alarm that is triggeredif there have been no lambda function
-  #invocations
-  LambdaNoInvocationAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      #SNS topic arn to publish to if number of lambda errors is
-      #greater than 0
-      AlarmActions: 
-        - !Ref ErrorAlertQueue
-      AlarmDescription: !Sub '${ProjectName} No lambda function invocations'
-      AlarmName: !Sub '${ProjectName}LambdaMissingInvocationAlarm'
-      ComparisonOperator: LessThanOrEqualToThreshold
-      #The functions we want to consider for invocation count
-      Dimensions:
-        - Name: FunctionName
-          Value: !Join ['-', [ !Ref ProjectName, 'lambda-poll']]
-
-      EvaluationPeriods: 1
-      #metric statistic for if there was no lambda invocations
-      # in the last 24 hours
-      MetricName: Invocations
-      Namespace: AWS/Lambda
-      #every 24 hours
-      Period: 86400
-      Statistic: Sum
-      #Should have a lambda invocation in last 24 hours
-      Threshold: 0
-
 
   LambdaCodeBucket:
     Properties:

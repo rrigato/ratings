@@ -217,9 +217,9 @@ def ratings_title_override(
     ratings_date_from_title = parser.parse(ratings_title,
         fuzzy_with_tokens=True)
 
-    logging.info("ratings_title_override - ratings_title -"+
+    logging.info("ratings_title_override - ratings_title - "+
                  ratings_title)
-    logging.info("ratings_title_override - ratings_date_from_title -"+
+    logging.info("ratings_title_override - ratings_date_from_title - "+
                  f"{ratings_date_from_title}")
 
     return(ratings_date_from_title[0])
