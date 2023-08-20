@@ -70,7 +70,7 @@ Resources:
       Namespace: 'AWS/Lambda'
       MetricName: 'Errors'      
       Statistic: 'Sum'
-      Period: 172800
+      Period: 86400
       #dont want any greater than 0 errors
       Threshold: 0
 
