@@ -1,4 +1,8 @@
-![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNWRzcDRZemNOTTZVM1F1ZVNZb2J6UG1ZMFdPWnRobytweG9aOE81RTgyTXlEeFg1RDcvQWFlWm96OXpQSTBBZ0VQNTFDeEJweWdtcU9ORTBYSVRGTmQ4PSIsIml2UGFyYW1ldGVyU3BlYyI6IjRIRExOZk5ZRnFZdFdRVE0iLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master) ![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)
+![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)
+
+# archival
+- Effective 2023-08-27 I archived this project, might revisit in the future but the upstream television ratings sources were too inconsistent to reliably pull the required data.
+  
 
 # ratings
 
@@ -8,6 +12,7 @@ This application creates a lambda function that polls the reddit api to retrieve
 ## table_of_contents
 
 
+- [archival](#archival)
 - [ratings](#ratings)
   - [table\_of\_contents](#table_of_contents)
     - [dev\_tools](#dev_tools)
@@ -17,7 +22,6 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
-        - [util](#util)
   - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
     - [integration-tests](#integration-tests)
@@ -31,7 +35,6 @@ This application creates a lambda function that polls the reddit api to retrieve
 
 The goal of these dev tools is to build security checks into the CI/CD pipeline so that controls are put into place without manual intervention by the developer.
 
-Follow [this aws example](https://forums.aws.amazon.com/thread.jspa?threadID=228206) on how to have multiple rsa key pairs in the same local machine being used with different accounts.
 
 
 #### detect_secrets
@@ -80,8 +83,6 @@ python3 -c "import sys, json; print(json.load(sys.stdin)['results'])"
 
 Configuring git secrets as a web hook will ensure that git secrets runs on every commit, scanning for credentials
 ```
-    cd ~/Documents/devdocs
-
     git secrets --install
 
     git secrets --register-aws
@@ -120,29 +121,14 @@ ci.sh = miscellaneous awscli commands to configure environment
   
 - historical_ratings_upload.py = one time upload of json from the [historical](#historical) directory
 
-- reddit_ratings.py = api call to reddit to get television ratings and transform for upload into dynamodb
-
-
-
-##### util
-
-- news_flair_fixture.json = reddit response with posts that have a news flair for unit testing
-  
-- reddit_search_response.json = Reddit search api json response using the
-following api query:
-https://oauth.reddit.com/r/toonami/search.json?limit=25&q=flair:news&sort=new&restrict_sr=on&t=all&raw_json=1&after=t3_a19qyq
-
-- test_reddit_rating_config.py = legacy location for test fixtures
+- reddit_ratings.py = api call to reddit to get television ratings and transform for upload into persistant storage
 
 
 ## run_locally
 
 
 ```bash
-#I know, I know, this was build before I knew better
-export AWS_LAMBDA_FUNCTION_NAME="dev-ratings-backend-lambda-poll"
-export BUILD_ENVIRONMENT="dev"
-
+# assumes you have exported aws profile with aws cli locally
 python -m scripts.reddit_ratings
 ```
 
@@ -162,4 +148,4 @@ python -m unittest discover integration
 ## known-issues
 - no data from 2022-10-29 through 2023-03-18 inclusive
 - 2023-06-10 through 2023-07-08 inclusive
-- 2023-08-05 through 2023-08-12 inclusive
+- No data after 2023-07-08 due to project archival
