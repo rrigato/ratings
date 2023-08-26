@@ -39,19 +39,6 @@ Parameters:
 
 Resources:
 
-  #SNS Topic that will be published to in case of a lambda error
-  ErrorAlertQueue:
-    Type: AWS::SNS::Topic
-    Properties:
-      Tags:
-        -
-          Key: keep
-          Value: 'yes'
-        -
-          Key: reason
-          Value: !Join ['-', [ !Ref ProjectName, 'lambda-function-error-alert']]
-      TopicName: !Sub '${ProjectName}-error-topic'
-
 
   LambdaCodeBucket:
     Properties:
