@@ -52,27 +52,6 @@ Resources:
           Value: !Join ['-', [ !Ref ProjectName, 'lambda-function-error-alert']]
       TopicName: !Sub '${ProjectName}-error-topic'
 
-  #alarm that is triggered for lambda function error
-  LambdaErrorAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      #SNS topic arn to publish to if number of lambda errors is
-      #greater than 0
-      AlarmActions: 
-        - !Ref ErrorAlertQueue
-      AlarmDescription: !Sub '${ProjectName} Lambda Error alert'
-      AlarmName: !Sub '${ProjectName}-lambda-poll-error'
-      ComparisonOperator: GreaterThanThreshold
-      EvaluationPeriods: 1
-      Dimensions:
-        - Name: 'FunctionName'
-          Value: !Sub '${ProjectName}-lambda-poll'
-      Namespace: 'AWS/Lambda'
-      MetricName: 'Errors'      
-      Statistic: 'Sum'
-      Period: 86400
-      #dont want any greater than 0 errors
-      Threshold: 0
 
   LambdaCodeBucket:
     Properties:
@@ -94,10 +73,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       
-      #SNS topic that errors will be sent to
-      DeadLetterQueue:
-        TargetArn: !Ref ErrorAlertQueue
-        Type: SNS
                                 
       Description: |
         Makes reddit api call on schedule to check for 
