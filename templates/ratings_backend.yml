@@ -21,17 +21,6 @@ Parameters:
     Type: String
     Default: dev
 
-  EnableLambdaSchedule:
-    Type: String
-    Default: false 
-    Description: Determines whether lambda function event is enabled   
-
-
-  PolicyPrefix:
-    Type: String
-    Default: DevRatingsBackend 
-    Description: Policy statements must be AlphaNumeric   
-
   ProjectName:
     Type: String
     Default: dev-ratings-backend
