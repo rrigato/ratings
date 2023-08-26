@@ -18,8 +18,6 @@ This application creates a lambda function that polls the reddit api to retrieve
     - [dev\_tools](#dev_tools)
       - [detect\_secrets](#detect_secrets)
       - [git\_secrets](#git_secrets)
-    - [project\_directory\_overview](#project_directory_overview)
-      - [devops](#devops)
       - [historical](#historical)
       - [scripts](#scripts)
   - [run\_locally](#run_locally)
@@ -40,7 +38,6 @@ The goal of these dev tools is to build security checks into the CI/CD pipeline 
 #### detect_secrets
 [detect-secrets](https://github.com/Yelp/detect-secrets) is a python library that performs static code analysis to ensure no secrets have entered your code base.
 
-A detect-secrets scan is run as part of the dev CI build to ensure no secrets are promoted to prod. 
 
 ```bash
 #creates/updates baseline of vulnerabilities 
@@ -99,13 +96,7 @@ git secrets --scan
 ```
 
 
-### project_directory_overview
-Provides information on each directory/ source file
 
-
-#### devops
-
-ci.sh = miscellaneous awscli commands to configure environment
 
 
 
@@ -146,6 +137,5 @@ python -m unittest discover integration
 
 
 ## known-issues
-- no data from 2022-10-29 through 2023-03-18 inclusive
-- 2023-06-10 through 2023-07-08 inclusive
-- No data after 2023-07-08 due to project archival
+- No data from 2022-10-29 through 2023-03-18 inclusive
+- No data after 2023-06-10 outside of 2023-07-15 due to project archival
