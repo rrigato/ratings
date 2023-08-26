@@ -9,9 +9,6 @@ Description: |
   templates/ratings_backend.yml
 
 Parameters:
-  BucketName:
-    Type: String
-    Default: source-code
 
   DynamoDbTableName:
     Type: String
@@ -27,19 +24,6 @@ Parameters:
 
 
 Resources:
-
-
-  LambdaCodeBucket:
-    Properties:
-      BucketName: !Join ['-', [ !Ref ProjectName, !Ref BucketName ]]
-      Tags:
-        -
-          Key: keep
-          Value: 'yes'
-        -
-          Key: reason
-          Value: !Join ['-', [ !Ref ProjectName, 'lambda-function']]
-    Type: 'AWS::S3::Bucket'
 
 
 ###############################
