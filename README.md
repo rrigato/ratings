@@ -19,7 +19,7 @@ This application creates a lambda function that polls the reddit api to retrieve
       - [detect\_secrets](#detect_secrets)
       - [git\_secrets](#git_secrets)
       - [historical](#historical)
-      - [scripts](#scripts)
+  - [scripts](#scripts)
   - [run\_locally](#run_locally)
   - [unit-tests](#unit-tests)
     - [integration-tests](#integration-tests)
@@ -106,13 +106,12 @@ git secrets --scan
 - ratings_11102018_04112020.json = ratings from November 10th 2018 through April 11th 2020, source was the reddit api
 
 
-#### scripts
+## scripts
 - adhoc_item_update.py = Script to perform ad-hoc updates of all items in 
   the dynamodb table at once (data quality)
   
 - historical_ratings_upload.py = one time upload of json from the [historical](#historical) directory
 
-- reddit_ratings.py = api call to reddit to get television ratings and transform for upload into persistant storage
 
 
 ## run_locally
@@ -123,6 +122,7 @@ git secrets --scan
 python -m scripts.reddit_ratings
 ```
 
+- reddit_ratings.py = api call to reddit to get television ratings and transform for upload into persistant storage
 
 ## unit-tests
 ```bash
